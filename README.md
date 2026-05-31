@@ -1,2 +1,2 @@
 # CSGO
-WSWSB
+颗秒
