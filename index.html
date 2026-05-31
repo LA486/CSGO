@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>熊国会专属 · 夏日清风与爱</title>
+    <title>熊国会专属 · 夏日清风 · 泰迪熊视频惊喜</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none; /* 让文字选择更干净，不影响体验 */
+            user-select: none;
         }
 
         body {
             min-height: 100vh;
             background: linear-gradient(145deg, #f9d8c6 0%, #ffe6d5 35%, #b3e0ff 100%);
-            /* 暖暖的夏日渐变，上方暖色，下方天空蓝 */
             font-family: 'Segoe UI', 'Quicksand', system-ui, 'Poppins', 'Comic Neue', cursive;
             display: flex;
             align-items: center;
@@ -27,7 +26,7 @@
 
         /* 主卡片，文字区域柔和精致 */
         .love-card {
-            max-width: 800px;
+            max-width: 850px;
             width: 100%;
             background: rgba(255, 250, 240, 0.88);
             backdrop-filter: blur(12px);
@@ -44,7 +43,6 @@
             transform: scale(1.01);
         }
 
-        /* 动感标题区 */
         .breeze-text {
             font-size: 2rem;
             font-weight: 700;
@@ -57,7 +55,6 @@
             display: inline-block;
         }
 
-        /* 云朵段落容器 - 手绘风格 */
         .cloud-section {
             background: rgba(255, 255, 245, 0.5);
             border-radius: 80px;
@@ -65,28 +62,36 @@
             margin: 1.5rem 0;
             backdrop-filter: blur(4px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
         }
 
-        /* 让云朵动画的每一行有独立飘移感 */
-        .cloud-line {
+        .cloud-art {
             display: inline-block;
-            font-family: monospace, 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+            text-align: left;
+            background: rgba(255,245,235,0.4);
+            border-radius: 60px;
+            padding: 0.6rem 1.2rem;
+            backdrop-filter: blur(2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .cloud-line {
+            font-family: monospace, 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', 'Courier New', monospace;
             font-size: 1.5rem;
             white-space: pre;
-            letter-spacing: 2px;
+            line-height: 1.65;
+            letter-spacing: 1px;
             filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.1));
             animation: floatCloud 3s infinite alternate ease-in-out;
             transform-origin: center;
+            display: block;
         }
 
-        /* 分别控制不同行的延迟与飘移速度，产生错落感 */
         .cloud-line:nth-child(1) { animation-duration: 2.8s; animation-delay: 0s; }
         .cloud-line:nth-child(2) { animation-duration: 3.4s; animation-delay: 0.2s; }
         .cloud-line:nth-child(3) { animation-duration: 2.5s; animation-delay: 0.5s; }
         .cloud-line:nth-child(4) { animation-duration: 3.2s; animation-delay: 0.1s; }
-        .cloud-line:nth-child(5) { animation-duration: 3.7s; animation-delay: 0.8s; }
 
-        /* 雪花/清凉粒子动态旋转区域 */
         .cool-breeze {
             display: flex;
             justify-content: center;
@@ -102,7 +107,6 @@
             filter: drop-shadow(0 0 6px #aaffff);
         }
 
-        /* 大字祝福区域 */
         .blessing {
             font-size: 1.9rem;
             font-weight: bold;
@@ -111,7 +115,6 @@
             -webkit-background-clip: text;
             color: transparent;
             margin: 1rem 0 0.5rem;
-            animation: heartbeatGlow 1.6s infinite ease;
             letter-spacing: 2px;
         }
 
@@ -126,57 +129,27 @@
             border-radius: 60px;
         }
 
-        /* 自定义手绘云朵飘移动画 */
         @keyframes floatCloud {
-            0% {
-                transform: translateX(0px) translateY(0px) rotate(0deg);
-            }
-            100% {
-                transform: translateX(12px) translateY(-6px) rotate(1deg);
-            }
+            0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+            100% { transform: translateX(8px) translateY(-5px) rotate(0.8deg); }
         }
 
         @keyframes gentleFloat {
-            0% {
-                transform: translateY(0px);
-            }
-            100% {
-                transform: translateY(-6px);
-            }
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-6px); }
         }
 
         @keyframes spinFlurry {
-            0% {
-                transform: rotate(0deg) scale(0.9);
-                opacity: 0.7;
-            }
-            100% {
-                transform: rotate(12deg) scale(1.2);
-                opacity: 1;
-            }
+            0% { transform: rotate(0deg) scale(0.9); opacity: 0.7; }
+            100% { transform: rotate(12deg) scale(1.2); opacity: 1; }
         }
 
         @keyframes floatUpSmall {
-            0% {
-                transform: translateY(0px);
-            }
-            100% {
-                transform: translateY(-8px);
-            }
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-8px); }
         }
 
-        @keyframes heartbeatGlow {
-            0% {
-                text-shadow: 0 0 0px #ff88aa;
-                opacity: 0.9;
-            }
-            100% {
-                text-shadow: 0 0 10px #ff4d6d, 0 0 5px #ffaa88;
-                opacity: 1;
-            }
-        }
-
-        /* 动态吹风背景——飘浮爱心和凉爽的粒子（canvas风格+额外dom粒子） */
+        /* 吹风粒子 */
         .floating-particle {
             position: fixed;
             pointer-events: none;
@@ -187,17 +160,11 @@
         }
 
         @keyframes blowWind {
-            0% {
-                transform: translateX(0) translateY(0) rotate(0deg);
-                opacity: 0.8;
-            }
-            100% {
-                transform: translateX(180px) translateY(-120px) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 0.8; }
+            100% { transform: translateX(180px) translateY(-120px) rotate(360deg); opacity: 0; }
         }
 
-        /* 云层背景动画——动态云朵层（背景大云增加梦幻感） */
+        /* 背景大云 */
         .bg-cloud {
             position: fixed;
             background: rgba(255, 255, 250, 0.7);
@@ -209,35 +176,10 @@
         }
 
         @keyframes bgCloudMove {
-            0% {
-                transform: translateX(-3%) translateY(0%);
-            }
-            100% {
-                transform: translateX(5%) translateY(-8%);
-            }
+            0% { transform: translateX(-3%) translateY(0%); }
+            100% { transform: translateX(5%) translateY(-8%); }
         }
 
-        /* 响应式调整 */
-        @media (max-width: 620px) {
-            .love-card {
-                padding: 1.2rem;
-            }
-            .cloud-line {
-                font-size: 1rem;
-                letter-spacing: 1px;
-            }
-            .breeze-text {
-                font-size: 1.6rem;
-            }
-            .blessing {
-                font-size: 1.4rem;
-            }
-            .cool-item {
-                font-size: 1.3rem;
-            }
-        }
-
-        /* 小扇子标识点缀 */
         .fan-icon {
             display: inline-block;
             animation: fanSwing 2s infinite ease;
@@ -250,30 +192,165 @@
             100% { transform: rotate(15deg); }
         }
 
-        /* 暖光扫过效果 */
-        .shimmer {
+        @keyframes clickPopFade {
+            0% { transform: scale(0.3) translateY(0); opacity: 1; }
+            100% { transform: scale(1.5) translateY(-40px); opacity: 0; }
+        }
+
+        @keyframes floatUpHeart {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.9; }
+            100% { transform: translateY(-120vh) rotate(25deg); opacity: 0; }
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 620px) {
+            .love-card { padding: 1.2rem; }
+            .cloud-line { font-size: 0.95rem; line-height: 1.45; white-space: pre-wrap; word-break: keep-all; }
+            .cloud-art { padding: 0.3rem 0.6rem; }
+            .breeze-text { font-size: 1.6rem; }
+            .blessing { font-size: 1.4rem; }
+            .cool-item { font-size: 1.3rem; }
+        }
+
+        /* ========= 泰迪熊容器 右下角 ========= */
+        .teddy-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 30;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .teddy-container:hover {
+            transform: scale(1.02);
+        }
+        .teddy-canvas {
+            background: rgba(255, 245, 220, 0.3);
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2), 0 0 0 2px rgba(255,215,150,0.6);
+            transition: all 0.2s;
+            width: 150px;
+            height: 150px;
+            display: block;
+        }
+        .teddy-tip {
+            background: rgba(255,255,210,0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 40px;
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #b45f2b;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            white-space: nowrap;
+            font-family: inherit;
+            animation: tipPulse 1.2s infinite alternate;
+        }
+        @keyframes tipPulse {
+            0% { opacity: 0.7; transform: scale(0.95);}
+            100% { opacity: 1; transform: scale(1.05);}
+        }
+        @media (max-width: 550px) {
+            .teddy-canvas { width: 120px; height: 120px; }
+            .teddy-tip { font-size: 0.7rem; white-space: nowrap; }
+            .teddy-container { bottom: 12px; right: 12px; }
+        }
+
+        /* ========= 视频模态框 (新页面效果) ========= */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+        .video-modal.active {
+            display: flex;
+        }
+        .modal-content {
             position: relative;
-            overflow: hidden;
+            max-width: 90%;
+            max-height: 90%;
+            background: #1e1a1a;
+            border-radius: 32px;
+            padding: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            border: 2px solid #ffcd94;
+            text-align: center;
+        }
+        .modal-content video {
+            max-width: 100%;
+            max-height: 70vh;
+            border-radius: 24px;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .close-modal {
+            position: absolute;
+            top: 8px;
+            right: 18px;
+            font-size: 2rem;
+            color: #ffcf9a;
+            cursor: pointer;
+            background: rgba(0,0,0,0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            font-weight: bold;
+        }
+        .close-modal:hover {
+            background: #ff8866;
+            color: white;
+            transform: scale(1.1);
+        }
+        .video-caption {
+            margin-top: 12px;
+            color: #ffecb3;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @media (max-width: 650px) {
+            .modal-content { padding: 12px; }
+            .close-modal { top: 2px; right: 8px; width: 32px; height: 32px; font-size: 1.6rem; }
+            .video-caption { font-size: 0.8rem; }
         }
     </style>
 </head>
 <body>
 
 <div class="love-card">
-    <!-- 标题：老婆天热给你吹吹 + 动态小风扇表情 -->
     <div class="breeze-text">
         <span class="fan-icon">🌀</span> 老婆天热我给你吹吹 <span class="fan-icon">🍃</span>
     </div>
-
-    <!-- 云朵版诗句（动起来～） -->
     <div class="cloud-section">
-        <div class="cloud-line">╭◜◝ ͡ ◜◝╮</div><br>
-        <div class="cloud-line">(　　　`3´ )༄༅༄༅</div><br>
-          <div class="cloud-line">╰◟◞ ͜ ◟◞╯　　༄༅༄༅ ❄️ ❄️ ❄️</div><br>
-        <div class="cloud-line">༄༅ ❄️ ❄️</div>
+        <div class="cloud-art">
+            <div class="cloud-line">╭◜◝ ͡ ◜◝╮</div>
+            <div class="cloud-line">(　　　`3´ )༄༅༄༅</div>
+            <div class="cloud-line">╰◟◞ ͜ ◟◞╯　　༄༅༄༅ ❄️ ❄️ ❄️</div>
+            <div class="cloud-line">༄༅ ❄️ ❄️</div>
+        </div>
     </div>
-
-    <!-- 凉风雪花旋转区（额外的清凉动效） -->
     <div class="cool-breeze">
         <span class="cool-item">❄️</span>
         <span class="cool-item">🍃</span>
@@ -281,8 +358,6 @@
         <span class="cool-item">❄️</span>
         <span class="cool-item">✨</span>
     </div>
-
-    <!-- 祝福语双倍爱心横幅 -->
     <div class="blessing">
         🎉熊国会天下第一好！小狗永远爱你🎉
     </div>
@@ -294,71 +369,64 @@
     </div>
 </div>
 
-<!-- 动态背景云层（增加浮动大云） -->
 <div id="bgCloudContainer"></div>
+
+<!-- 右下角泰迪熊交互区域 -->
+<div class="teddy-container" id="teddyContainer">
+    <canvas id="teddyCanvas" class="teddy-canvas" width="150" height="150"></canvas>
+    <div class="teddy-tip" id="teddyTip">🐻 单击看视频 · 双击换动作</div>
+</div>
+
+<!-- 视频模态框（新页面中间区域） -->
+<div id="videoModal" class="video-modal">
+    <div class="modal-content">
+        <span class="close-modal" id="closeModalBtn">&times;</span>
+        <video id="loveVideo" controls autoplay muted playsinline>
+            <source src="321.mp4" type="video/mp4">
+            您的浏览器不支持 video 标签。
+        </video>
+        <div class="video-caption">❤️ 专属回忆 · 温暖时光 ❤️</div>
+    </div>
+</div>
 
 <script>
     (function() {
-        // ========= 1. 动态「吹风」粒子系统 =========
-        // 为了让老婆感受到清凉，持续飘落雪花/爱心/清风符号
-        
+        // ========= 保留原有吹风粒子 & 背景云 & 爱心效果 =========
         const bodyEl = document.body;
         let particleInterval = null;
-        
-        // 清凉小元素池子
         const coolItems = ['❄️', '🍃', '💨', '✨', '💙', '🌸', '💧', '🌀', '❤️', '🎐'];
         
         function createWindParticle() {
-            // 避免太密集 最多每秒10个左右 但是随着页面活跃动态生成
             const particle = document.createElement('div');
             particle.classList.add('floating-particle');
-            // 随机符号
             const randomIcon = coolItems[Math.floor(Math.random() * coolItems.length)];
             particle.innerHTML = randomIcon;
-            // 随机大小
             const size = 1 + Math.random() * 1.2;
             particle.style.fontSize = `${size}rem`;
-            // 初始位置 主要在屏幕下方和左边区域 产生风吹感觉
             const startX = Math.random() * window.innerWidth;
-            const startY = window.innerHeight + 20; // 从底部开始飘
+            const startY = window.innerHeight + 20;
             particle.style.left = `${startX}px`;
             particle.style.top = `${startY}px`;
-            // 自定义飘移方向：向左上/右上/左上飘逸，模拟清风
-            const deltaX = (Math.random() - 0.5) * 200 + 60; // 向右飘为主
-            const deltaY = -150 - Math.random() * 100;
-            // 定制关键帧动画更个性化（动态设置）
             const duration = 4 + Math.random() * 3;
             particle.style.animation = `blowWind ${duration}s linear forwards`;
-            // 增加额外旋转和倾斜效果
             particle.style.transform = `rotate(${Math.random() * 60}deg)`;
             bodyEl.appendChild(particle);
-            
-            // 动画结束后移除
-            particle.addEventListener('animationend', () => {
-                if(particle && particle.remove) particle.remove();
-            });
+            particle.addEventListener('animationend', () => { if(particle && particle.remove) particle.remove(); });
         }
         
-        // 启动粒子微风 (老婆天热给你吹吹 持续清爽)
         function startCoolBreeze() {
             if (particleInterval) clearInterval(particleInterval);
             particleInterval = setInterval(() => {
-                // 页面可见时生产粒子，控制每秒最多4～8个
                 if (document.hidden) return;
-                const count = Math.floor(Math.random() * 2) + 1;  // 一次生成1-2个
-                for(let i=0; i<count; i++) {
-                    createWindParticle();
-                }
+                const count = Math.floor(Math.random() * 2) + 1;
+                for(let i=0; i<count; i++) createWindParticle();
             }, 700);
         }
         
-        // ========= 2. 让背景云朵也动起来 (增加梦幻云层效果) =========
         function createBgClouds() {
             const container = document.getElementById('bgCloudContainer');
             if(!container) return;
-            // 清除已有的
             container.innerHTML = '';
-            // 生成4～6朵大云
             const cloudCount = 5;
             for(let i=0; i<cloudCount; i++) {
                 const cloud = document.createElement('div');
@@ -377,9 +445,7 @@
             }
         }
         
-        // 额外动态爱心泡泡（添加到云朵区域给予生动的爱心冒泡）
-        function createFloatingHeartsForWife() {
-            // 每2秒在屏幕上生成一颗爱的浮心（让小狗的爱飘满天空）
+        function createFloatingHearts() {
             setInterval(() => {
                 if(document.hidden) return;
                 const heartSpan = document.createElement('div');
@@ -397,37 +463,12 @@
             }, 1800);
         }
         
-        // 爱心浮动动画定义
-        const styleSheet = document.createElement("style");
-        styleSheet.textContent = `
-            @keyframes floatUpHeart {
-                0% {
-                    transform: translateY(0) rotate(0deg);
-                    opacity: 0.9;
-                }
-                100% {
-                    transform: translateY(-120vh) rotate(25deg);
-                    opacity: 0;
-                }
-            }
-            /* 加强云朵线条的呼吸感 */
-            .cloud-line {
-                transition: all 0.1s ease;
-                text-shadow: 2px 2px 8px rgba(0,0,0,0.1);
-            }
-            .cool-item {
-                transition: 0.1s;
-            }
-        `;
-        document.head.appendChild(styleSheet);
-        
-        // ========= 3. 鼠标/手指点击额外惊喜: 点击任意处出现"爱心吹风" =========
         function addClickBreezeEffect(e) {
+            // 如果点击的是模态框或者其内部，不触发额外粒子（避免干扰），但无伤大雅
             const x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
             const y = e.clientY || (e.touches ? e.touches[0].clientY : 0);
             if(!x && !y) return;
-            // 生成一团凉爽粒子+爱心
-            for(let i=0; i<6; i++) {
+            for(let i=0; i<5; i++) {
                 const extraParticle = document.createElement('div');
                 extraParticle.style.position = 'fixed';
                 extraParticle.style.left = x + (Math.random() - 0.5) * 30 + 'px';
@@ -444,131 +485,262 @@
             }
         }
         
-        // 定义点击动画关键帧（如果不存在则动态添加）
-        if (!document.querySelector('#clickPopAnimStyle')) {
-            const clickStyle = document.createElement('style');
-            clickStyle.id = 'clickPopAnimStyle';
-            clickStyle.textContent = `
-                @keyframes clickPopFade {
-                    0% {
-                        transform: scale(0.3) translateY(0);
-                        opacity: 1;
-                    }
-                    100% {
-                        transform: scale(1.5) translateY(-40px);
-                        opacity: 0;
-                    }
-                }
-            `;
-            document.head.appendChild(clickStyle);
-        }
-        
-        // ========= 4. 为了增加“云朵动起来”更生动，让每个云朵字符单独具有摇摆浮动 =========
         function enhanceCloudMotion() {
-            // 将原云块每一行单独加微动感，已经通过 .cloud-line 动画实现了，额外针对字符单独做微妙变化
-            const cloudLines = document.querySelectorAll('.cloud-line');
-            cloudLines.forEach((line, idx) => {
-                // 每个字符包裹成span？为了更细腻就让整体动效啦，但在hover时也可轻晃, 不改结构也足够
-                line.style.display = 'inline-block';
-                // 添加另一种呼吸感——小幅度缩放
-                line.style.transition = 'all 0.2s';
-                if(!line.hasAttribute('data-animated')){
-                    line.setAttribute('data-animated', 'true');
-                }
-            });
+            document.querySelectorAll('.cloud-line').forEach(line => line.style.display = 'block');
         }
         
-        // 增加新风吹拂模拟的旋转扇叶效果
-        function initFanSwingContinuous() {
+        function initFanSwing() {
             const fanIcon = document.querySelector('.fan-icon');
             if(fanIcon) {
-                setInterval(() => {
-                    // 轻微改变动画增强连续感，不破坏原有动画，额外加旋转摇摆
-                    fanIcon.style.transform = `rotate(${Math.sin(Date.now() / 500) * 12}deg)`;
-                }, 100);
+                setInterval(() => { fanIcon.style.transform = `rotate(${Math.sin(Date.now() / 500) * 12}deg)`; }, 100);
             }
         }
         
-        // 夏日清凉标语动态文字一闪一闪
-        function glintText() {
-            const blessingDivs = document.querySelectorAll('.blessing');
-            let toggle = true;
-            setInterval(() => {
-                if(!document.hidden) {
-                    const glow = toggle ? '0 0 12px #ff6699' : '0 0 0px transparent';
-                    blessingDivs.forEach(div => {
-                        div.style.textShadow = glow;
-                    });
-                    toggle = !toggle;
-                }
-            }, 800);
+        function initialBreeze() {
+            for(let i=0;i<16;i++) setTimeout(() => createWindParticle(), i*130);
         }
         
-        // 窗口大小变化时重新调整个别粒子边界，避免浪费，但是已有的会自适应， 云朵背景不动即可
-        window.addEventListener('resize', () => {
-            // 没什么必要重置背景云朵位置，但重新生成背景云可能会重置位置影响美观？ 不重新生成背景避免重置突兀，我们保留原本就好
-            // 但为了让背景云始终柔和，可稍微微调一下不强制重新生成
-            if(window.resizeTimer) clearTimeout(window.resizeTimer);
-            window.resizeTimer = setTimeout(() => {
-                // 如果觉得背景云比例失调，简单重新生成，会导致云朵闪现重置，但是会更有新意；可以不重绘
-                // 为了保持云朵动效可以动态调整位置，不做强制重置
-            }, 300);
-        });
-        
-        // 动态生成更多飘浮的雪花+凉风符号（初始额外出现）
-        function initialStrongBreeze() {
-            // 一进入页面先吹一阵凉风
-            for(let i=0;i<20;i++) {
-                setTimeout(() => {
-                    createWindParticle();
-                }, i*150);
-            }
-        }
-        
-        // ========= 启动所有特效 =========
-        startCoolBreeze();                // 持续清风粒子
-        createBgClouds();                // 漂浮大云背景
-        createFloatingHeartsForWife();   // 额外爱心漂浮
-        enhanceCloudMotion();            // 让云朵行摆动起来
-        initFanSwingContinuous();        // 扇叶动态
-        glintText();                     // 文字闪耀
-        initialStrongBreeze();           // 开场凉风
-        // 增加全局点击触发爱心吹风效果
+        startCoolBreeze();
+        createBgClouds();
+        createFloatingHearts();
+        enhanceCloudMotion();
+        initFanSwing();
+        initialBreeze();
         window.addEventListener('click', addClickBreezeEffect);
         window.addEventListener('touchstart', addClickBreezeEffect);
+        window.addEventListener('beforeunload', () => { if(particleInterval) clearInterval(particleInterval); });
         
-        // 添加控制性能注意清理（页面关闭清理定时器）
-        window.addEventListener('beforeunload', () => {
-            if(particleInterval) clearInterval(particleInterval);
-        });
+        // ========= 泰迪熊模块: 交互 (单击看视频 / 双击换动作) =========
+        const teddyCanvas = document.getElementById('teddyCanvas');
+        const ctx = teddyCanvas.getContext('2d');
+        let currentAction = 'sitting';   // 'sitting', 'lying', 'walking'
+        let walkPhase = 0;
+        let walkAnimationId = null;
+        const w = 150, h = 150;
         
-        // 额外增加对云朵鼠标悬浮加强效果，让老婆看到互动趣味
-        const cloudSection = document.querySelector('.cloud-section');
-        if(cloudSection) {
-            cloudSection.addEventListener('mouseenter', () => {
-                const lines = document.querySelectorAll('.cloud-line');
-                lines.forEach(line => {
-                    line.style.animationDuration = '1.2s';
-                    line.style.filter = 'drop-shadow(0 0 6px #ffaa99)';
-                });
-            });
-            cloudSection.addEventListener('mouseleave', () => {
-                const lines = document.querySelectorAll('.cloud-line');
-                lines.forEach((line, idx) => {
-                    const dur = ['2.8s', '3.4s', '2.5s', '3.2s', '3.7s'][idx%5];
-                    line.style.animationDuration = dur;
-                    line.style.filter = '';
-                });
+        // ---- 绘图函数 (坐立/躺卧/走动) 完整保留 ----
+        function drawSitting() {
+            ctx.save();
+            ctx.clearRect(0, 0, w, h);
+            const gradBody = ctx.createLinearGradient(60, 70, 90, 110);
+            gradBody.addColorStop(0, '#F7C56E');
+            gradBody.addColorStop(1, '#E5A649');
+            ctx.beginPath();
+            ctx.ellipse(75, 95, 35, 40, 0, 0, Math.PI * 2);
+            ctx.fillStyle = gradBody;
+            ctx.fill();
+            ctx.strokeStyle = '#B97F2E';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(75, 55, 28, 0, Math.PI * 2);
+            ctx.fillStyle = '#F7C56E';
+            ctx.fill();
+            ctx.stroke();
+            ctx.beginPath(); ctx.ellipse(52, 35, 12, 14, -0.2, 0, Math.PI * 2); ctx.fillStyle = '#E5A649'; ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.ellipse(98, 35, 12, 14, 0.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#B87C2E';
+            ctx.beginPath(); ctx.arc(52, 35, 5, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(98, 35, 5, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#422C14';
+            ctx.beginPath(); ctx.arc(65, 52, 3, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(85, 52, 3, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(75, 63, 6, 0, Math.PI); ctx.fillStyle = '#E59A5E'; ctx.fill();
+            ctx.fillStyle = '#422C14';
+            ctx.beginPath(); ctx.ellipse(75, 61, 2, 3, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(75, 90, 20, 22, 0, 0, Math.PI * 2); ctx.fillStyle = '#FFDEA5'; ctx.fill();
+            ctx.fillStyle = '#E5A649';
+            ctx.beginPath(); ctx.ellipse(58, 120, 12, 15, -0.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.ellipse(92, 120, 12, 15, 0.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.ellipse(45, 88, 10, 18, -0.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.ellipse(105, 88, 10, 18, 0.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#FFAA88';
+            ctx.globalAlpha = 0.5;
+            ctx.beginPath(); ctx.arc(58, 60, 5, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(92, 60, 5, 0, Math.PI * 2); ctx.fill();
+            ctx.globalAlpha = 1;
+            ctx.restore();
+        }
+        
+        function drawLying() {
+            ctx.clearRect(0, 0, w, h);
+            ctx.save();
+            ctx.translate(75, 95);
+            ctx.rotate(-0.5);
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 42, 32, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#F7C56E';
+            ctx.fill();
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(38, -8, 26, 0, Math.PI * 2);
+            ctx.fillStyle = '#F7C56E';
+            ctx.fill();
+            ctx.stroke();
+            ctx.beginPath(); ctx.ellipse(48, -28, 10, 12, -0.3, 0, Math.PI * 2); ctx.fillStyle = '#E5A649'; ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.ellipse(30, -28, 10, 12, 0.3, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#B87C2E';
+            ctx.beginPath(); ctx.arc(48, -28, 5, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(30, -28, 5, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#422C14';
+            ctx.beginPath(); ctx.arc(48, -10, 2.5, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(30, -10, 2.5, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(39, -2, 6, 3, 0, 0, Math.PI * 2); ctx.fillStyle = '#E59A5E'; ctx.fill();
+            ctx.fillStyle = '#E5A649';
+            ctx.beginPath(); ctx.ellipse(-25, 10, 12, 18, 0.4, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.ellipse(25, 12, 12, 18, -0.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.ellipse(-20, -20, 10, 15, 0.6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.ellipse(20, -22, 10, 15, -0.6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+            ctx.restore();
+        }
+        
+        function drawWalking(phase) {
+            ctx.clearRect(0, 0, w, h);
+            ctx.save();
+            const bobY = Math.sin(phase * Math.PI * 2) * 2;
+            ctx.beginPath();
+            ctx.ellipse(75, 85 + bobY, 34, 38, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#F7C56E';
+            ctx.fill();
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(75, 48 + bobY*0.5, 27, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            ctx.fillStyle = '#E5A649';
+            ctx.beginPath(); ctx.ellipse(53, 28 + bobY*0.3, 11, 13, -0.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.ellipse(97, 28 + bobY*0.3, 11, 13, 0.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#B87C2E';
+            ctx.beginPath(); ctx.arc(53, 28 + bobY*0.3, 5, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(97, 28 + bobY*0.3, 5, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = '#422C14';
+            ctx.beginPath(); ctx.arc(64, 46 + bobY*0.4, 3, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(86, 46 + bobY*0.4, 3, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = 'white';
+            ctx.beginPath(); ctx.arc(62, 44 + bobY*0.4, 1, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(84, 44 + bobY*0.4, 1, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = '#422C14';
+            ctx.beginPath(); ctx.ellipse(75, 57 + bobY*0.5, 5, 3, 0, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(75, 85 + bobY, 18, 20, 0, 0, Math.PI*2); ctx.fillStyle = '#FFDEA5'; ctx.fill();
+            const armSwing = Math.sin(phase * Math.PI * 2) * 0.6;
+            ctx.fillStyle = '#E5A649';
+            ctx.beginPath(); ctx.ellipse(48 + armSwing*3, 80 + bobY + armSwing, 10, 18, -0.8 + armSwing*0.5, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.ellipse(102 - armSwing*3, 80 + bobY - armSwing, 10, 18, 0.8 - armSwing*0.5, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+            const legOffset = Math.sin(phase * Math.PI * 2) * 12;
+            ctx.beginPath(); ctx.ellipse(58 + legOffset*0.6, 118 + bobY - Math.abs(legOffset)*0.3, 12, 17, -0.4, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.ellipse(92 - legOffset*0.6, 118 + bobY - Math.abs(legOffset)*0.3, 12, 17, 0.4, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#FFAA88';
+            ctx.globalAlpha = 0.5;
+            ctx.beginPath(); ctx.arc(58, 55 + bobY*0.4, 5, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(92, 55 + bobY*0.4, 5, 0, Math.PI*2); ctx.fill();
+            ctx.globalAlpha = 1;
+            ctx.restore();
+        }
+        
+        function renderTeddy() {
+            if (currentAction === 'sitting') drawSitting();
+            else if (currentAction === 'lying') drawLying();
+            else if (currentAction === 'walking') drawWalking(walkPhase);
+        }
+        
+        function startWalkingAnimation() {
+            if (walkAnimationId) cancelAnimationFrame(walkAnimationId);
+            let startTime = null;
+            function animateWalk(timestamp) {
+                if (currentAction !== 'walking') {
+                    if (walkAnimationId) cancelAnimationFrame(walkAnimationId);
+                    walkAnimationId = null;
+                    renderTeddy();
+                    return;
+                }
+                if (!startTime) startTime = timestamp;
+                const elapsed = (timestamp - startTime) / 1000;
+                walkPhase = (elapsed * 1.8) % 1;
+                renderTeddy();
+                walkAnimationId = requestAnimationFrame(animateWalk);
+            }
+            walkAnimationId = requestAnimationFrame(animateWalk);
+        }
+        
+        function stopWalkingAndRender() {
+            if (walkAnimationId) { cancelAnimationFrame(walkAnimationId); walkAnimationId = null; }
+            renderTeddy();
+        }
+        
+        function nextAction() {
+            const actions = ['sitting', 'lying', 'walking'];
+            let idx = actions.indexOf(currentAction);
+            idx = (idx + 1) % actions.length;
+            currentAction = actions[idx];
+            const tipDiv = document.getElementById('teddyTip');
+            if (currentAction === 'sitting') tipDiv.innerHTML = '🐻 单击看视频 · 双击换动作 🧸坐立';
+            else if (currentAction === 'lying') tipDiv.innerHTML = '🐻 单击看视频 · 双击换动作 🛌躺卧';
+            else tipDiv.innerHTML = '🐻 单击看视频 · 双击换动作 🚶走走';
+            if (currentAction === 'walking') {
+                walkPhase = 0;
+                startWalkingAnimation();
+            } else {
+                stopWalkingAndRender();
+            }
+        }
+        
+        // ---------- 视频模态框逻辑 ----------
+        const modal = document.getElementById('videoModal');
+        const videoEl = document.getElementById('loveVideo');
+        const closeBtn = document.getElementById('closeModalBtn');
+        
+        function openVideoModal() {
+            modal.classList.add('active');
+            // 尝试播放（由于用户刚刚点击了熊，属于用户交互，可以自动播放带声音，但为了兼容性保留muted+controls）
+            videoEl.muted = false;  // 取消静音，让用户有声音体验（如果浏览器策略允许）
+            videoEl.play().catch(e => {
+                // 如果自动播放被阻止，让用户手动点击播放即可，不影响体验
+                console.log("自动播放需用户交互", e);
             });
         }
         
-        // 让字符"༄༅"等清凉符号更具动感重新刷新, .cool-breeze里的item添加额外动画
-        const coolItemsDom = document.querySelectorAll('.cool-item');
-        coolItemsDom.forEach((item, idx) => {
-            item.style.animationDelay = `${idx * 0.2}s`;
+        function closeVideoModal() {
+            modal.classList.remove('active');
+            videoEl.pause();
+            // 可选重置视频到开头
+            videoEl.currentTime = 0;
+        }
+        
+        // 单击熊 -> 打开视频模态框（新页面中间区域）
+        // 双击熊 -> 切换动作
+        let clickTimer = null;
+        const teddyContainer = document.getElementById('teddyContainer');
+        teddyContainer.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (clickTimer) {
+                clearTimeout(clickTimer);
+                clickTimer = null;
+                // 双击：切换动作
+                nextAction();
+            } else {
+                clickTimer = setTimeout(() => {
+                    // 单击：打开视频
+                    openVideoModal();
+                    clickTimer = null;
+                }, 180);
+            }
         });
         
-        console.log('❤️ 熊国会天下第一好！老婆专属清风已吹拂，云朵动起来啦！');
+        // 关闭模态框事件
+        closeBtn.addEventListener('click', closeVideoModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeVideoModal();
+        });
+        // 防止熊的事件冒泡干扰
+        window.addEventListener('resize', () => { renderTeddy(); });
+        
+        // 初始化熊姿态
+        renderTeddy();
+        // 额外添加鼠标悬浮特效
+        teddyContainer.addEventListener('mouseenter', () => {
+            teddyContainer.style.transform = 'scale(1.03)';
+            setTimeout(() => { if(teddyContainer) teddyContainer.style.transform = ''; }, 200);
+        });
     })();
 </script>
 </body>
