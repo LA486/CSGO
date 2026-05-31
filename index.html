@@ -2,16 +2,574 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>熊国会专属</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>熊国会专属 · 夏日清风与爱</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none; /* 让文字选择更干净，不影响体验 */
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #f9d8c6 0%, #ffe6d5 35%, #b3e0ff 100%);
+            /* 暖暖的夏日渐变，上方暖色，下方天空蓝 */
+            font-family: 'Segoe UI', 'Quicksand', system-ui, 'Poppins', 'Comic Neue', cursive;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+            padding: 2rem 1rem;
+        }
+
+        /* 主卡片，文字区域柔和精致 */
+        .love-card {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 250, 240, 0.88);
+            backdrop-filter: blur(12px);
+            border-radius: 80px 80px 80px 60px;
+            box-shadow: 0 30px 45px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 215, 175, 0.8) inset, 0 8px 20px rgba(255, 105, 180, 0.2);
+            padding: 2rem 1.8rem;
+            text-align: center;
+            z-index: 15;
+            transition: transform 0.2s ease;
+            animation: gentleFloat 4s infinite ease-in-out;
+        }
+
+        .love-card:hover {
+            transform: scale(1.01);
+        }
+
+        /* 动感标题区 */
+        .breeze-text {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff8866, #ff4d6d, #ffaa55);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 8px rgba(255, 80, 100, 0.3);
+            margin-bottom: 1.2rem;
+            display: inline-block;
+        }
+
+        /* 云朵段落容器 - 手绘风格 */
+        .cloud-section {
+            background: rgba(255, 255, 245, 0.5);
+            border-radius: 80px;
+            padding: 1.2rem 1rem;
+            margin: 1.5rem 0;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        /* 让云朵动画的每一行有独立飘移感 */
+        .cloud-line {
+            display: inline-block;
+            font-family: monospace, 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+            font-size: 1.5rem;
+            white-space: pre;
+            letter-spacing: 2px;
+            filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.1));
+            animation: floatCloud 3s infinite alternate ease-in-out;
+            transform-origin: center;
+        }
+
+        /* 分别控制不同行的延迟与飘移速度，产生错落感 */
+        .cloud-line:nth-child(1) { animation-duration: 2.8s; animation-delay: 0s; }
+        .cloud-line:nth-child(2) { animation-duration: 3.4s; animation-delay: 0.2s; }
+        .cloud-line:nth-child(3) { animation-duration: 2.5s; animation-delay: 0.5s; }
+        .cloud-line:nth-child(4) { animation-duration: 3.2s; animation-delay: 0.1s; }
+        .cloud-line:nth-child(5) { animation-duration: 3.7s; animation-delay: 0.8s; }
+
+        /* 雪花/清凉粒子动态旋转区域 */
+        .cool-breeze {
+            display: flex;
+            justify-content: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin: 1rem 0 0.8rem;
+        }
+
+        .cool-item {
+            font-size: 1.8rem;
+            display: inline-block;
+            animation: spinFlurry 1.8s infinite alternate, floatUpSmall 2.2s infinite alternate;
+            filter: drop-shadow(0 0 6px #aaffff);
+        }
+
+        /* 大字祝福区域 */
+        .blessing {
+            font-size: 1.9rem;
+            font-weight: bold;
+            background: linear-gradient(120deg, #ff6699, #ffbb77);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin: 1rem 0 0.5rem;
+            animation: heartbeatGlow 1.6s infinite ease;
+            letter-spacing: 2px;
+        }
+
+        .blessing-dual {
+            font-size: 1.7rem;
+            margin-top: 0.8rem;
+            padding: 0.6rem;
+            border-top: 2px dashed #ffb387;
+            border-bottom: 2px dashed #ffb387;
+            display: inline-block;
+            background: rgba(255,200,180,0.3);
+            border-radius: 60px;
+        }
+
+        /* 自定义手绘云朵飘移动画 */
+        @keyframes floatCloud {
+            0% {
+                transform: translateX(0px) translateY(0px) rotate(0deg);
+            }
+            100% {
+                transform: translateX(12px) translateY(-6px) rotate(1deg);
+            }
+        }
+
+        @keyframes gentleFloat {
+            0% {
+                transform: translateY(0px);
+            }
+            100% {
+                transform: translateY(-6px);
+            }
+        }
+
+        @keyframes spinFlurry {
+            0% {
+                transform: rotate(0deg) scale(0.9);
+                opacity: 0.7;
+            }
+            100% {
+                transform: rotate(12deg) scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        @keyframes floatUpSmall {
+            0% {
+                transform: translateY(0px);
+            }
+            100% {
+                transform: translateY(-8px);
+            }
+        }
+
+        @keyframes heartbeatGlow {
+            0% {
+                text-shadow: 0 0 0px #ff88aa;
+                opacity: 0.9;
+            }
+            100% {
+                text-shadow: 0 0 10px #ff4d6d, 0 0 5px #ffaa88;
+                opacity: 1;
+            }
+        }
+
+        /* 动态吹风背景——飘浮爱心和凉爽的粒子（canvas风格+额外dom粒子） */
+        .floating-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 20;
+            font-size: 1.4rem;
+            animation: blowWind 6s linear forwards;
+            filter: drop-shadow(0 0 4px cyan);
+        }
+
+        @keyframes blowWind {
+            0% {
+                transform: translateX(0) translateY(0) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateX(180px) translateY(-120px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* 云层背景动画——动态云朵层（背景大云增加梦幻感） */
+        .bg-cloud {
+            position: fixed;
+            background: rgba(255, 255, 250, 0.7);
+            border-radius: 1000px;
+            filter: blur(20px);
+            z-index: 0;
+            pointer-events: none;
+            animation: bgCloudMove 20s infinite alternate ease-in-out;
+        }
+
+        @keyframes bgCloudMove {
+            0% {
+                transform: translateX(-3%) translateY(0%);
+            }
+            100% {
+                transform: translateX(5%) translateY(-8%);
+            }
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 620px) {
+            .love-card {
+                padding: 1.2rem;
+            }
+            .cloud-line {
+                font-size: 1rem;
+                letter-spacing: 1px;
+            }
+            .breeze-text {
+                font-size: 1.6rem;
+            }
+            .blessing {
+                font-size: 1.4rem;
+            }
+            .cool-item {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* 小扇子标识点缀 */
+        .fan-icon {
+            display: inline-block;
+            animation: fanSwing 2s infinite ease;
+            font-size: 1.9rem;
+            margin-right: 6px;
+        }
+
+        @keyframes fanSwing {
+            0% { transform: rotate(-15deg); }
+            100% { transform: rotate(15deg); }
+        }
+
+        /* 暖光扫过效果 */
+        .shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
- <h1>老婆天热我给你吹吹
- <h1>   ╭◜◝ ͡ ◜◝╮  <h1>   
-<h1>    (　　　`3´ )༄༅༄༅<h1>
-<h1>     ╰◟◞ ͜ ◟◞╯　　༄༅༄༅ ❄️ ❄️ ❄️<h1>
-   <h1>           ༄༅ ❄️ ❄️    </h1>
-          
-    <h1>🎉熊国会天下第一好！小狗永远爱你🎉</h1>
-    <h1>🎉熊国会天下第一好！小狗永远爱你🎉</h1>
+
+<div class="love-card">
+    <!-- 标题：老婆天热给你吹吹 + 动态小风扇表情 -->
+    <div class="breeze-text">
+        <span class="fan-icon">🌀</span> 老婆天热我给你吹吹 <span class="fan-icon">🍃</span>
+    </div>
+
+    <!-- 云朵版诗句（动起来～） -->
+    <div class="cloud-section">
+        <div class="cloud-line">╭◜◝ ͡ ◜◝╮</div><br>
+        <div class="cloud-line">(　　　`3´ )༄༅༄༅</div><br>
+        <div class="cloud-line">╰◟◞ ͜ ◟◞╯　　༄༅༄༅ ❄️ ❄️ ❄️</div><br>
+        <div class="cloud-line">༄༅ ❄️ ❄️</div>
+    </div>
+
+    <!-- 凉风雪花旋转区（额外的清凉动效） -->
+    <div class="cool-breeze">
+        <span class="cool-item">❄️</span>
+        <span class="cool-item">🍃</span>
+        <span class="cool-item">💨</span>
+        <span class="cool-item">❄️</span>
+        <span class="cool-item">✨</span>
+    </div>
+
+    <!-- 祝福语双倍爱心横幅 -->
+    <div class="blessing">
+        🎉熊国会天下第一好！小狗永远爱你🎉
+    </div>
+    <div class="blessing blessing-dual">
+        🎉熊国会天下第一好！小狗永远爱你🎉
+    </div>
+    <div style="margin-top: 1rem; font-size:1rem; color:#b45f3b;">
+        <span>💨 微风拂面 · 爱意永存 💖</span>
+    </div>
+</div>
+
+<!-- 动态背景云层（增加浮动大云） -->
+<div id="bgCloudContainer"></div>
+
+<script>
+    (function() {
+        // ========= 1. 动态「吹风」粒子系统 =========
+        // 为了让老婆感受到清凉，持续飘落雪花/爱心/清风符号
+        
+        const bodyEl = document.body;
+        let particleInterval = null;
+        
+        // 清凉小元素池子
+        const coolItems = ['❄️', '🍃', '💨', '✨', '💙', '🌸', '💧', '🌀', '❤️', '🎐'];
+        
+        function createWindParticle() {
+            // 避免太密集 最多每秒10个左右 但是随着页面活跃动态生成
+            const particle = document.createElement('div');
+            particle.classList.add('floating-particle');
+            // 随机符号
+            const randomIcon = coolItems[Math.floor(Math.random() * coolItems.length)];
+            particle.innerHTML = randomIcon;
+            // 随机大小
+            const size = 1 + Math.random() * 1.2;
+            particle.style.fontSize = `${size}rem`;
+            // 初始位置 主要在屏幕下方和左边区域 产生风吹感觉
+            const startX = Math.random() * window.innerWidth;
+            const startY = window.innerHeight + 20; // 从底部开始飘
+            particle.style.left = `${startX}px`;
+            particle.style.top = `${startY}px`;
+            // 自定义飘移方向：向左上/右上/左上飘逸，模拟清风
+            const deltaX = (Math.random() - 0.5) * 200 + 60; // 向右飘为主
+            const deltaY = -150 - Math.random() * 100;
+            // 定制关键帧动画更个性化（动态设置）
+            const duration = 4 + Math.random() * 3;
+            particle.style.animation = `blowWind ${duration}s linear forwards`;
+            // 增加额外旋转和倾斜效果
+            particle.style.transform = `rotate(${Math.random() * 60}deg)`;
+            bodyEl.appendChild(particle);
+            
+            // 动画结束后移除
+            particle.addEventListener('animationend', () => {
+                if(particle && particle.remove) particle.remove();
+            });
+        }
+        
+        // 启动粒子微风 (老婆天热给你吹吹 持续清爽)
+        function startCoolBreeze() {
+            if (particleInterval) clearInterval(particleInterval);
+            particleInterval = setInterval(() => {
+                // 页面可见时生产粒子，控制每秒最多4～8个
+                if (document.hidden) return;
+                const count = Math.floor(Math.random() * 2) + 1;  // 一次生成1-2个
+                for(let i=0; i<count; i++) {
+                    createWindParticle();
+                }
+            }, 700);
+        }
+        
+        // ========= 2. 让背景云朵也动起来 (增加梦幻云层效果) =========
+        function createBgClouds() {
+            const container = document.getElementById('bgCloudContainer');
+            if(!container) return;
+            // 清除已有的
+            container.innerHTML = '';
+            // 生成4～6朵大云
+            const cloudCount = 5;
+            for(let i=0; i<cloudCount; i++) {
+                const cloud = document.createElement('div');
+                cloud.classList.add('bg-cloud');
+                const sizeW = 200 + Math.random() * 350;
+                const sizeH = 100 + Math.random() * 180;
+                cloud.style.width = `${sizeW}px`;
+                cloud.style.height = `${sizeH}px`;
+                cloud.style.left = `${Math.random() * 80}%`;
+                cloud.style.top = `${Math.random() * 80}%`;
+                cloud.style.opacity = 0.3 + Math.random() * 0.3;
+                cloud.style.background = `radial-gradient(circle, rgba(255,245,230,0.8) 0%, rgba(255,220,190,0.5) 100%)`;
+                cloud.style.animationDelay = `${Math.random() * 10}s`;
+                cloud.style.animationDuration = `${18 + Math.random() * 15}s`;
+                container.appendChild(cloud);
+            }
+        }
+        
+        // 额外动态爱心泡泡（添加到云朵区域给予生动的爱心冒泡）
+        function createFloatingHeartsForWife() {
+            // 每2秒在屏幕上生成一颗爱的浮心（让小狗的爱飘满天空）
+            setInterval(() => {
+                if(document.hidden) return;
+                const heartSpan = document.createElement('div');
+                heartSpan.style.position = 'fixed';
+                heartSpan.style.bottom = '-20px';
+                heartSpan.style.left = Math.random() * window.innerWidth + 'px';
+                heartSpan.style.fontSize = (1.2 + Math.random() * 1.5) + 'rem';
+                heartSpan.style.pointerEvents = 'none';
+                heartSpan.style.zIndex = '25';
+                heartSpan.style.filter = 'drop-shadow(0 0 6px #ff99aa)';
+                heartSpan.style.animation = 'floatUpHeart 5s ease-in forwards';
+                heartSpan.innerHTML = ['❤️', '💖', '💗', '💘', '💝', '🧡', '💕', '💞', '❤️‍🔥'][Math.floor(Math.random() * 9)];
+                document.body.appendChild(heartSpan);
+                heartSpan.addEventListener('animationend', () => heartSpan.remove());
+            }, 1800);
+        }
+        
+        // 爱心浮动动画定义
+        const styleSheet = document.createElement("style");
+        styleSheet.textContent = `
+            @keyframes floatUpHeart {
+                0% {
+                    transform: translateY(0) rotate(0deg);
+                    opacity: 0.9;
+                }
+                100% {
+                    transform: translateY(-120vh) rotate(25deg);
+                    opacity: 0;
+                }
+            }
+            /* 加强云朵线条的呼吸感 */
+            .cloud-line {
+                transition: all 0.1s ease;
+                text-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+            }
+            .cool-item {
+                transition: 0.1s;
+            }
+        `;
+        document.head.appendChild(styleSheet);
+        
+        // ========= 3. 鼠标/手指点击额外惊喜: 点击任意处出现"爱心吹风" =========
+        function addClickBreezeEffect(e) {
+            const x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+            const y = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+            if(!x && !y) return;
+            // 生成一团凉爽粒子+爱心
+            for(let i=0; i<6; i++) {
+                const extraParticle = document.createElement('div');
+                extraParticle.style.position = 'fixed';
+                extraParticle.style.left = x + (Math.random() - 0.5) * 30 + 'px';
+                extraParticle.style.top = y + (Math.random() - 0.5) * 30 + 'px';
+                extraParticle.style.fontSize = (1 + Math.random() * 1.2) + 'rem';
+                extraParticle.style.pointerEvents = 'none';
+                extraParticle.style.zIndex = '999';
+                extraParticle.style.opacity = '0.9';
+                extraParticle.style.animation = 'clickPopFade 0.9s forwards';
+                const icons = ['💨', '❄️', '🍃', '❤️', '💖', '🌀', '🎐', '🌸'];
+                extraParticle.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+                document.body.appendChild(extraParticle);
+                extraParticle.addEventListener('animationend', () => extraParticle.remove());
+            }
+        }
+        
+        // 定义点击动画关键帧（如果不存在则动态添加）
+        if (!document.querySelector('#clickPopAnimStyle')) {
+            const clickStyle = document.createElement('style');
+            clickStyle.id = 'clickPopAnimStyle';
+            clickStyle.textContent = `
+                @keyframes clickPopFade {
+                    0% {
+                        transform: scale(0.3) translateY(0);
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: scale(1.5) translateY(-40px);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(clickStyle);
+        }
+        
+        // ========= 4. 为了增加“云朵动起来”更生动，让每个云朵字符单独具有摇摆浮动 =========
+        function enhanceCloudMotion() {
+            // 将原云块每一行单独加微动感，已经通过 .cloud-line 动画实现了，额外针对字符单独做微妙变化
+            const cloudLines = document.querySelectorAll('.cloud-line');
+            cloudLines.forEach((line, idx) => {
+                // 每个字符包裹成span？为了更细腻就让整体动效啦，但在hover时也可轻晃, 不改结构也足够
+                line.style.display = 'inline-block';
+                // 添加另一种呼吸感——小幅度缩放
+                line.style.transition = 'all 0.2s';
+                if(!line.hasAttribute('data-animated')){
+                    line.setAttribute('data-animated', 'true');
+                }
+            });
+        }
+        
+        // 增加新风吹拂模拟的旋转扇叶效果
+        function initFanSwingContinuous() {
+            const fanIcon = document.querySelector('.fan-icon');
+            if(fanIcon) {
+                setInterval(() => {
+                    // 轻微改变动画增强连续感，不破坏原有动画，额外加旋转摇摆
+                    fanIcon.style.transform = `rotate(${Math.sin(Date.now() / 500) * 12}deg)`;
+                }, 100);
+            }
+        }
+        
+        // 夏日清凉标语动态文字一闪一闪
+        function glintText() {
+            const blessingDivs = document.querySelectorAll('.blessing');
+            let toggle = true;
+            setInterval(() => {
+                if(!document.hidden) {
+                    const glow = toggle ? '0 0 12px #ff6699' : '0 0 0px transparent';
+                    blessingDivs.forEach(div => {
+                        div.style.textShadow = glow;
+                    });
+                    toggle = !toggle;
+                }
+            }, 800);
+        }
+        
+        // 窗口大小变化时重新调整个别粒子边界，避免浪费，但是已有的会自适应， 云朵背景不动即可
+        window.addEventListener('resize', () => {
+            // 没什么必要重置背景云朵位置，但重新生成背景云可能会重置位置影响美观？ 不重新生成背景避免重置突兀，我们保留原本就好
+            // 但为了让背景云始终柔和，可稍微微调一下不强制重新生成
+            if(window.resizeTimer) clearTimeout(window.resizeTimer);
+            window.resizeTimer = setTimeout(() => {
+                // 如果觉得背景云比例失调，简单重新生成，会导致云朵闪现重置，但是会更有新意；可以不重绘
+                // 为了保持云朵动效可以动态调整位置，不做强制重置
+            }, 300);
+        });
+        
+        // 动态生成更多飘浮的雪花+凉风符号（初始额外出现）
+        function initialStrongBreeze() {
+            // 一进入页面先吹一阵凉风
+            for(let i=0;i<20;i++) {
+                setTimeout(() => {
+                    createWindParticle();
+                }, i*150);
+            }
+        }
+        
+        // ========= 启动所有特效 =========
+        startCoolBreeze();                // 持续清风粒子
+        createBgClouds();                // 漂浮大云背景
+        createFloatingHeartsForWife();   // 额外爱心漂浮
+        enhanceCloudMotion();            // 让云朵行摆动起来
+        initFanSwingContinuous();        // 扇叶动态
+        glintText();                     // 文字闪耀
+        initialStrongBreeze();           // 开场凉风
+        // 增加全局点击触发爱心吹风效果
+        window.addEventListener('click', addClickBreezeEffect);
+        window.addEventListener('touchstart', addClickBreezeEffect);
+        
+        // 添加控制性能注意清理（页面关闭清理定时器）
+        window.addEventListener('beforeunload', () => {
+            if(particleInterval) clearInterval(particleInterval);
+        });
+        
+        // 额外增加对云朵鼠标悬浮加强效果，让老婆看到互动趣味
+        const cloudSection = document.querySelector('.cloud-section');
+        if(cloudSection) {
+            cloudSection.addEventListener('mouseenter', () => {
+                const lines = document.querySelectorAll('.cloud-line');
+                lines.forEach(line => {
+                    line.style.animationDuration = '1.2s';
+                    line.style.filter = 'drop-shadow(0 0 6px #ffaa99)';
+                });
+            });
+            cloudSection.addEventListener('mouseleave', () => {
+                const lines = document.querySelectorAll('.cloud-line');
+                lines.forEach((line, idx) => {
+                    const dur = ['2.8s', '3.4s', '2.5s', '3.2s', '3.7s'][idx%5];
+                    line.style.animationDuration = dur;
+                    line.style.filter = '';
+                });
+            });
+        }
+        
+        // 让字符"༄༅"等清凉符号更具动感重新刷新, .cool-breeze里的item添加额外动画
+        const coolItemsDom = document.querySelectorAll('.cool-item');
+        coolItemsDom.forEach((item, idx) => {
+            item.style.animationDelay = `${idx * 0.2}s`;
+        });
+        
+        console.log('❤️ 熊国会天下第一好！老婆专属清风已吹拂，云朵动起来啦！');
+    })();
+</script>
 </body>
 </html>
