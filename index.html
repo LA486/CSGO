@@ -439,7 +439,7 @@
             }
         }
 
-        /* 小狗容器 (右下角) */
+        /* 🐶 实况小狗容器 (右下角) */
         .dog-container {
             position: fixed;
             bottom: 20px;
@@ -456,41 +456,22 @@
             transform: scale(0.94);
         }
 
-        .dog-image {
+        /* 视频替代图片，保持相同大小与圆角 */
+        .dog-video {
             width: 150px;
             height: 150px;
             border-radius: 25px;
-            object-fit: contain;
+            object-fit: cover;
             background: rgba(255, 245, 220, 0.35);
             backdrop-filter: blur(4px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             border: 3px solid rgba(255, 215, 175, 0.6);
-            padding: 4px;
-            /* 🌟 实况效果：持续轻微的呼吸摇摆动画 */
-            animation: dogLive 3s ease-in-out infinite;
+            padding: 2px;
+            transition: transform 0.3s ease;
         }
 
-        /* 实况小狗动画 */
-        @keyframes dogLive {
-            0% {
-                transform: scale(1) rotate(0deg);
-            }
-            25% {
-                transform: scale(1.03) rotate(1.5deg);
-            }
-            50% {
-                transform: scale(1) rotate(0deg);
-            }
-            75% {
-                transform: scale(0.97) rotate(-1.5deg);
-            }
-            100% {
-                transform: scale(1) rotate(0deg);
-            }
-        }
-
-        /* 双击旋转动画（会覆盖实况动画） */
-        .dog-image.dog-spin {
+        /* 双击旋转动画 */
+        .dog-video.dog-spin {
             animation: dogSpin 0.6s ease-in-out forwards;
         }
 
@@ -524,7 +505,7 @@
             }
         }
         @media (max-width: 550px) {
-            .dog-image {
+            .dog-video {
                 width: 120px;
                 height: 120px;
                 border-radius: 20px;
@@ -693,9 +674,14 @@
 
     <div id="bgCloudContainer"></div>
 
-    <!-- 🐶 实况小狗区域 (右下角) -->
+    <!-- 🐶 实况小狗区域 (右下角) - 使用视频替代图片 -->
     <div class="dog-container" id="dogContainer">
-        <img id="dogImage" src="dog.jpg" class="dog-image" alt="小狗">
+        <!-- 关键修改：将 img 替换为 video，自动循环播放、静音 -->
+        <video id="dogVideo" class="dog-video" autoplay loop muted playsinline>
+            <source src="dog_live.mp4" type="video/mp4">
+            <!-- 如果视频无法播放，显示备用图片 -->
+            <img src="dog.jpg" alt="小狗">
+        </video>
         <div class="dog-tip" id="dogTip">🐶 单击看视频 · 双击转圈圈</div>
     </div>
 
@@ -824,7 +810,7 @@
             window.addEventListener('click', addClickBreezeEffect);
             window.addEventListener('beforeunload', () => particleInterval && clearInterval(particleInterval));
 
-            // ========= 全局想念计数器 (使用 countapi.xyz 实现跨用户统一计数) =========
+            // ========= 全局想念计数器 =========
             const missBtn = document.getElementById('missYouHeartBtn');
             const missCountSpan = document.getElementById('missCountDisplay');
             const lastTimeSpan = document.getElementById('lastClickTimeDisplay');
@@ -997,8 +983,8 @@
 
             initMissCounter();
 
-            // ========= 小狗模块（实况效果） =========
-            const dogImage = document.getElementById('dogImage');
+            // ========= 小狗视频模块 =========
+            const dogVideo = document.getElementById('dogVideo');
             const dogTip = document.getElementById('dogTip');
 
             const modalVideo = document.getElementById('videoModal');
@@ -1029,11 +1015,11 @@
                 if (clickTimer) {
                     clearTimeout(clickTimer);
                     clickTimer = null;
-                    // 双击：转圈圈动画（暂时覆盖实况动画）
-                    dogImage.classList.add('dog-spin');
+                    // 双击：转圈圈动画
+                    dogVideo.classList.add('dog-spin');
                     dogTip.innerHTML = '🌀 小狗转圈圈啦！ 🌀';
                     setTimeout(() => {
-                        dogImage.classList.remove('dog-spin');
+                        dogVideo.classList.remove('dog-spin');
                         dogTip.innerHTML = '🐶 单击看视频 · 双击转圈圈';
                     }, 600);
                 } else {
@@ -1044,14 +1030,13 @@
                 }
             });
 
-            dogImage.addEventListener('error', function() {
-                dogTip.innerHTML = '⚠️ 图片 dog.jpg 未找到，请放在同级目录下';
-                this.style.border = '3px solid #ff6666';
-                this.style.background = '#ffe8e8';
+            // 视频加载事件
+            dogVideo.addEventListener('loadeddata', () => {
+                dogTip.innerHTML = '🐶 单击看视频 · 双击转圈圈';
             });
 
-            dogImage.addEventListener('load', function() {
-                dogTip.innerHTML = '🐶 单击看视频 · 双击转圈圈';
+            dogVideo.addEventListener('error', () => {
+                dogTip.innerHTML = '⚠️ 视频未找到，请将导出的实况视频命名为 dog_live.mp4';
             });
 
             // ========= 游戏模块 =========
