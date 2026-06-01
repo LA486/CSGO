@@ -237,6 +237,8 @@
             color: #b13e4b;
             box-shadow: 0 6px 14px rgba(255, 140, 140, 0.3);
             margin-top: 5px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .miss-count {
@@ -264,6 +266,18 @@
             border-radius: 30px;
             padding: 0.2rem 1.2rem;
             color: #9b5e4b;
+        }
+
+        /* 全局计数提示 */
+        .global-badge {
+            display: inline-block;
+            background: rgba(255, 200, 100, 0.3);
+            border-radius: 20px;
+            padding: 0.15rem 0.8rem;
+            font-size: 0.75rem;
+            color: #b8782e;
+            margin-left: 8px;
+            animation: gentleFloat 2s infinite ease-in-out;
         }
 
         /* 游戏按钮 */
@@ -447,13 +461,14 @@
         .dog-image {
             width: 150px;
             height: 150px;
-            border-radius: 60px;
-            object-fit: cover;
-            background: rgba(255, 245, 220, 0.3);
+            border-radius: 25px;
+            object-fit: contain;
+            background: rgba(255, 245, 220, 0.35);
             backdrop-filter: blur(4px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, filter 0.3s ease;
+            transition: transform 0.3s ease, filter 0.3s ease, border-radius 0.3s ease;
             border: 3px solid rgba(255, 215, 175, 0.6);
+            padding: 4px;
         }
         .dog-image.dog-spin {
             transform: rotate(360deg) scale(1.1);
@@ -500,6 +515,7 @@
             .dog-image {
                 width: 120px;
                 height: 120px;
+                border-radius: 20px;
             }
             .dog-tip {
                 font-size: 0.7rem;
@@ -645,13 +661,14 @@
         <div class="blessing">🎉 祝熊国会儿童节快乐！童心永驻，可爱无敌 🎉</div>
         <div class="blessing blessing-dual">🎉 小熊陪你每一天，快乐成长 ۶•͈⚇•͈ა 🎉</div>
 
-        <!-- 🌟 我想你了按钮区域 -->
+        <!-- 🌟 我想你了按钮区域 (全局统一计数) -->
         <div class="miss-you-area">
             <button class="heart-miss-btn" id="missYouHeartBtn" aria-label="我想你了">❤️</button>
             <div class="miss-counter-box">
                 <span>💌 想念次数</span>
-                <span class="miss-count" id="missCountDisplay">0</span>
-                <span class="last-time" id="lastClickTimeDisplay">还没按过呢</span>
+                <span class="miss-count" id="missCountDisplay">…</span>
+                <span class="last-time" id="lastClickTimeDisplay">加载中…</span>
+                <span class="global-badge" id="globalBadge">🌐 全球统一</span>
             </div>
             <div class="history-badge" id="historyHint">✨ 每次想念都被珍藏 ✨</div>
         </div>
@@ -664,7 +681,7 @@
 
     <div id="bgCloudContainer"></div>
 
-    <!-- 小狗区域 (替换原来的泰迪熊) -->
+    <!-- 小狗区域 (右下角) -->
     <div class="dog-container" id="dogContainer">
         <img id="dogImage" src="dog.jpg" class="dog-image" alt="小狗">
         <div class="dog-tip" id="dogTip">🐶 单击看视频 · 双击转圈圈</div>
@@ -795,47 +812,186 @@
             window.addEventListener('click', addClickBreezeEffect);
             window.addEventListener('beforeunload', () => particleInterval && clearInterval(particleInterval));
 
-            // ========= 想念按钮逻辑 =========
+            // ========= 全局想念计数器 (使用 countapi.xyz 实现跨用户统一计数) =========
             const missBtn = document.getElementById('missYouHeartBtn');
             const missCountSpan = document.getElementById('missCountDisplay');
             const lastTimeSpan = document.getElementById('lastClickTimeDisplay');
             const historyHint = document.getElementById('historyHint');
+            const globalBadge = document.getElementById('globalBadge');
 
-            let missData = { count: 0, lastTime: null };
-            try {
-                const stored = localStorage.getItem('bear_miss_you_data');
-                if (stored) {
-                    missData = JSON.parse(stored);
+            // 全局计数API配置
+            const API_NAMESPACE = 'xgh61miss';
+            const API_KEY_COUNTER = 'counter';
+            const API_KEY_LASTTIME = 'lasttime';
+            const API_BASE = 'https://api.countapi.xyz';
+            const FETCH_TIMEOUT = 4000; // 4秒超时
+
+            // 当前缓存的值
+            let globalCount = 0;
+            let globalLastTime = null;
+            let apiAvailable = false;
+
+            // 带超时的fetch
+            function fetchWithTimeout(url, timeout = FETCH_TIMEOUT) {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), timeout);
+                return fetch(url, { signal: controller.signal })
+                    .then(response => {
+                        clearTimeout(timeoutId);
+                        if (!response.ok) throw new Error('HTTP ' + response.status);
+                        return response.json();
+                    })
+                    .catch(err => {
+                        clearTimeout(timeoutId);
+                        throw err;
+                    });
+            }
+
+            // 从全局API获取计数
+            async function fetchGlobalCount() {
+                try {
+                    const data = await fetchWithTimeout(`${API_BASE}/get/${API_NAMESPACE}/${API_KEY_COUNTER}`);
+                    if (data && typeof data.value === 'number') {
+                        globalCount = data.value;
+                        apiAvailable = true;
+                        return data.value;
+                    }
+                } catch (e) {
+                    console.warn('🌐 全局计数API获取失败，使用本地缓存:', e.message);
+                    apiAvailable = false;
                 }
-            } catch (e) {}
+                return null;
+            }
 
+            // 从全局API获取最后时间
+            async function fetchGlobalLastTime() {
+                try {
+                    const data = await fetchWithTimeout(`${API_BASE}/get/${API_NAMESPACE}/${API_KEY_LASTTIME}`);
+                    if (data && typeof data.value === 'number' && data.value > 0) {
+                        globalLastTime = data.value;
+                        return data.value;
+                    }
+                } catch (e) {
+                    console.warn('🌐 全局时间API获取失败:', e.message);
+                }
+                return null;
+            }
+
+            // 增加全局计数
+            async function hitGlobalCount() {
+                try {
+                    const data = await fetchWithTimeout(`${API_BASE}/hit/${API_NAMESPACE}/${API_KEY_COUNTER}`);
+                    if (data && typeof data.value === 'number') {
+                        globalCount = data.value;
+                        apiAvailable = true;
+                        return data.value;
+                    }
+                } catch (e) {
+                    console.warn('🌐 全局计数更新失败:', e.message);
+                    apiAvailable = false;
+                }
+                return null;
+            }
+
+            // 设置全局最后时间
+            async function setGlobalLastTime(timestamp) {
+                try {
+                    await fetchWithTimeout(`${API_BASE}/set/${API_NAMESPACE}/${API_KEY_LASTTIME}?value=${timestamp}`);
+                    globalLastTime = timestamp;
+                } catch (e) {
+                    console.warn('🌐 全局时间更新失败:', e.message);
+                }
+            }
+
+            // 格式化时间显示
+            function formatTime(timestamp) {
+                if (!timestamp || timestamp === 0) return '还没按过呢';
+                const date = new Date(timestamp);
+                return `${date.getMonth()+1}/${date.getDate()} ${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}:${date.getSeconds().toString().padStart(2,'0')}`;
+            }
+
+            // 更新UI显示
             function updateMissDisplay() {
-                missCountSpan.textContent = missData.count;
-                if (missData.lastTime) {
-                    const date = new Date(missData.lastTime);
-                    const formatted = `${date.getMonth()+1}/${date.getDate()} ${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}:${date.getSeconds().toString().padStart(2,'0')}`;
-                    lastTimeSpan.textContent = `🕒 ${formatted}`;
-                } else {
-                    lastTimeSpan.textContent = '还没按过呢';
-                }
-                if (missData.count > 0) {
-                    historyHint.innerHTML = `💗 你已经想了 ${missData.count} 次，小狗都知道啦 💗`;
+                missCountSpan.textContent = globalCount;
+                lastTimeSpan.textContent = '🕒 ' + formatTime(globalLastTime);
+
+                if (globalCount > 0) {
+                    historyHint.innerHTML = `💗 全世界已经想念了 ${globalCount} 次，小狗都知道啦 💗`;
                 } else {
                     historyHint.innerHTML = '✨ 每次想念都被珍藏 ✨';
                 }
+
+                if (apiAvailable) {
+                    globalBadge.textContent = '🌐 全球同步';
+                    globalBadge.style.color = '#2e8b57';
+                } else {
+                    globalBadge.textContent = '📱 本地模式';
+                    globalBadge.style.color = '#b8782e';
+                }
             }
 
-            function saveMissData() {
-                localStorage.setItem('bear_miss_you_data', JSON.stringify(missData));
+            // 初始化：从API加载数据
+            async function initMissCounter() {
+                missCountSpan.textContent = '…';
+                lastTimeSpan.textContent = '加载中…';
+
+                const countResult = await fetchGlobalCount();
+                const timeResult = await fetchGlobalLastTime();
+
+                if (countResult !== null) {
+                    globalCount = countResult;
+                } else {
+                    // API不可用，回退到localStorage
+                    try {
+                        const stored = localStorage.getItem('bear_miss_you_data');
+                        if (stored) {
+                            const parsed = JSON.parse(stored);
+                            globalCount = parsed.count || 0;
+                            globalLastTime = parsed.lastTime || null;
+                        }
+                    } catch (e) {
+                        globalCount = 0;
+                        globalLastTime = null;
+                    }
+                    apiAvailable = false;
+                }
+
+                if (timeResult !== null) {
+                    globalLastTime = timeResult;
+                }
+
+                updateMissDisplay();
             }
 
-            missBtn.addEventListener('click', function(e) {
+            // 点击想念按钮
+            missBtn.addEventListener('click', async function(e) {
                 e.stopPropagation();
-                missData.count += 1;
-                missData.lastTime = new Date().toISOString();
-                saveMissData();
+
+                // 先乐观更新UI
+                const now = Date.now();
+                globalCount++;
+                globalLastTime = now;
                 updateMissDisplay();
 
+                // 保存到localStorage作为备份
+                try {
+                    localStorage.setItem('bear_miss_you_data', JSON.stringify({
+                        count: globalCount,
+                        lastTime: now
+                    }));
+                } catch (e) {}
+
+                // 异步更新全局API
+                const apiCountResult = await hitGlobalCount();
+                if (apiCountResult !== null) {
+                    globalCount = apiCountResult;
+                }
+                // 更新时间戳
+                setGlobalLastTime(now);
+                // 刷新显示
+                updateMissDisplay();
+
+                // 飞出小心心特效
                 const rect = missBtn.getBoundingClientRect();
                 const centerX = rect.left + rect.width / 2;
                 const centerY = rect.top + rect.height / 2;
@@ -854,9 +1010,10 @@
                 }
             });
 
-            updateMissDisplay();
+            // 启动计数器初始化
+            initMissCounter();
 
-            // ========= 小狗模块（替换泰迪熊） =========
+            // ========= 小狗模块 =========
             const dogImage = document.getElementById('dogImage');
             const dogTip = document.getElementById('dogTip');
 
@@ -892,7 +1049,6 @@
                     clickTimer = null;
                     // 双击：转圈圈动画
                     dogImage.classList.remove('dog-spin', 'dog-bounce');
-                    // 强制回流触发重播
                     void dogImage.offsetWidth;
                     dogImage.classList.add('dog-spin');
                     dogTip.innerHTML = '🌀 小狗转圈圈啦！ 🌀';
@@ -912,6 +1068,12 @@
             dogImage.addEventListener('error', function() {
                 dogTip.innerHTML = '⚠️ 图片 dog.jpg 未找到，请放在同级目录下';
                 this.style.border = '3px solid #ff6666';
+                this.style.background = '#ffe8e8';
+            });
+
+            // 图片加载成功
+            dogImage.addEventListener('load', function() {
+                dogTip.innerHTML = '🐶 单击看视频 · 双击转圈圈';
             });
 
             // ========= 游戏模块 =========
@@ -1076,8 +1238,6 @@
                 handleCanvasClick(e);
             });
             gameModal.addEventListener('click', (e) => { if (e.target === gameModal) stopGameAndClose(); });
-
-            // 窗口 resize 无操作（图片自适应）
         })();
     </script>
 </body>
