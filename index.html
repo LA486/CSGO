@@ -2,8 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>熊国会 · 六一儿童节快乐 · 专属乐园</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>熊国会 · 六一儿童节快乐 · 糖果乐园</title>
     <style>
         * {
             margin: 0;
@@ -24,9 +24,9 @@
             padding: 2rem 1rem;
         }
 
-        /* 主卡片，文字区域柔和精致 */
+        /* 主卡片 */
         .love-card {
-            max-width: 900px;
+            max-width: 950px;
             width: 100%;
             background: rgba(255, 250, 240, 0.92);
             backdrop-filter: blur(12px);
@@ -50,14 +50,13 @@
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            text-shadow: 0 2px 8px rgba(255, 80, 100, 0.3);
             margin-bottom: 1rem;
             display: inline-block;
         }
 
         .festival-badge {
             display: inline-block;
-            background: rgba(255,220,150,0.8);
+            background: rgba(255, 220, 150, 0.8);
             border-radius: 60px;
             padding: 0.2rem 1rem;
             margin-bottom: 0.8rem;
@@ -72,36 +71,42 @@
             padding: 1.2rem 1rem;
             margin: 1.5rem 0;
             backdrop-filter: blur(4px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             text-align: center;
         }
 
         .cloud-art {
             display: inline-block;
             text-align: left;
-            background: rgba(255,245,235,0.4);
+            background: rgba(255, 245, 235, 0.4);
             border-radius: 60px;
             padding: 0.6rem 1.2rem;
-            backdrop-filter: blur(2px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
         .cloud-line {
-            font-family: monospace, 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', 'Courier New', monospace;
+            font-family: monospace, 'Segoe UI Emoji', 'Courier New', monospace;
             font-size: 1.5rem;
             white-space: pre;
             line-height: 1.65;
-            letter-spacing: 1px;
-            filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.1));
+            filter: drop-shadow(2px 4px 8px rgba(0, 0, 0, 0.1));
             animation: floatCloud 3s infinite alternate ease-in-out;
-            transform-origin: center;
             display: block;
         }
 
-        .cloud-line:nth-child(1) { animation-duration: 2.8s; animation-delay: 0s; }
-        .cloud-line:nth-child(2) { animation-duration: 3.4s; animation-delay: 0.2s; }
-        .cloud-line:nth-child(3) { animation-duration: 2.5s; animation-delay: 0.5s; }
-        .cloud-line:nth-child(4) { animation-duration: 3.2s; animation-delay: 0.1s; }
+        .cloud-line:nth-child(1) {
+            animation-duration: 2.8s;
+        }
+        .cloud-line:nth-child(2) {
+            animation-duration: 3.4s;
+            animation-delay: 0.2s;
+        }
+        .cloud-line:nth-child(3) {
+            animation-duration: 2.5s;
+            animation-delay: 0.5s;
+        }
+        .cloud-line:nth-child(4) {
+            animation-duration: 3.2s;
+            animation-delay: 0.1s;
+        }
 
         .cool-breeze {
             display: flex;
@@ -115,7 +120,6 @@
             font-size: 1.8rem;
             display: inline-block;
             animation: spinFlurry 1.8s infinite alternate, floatUpSmall 2.2s infinite alternate;
-            filter: drop-shadow(0 0 6px #aaffff);
         }
 
         .blessing {
@@ -136,41 +140,191 @@
             border-top: 2px dashed #ffb387;
             border-bottom: 2px dashed #ffb387;
             display: inline-block;
-            background: rgba(255,200,180,0.3);
+            background: rgba(255, 200, 180, 0.3);
             border-radius: 60px;
         }
 
-        /* 儿童节小装饰 */
-        .candy-cane {
-            display: inline-block;
-            font-size: 1.5rem;
-            margin: 0 0.2rem;
-            animation: bounce 1s infinite alternate;
-        }
-        @keyframes bounce {
-            from { transform: translateY(0px); }
-            to { transform: translateY(-6px); }
+        /* 想念按钮区域 */
+        .miss-you-area {
+            margin: 1.5rem 0 0.8rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* 原有动画 */
+        .heart-miss-btn {
+            background: radial-gradient(circle at 30% 30%, #ff7b9c, #e6456b);
+            border: none;
+            width: 85px;
+            height: 85px;
+            border-radius: 50% 50% 50% 50%;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 15px 25px rgba(220, 20, 60, 0.4), 0 0 0 4px rgba(255, 240, 245, 0.9);
+            transition: all 0.25s ease;
+            font-size: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 0.5rem;
+            animation: heartBeatPulse 1.8s infinite;
+        }
+
+        .heart-miss-btn::before {
+            content: "";
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            background: transparent;
+            border-radius: 50%;
+            border: 2px dashed rgba(255, 255, 200, 0.7);
+            animation: rotateDash 10s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes rotateDash {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .heart-miss-btn:hover {
+            transform: scale(1.12);
+            background: radial-gradient(circle at 30% 30%, #ff99b9, #f0627c);
+            box-shadow: 0 0 30px #ff4d7a, 0 0 0 5px rgba(255, 220, 220, 0.9);
+        }
+
+        .heart-miss-btn:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes heartBeatPulse {
+            0% {
+                transform: scale(1);
+            }
+            30% {
+                transform: scale(1.05);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+            70% {
+                transform: scale(1.08);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .miss-counter-box {
+            background: rgba(255, 255, 250, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 50px;
+            padding: 0.6rem 1.4rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #b13e4b;
+            box-shadow: 0 6px 14px rgba(255, 140, 140, 0.3);
+            margin-top: 5px;
+        }
+
+        .miss-count {
+            background: #ffe8f0;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            color: #c0395c;
+            font-size: 1.4rem;
+            min-width: 50px;
+        }
+
+        .last-time {
+            color: #7b4b3a;
+            font-size: 0.9rem;
+            max-width: 180px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .history-badge {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            background: #fff2e6;
+            border-radius: 30px;
+            padding: 0.2rem 1.2rem;
+            color: #9b5e4b;
+        }
+
+        /* 游戏按钮 */
+        .game-btn {
+            background: linear-gradient(135deg, #ffaa66, #ff6b8b);
+            border: none;
+            font-size: 1.3rem;
+            font-weight: bold;
+            padding: 0.7rem 1.8rem;
+            border-radius: 60px;
+            color: white;
+            cursor: pointer;
+            margin-top: 1.2rem;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .game-btn:hover {
+            transform: scale(1.03);
+            background: linear-gradient(135deg, #ffbb77, #ff7f9f);
+            box-shadow: 0 10px 18px rgba(0, 0, 0, 0.25);
+        }
+
+        /* 动画 */
         @keyframes floatCloud {
-            0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-            100% { transform: translateX(8px) translateY(-5px) rotate(0.8deg); }
+            0% {
+                transform: translateX(0px) translateY(0px) rotate(0deg);
+            }
+            100% {
+                transform: translateX(8px) translateY(-5px) rotate(0.8deg);
+            }
         }
-
         @keyframes gentleFloat {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-6px); }
+            0% {
+                transform: translateY(0px);
+            }
+            100% {
+                transform: translateY(-6px);
+            }
         }
-
         @keyframes spinFlurry {
-            0% { transform: rotate(0deg) scale(0.9); opacity: 0.7; }
-            100% { transform: rotate(12deg) scale(1.2); opacity: 1; }
+            0% {
+                transform: rotate(0deg) scale(0.9);
+                opacity: 0.7;
+            }
+            100% {
+                transform: rotate(12deg) scale(1.2);
+                opacity: 1;
+            }
         }
-
         @keyframes floatUpSmall {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-8px); }
+            0% {
+                transform: translateY(0px);
+            }
+            100% {
+                transform: translateY(-8px);
+            }
         }
 
         /* 吹风粒子 */
@@ -182,13 +336,17 @@
             animation: blowWind 6s linear forwards;
             filter: drop-shadow(0 0 4px gold);
         }
-
         @keyframes blowWind {
-            0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 0.8; }
-            100% { transform: translateX(180px) translateY(-120px) rotate(360deg); opacity: 0; }
+            0% {
+                transform: translateX(0) translateY(0) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateX(180px) translateY(-120px) rotate(360deg);
+                opacity: 0;
+            }
         }
 
-        /* 背景大云 */
         .bg-cloud {
             position: fixed;
             background: rgba(255, 255, 250, 0.7);
@@ -196,12 +354,15 @@
             filter: blur(20px);
             z-index: 0;
             pointer-events: none;
-            animation: bgCloudMove 20s infinite alternate ease-in-out;
+            animation: bgCloudMove 20s infinite alternate;
         }
-
         @keyframes bgCloudMove {
-            0% { transform: translateX(-3%) translateY(0%); }
-            100% { transform: translateX(5%) translateY(-8%); }
+            0% {
+                transform: translateX(-3%) translateY(0%);
+            }
+            100% {
+                transform: translateX(5%) translateY(-8%);
+            }
         }
 
         .fan-icon {
@@ -210,34 +371,64 @@
             font-size: 1.9rem;
             margin-right: 6px;
         }
-
         @keyframes fanSwing {
-            0% { transform: rotate(-15deg); }
-            100% { transform: rotate(15deg); }
+            0% {
+                transform: rotate(-15deg);
+            }
+            100% {
+                transform: rotate(15deg);
+            }
         }
 
         @keyframes clickPopFade {
-            0% { transform: scale(0.3) translateY(0); opacity: 1; }
-            100% { transform: scale(1.5) translateY(-40px); opacity: 0; }
+            0% {
+                transform: scale(0.3) translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.5) translateY(-40px);
+                opacity: 0;
+            }
         }
-
         @keyframes floatUpHeart {
-            0% { transform: translateY(0) rotate(0deg); opacity: 0.9; }
-            100% { transform: translateY(-120vh) rotate(25deg); opacity: 0; }
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(-120vh) rotate(25deg);
+                opacity: 0;
+            }
         }
 
-        /* 响应式调整 */
+        /* 响应式 */
         @media (max-width: 620px) {
-            .love-card { padding: 1.2rem; }
-            .cloud-line { font-size: 0.95rem; line-height: 1.45; white-space: pre-wrap; word-break: keep-all; }
-            .cloud-art { padding: 0.3rem 0.6rem; }
-            .breeze-text { font-size: 1.6rem; }
-            .blessing { font-size: 1.4rem; }
-            .cool-item { font-size: 1.3rem; }
+            .love-card {
+                padding: 1.2rem;
+            }
+            .cloud-line {
+                font-size: 0.95rem;
+                white-space: pre-wrap;
+            }
+            .breeze-text {
+                font-size: 1.6rem;
+            }
+            .blessing {
+                font-size: 1.4rem;
+            }
+            .game-btn {
+                font-size: 1rem;
+                padding: 0.5rem 1.2rem;
+            }
+            .heart-miss-btn {
+                width: 70px;
+                height: 70px;
+                font-size: 2rem;
+            }
         }
 
-        /* ========= 泰迪熊容器 右下角 ========= */
-        .teddy-container {
+        /* 小狗容器 (右下角) */
+        .dog-container {
             position: fixed;
             bottom: 20px;
             right: 20px;
@@ -247,60 +438,92 @@
             align-items: center;
             gap: 8px;
             cursor: pointer;
-            transition: transform 0.2s ease;
+            transition: transform 0.2s;
         }
-        .teddy-container:hover {
-            transform: scale(1.02);
+        .dog-container:active {
+            transform: scale(0.94);
         }
-        .teddy-canvas {
-            background: rgba(255, 245, 220, 0.3);
-            border-radius: 60px;
-            backdrop-filter: blur(4px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2), 0 0 0 2px rgba(255,215,150,0.6);
-            transition: all 0.2s;
+
+        .dog-image {
             width: 150px;
             height: 150px;
-            display: block;
+            border-radius: 60px;
+            object-fit: cover;
+            background: rgba(255, 245, 220, 0.3);
+            backdrop-filter: blur(4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, filter 0.3s ease;
+            border: 3px solid rgba(255, 215, 175, 0.6);
         }
-        .teddy-tip {
-            background: rgba(255,255,210,0.85);
-            backdrop-filter: blur(8px);
+        .dog-image.dog-spin {
+            transform: rotate(360deg) scale(1.1);
+        }
+        .dog-image.dog-bounce {
+            animation: dogBounce 0.5s ease;
+        }
+        @keyframes dogBounce {
+            0% {
+                transform: scale(1) rotate(0deg);
+            }
+            30% {
+                transform: scale(1.2) rotate(-8deg);
+            }
+            60% {
+                transform: scale(0.9) rotate(8deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .dog-tip {
+            background: rgba(255, 255, 210, 0.85);
             border-radius: 40px;
             padding: 5px 12px;
             font-size: 0.8rem;
             font-weight: bold;
             color: #b45f2b;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             white-space: nowrap;
-            font-family: inherit;
             animation: tipPulse 1.2s infinite alternate;
         }
         @keyframes tipPulse {
-            0% { opacity: 0.7; transform: scale(0.95);}
-            100% { opacity: 1; transform: scale(1.05);}
+            0% {
+                opacity: 0.7;
+                transform: scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
         }
         @media (max-width: 550px) {
-            .teddy-canvas { width: 120px; height: 120px; }
-            .teddy-tip { font-size: 0.7rem; white-space: nowrap; }
-            .teddy-container { bottom: 12px; right: 12px; }
+            .dog-image {
+                width: 120px;
+                height: 120px;
+            }
+            .dog-tip {
+                font-size: 0.7rem;
+            }
         }
 
-        /* ========= 视频模态框 ========= */
-        .video-modal {
+        /* 视频模态框 */
+        .video-modal,
+        .game-modal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.85);
+            background-color: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(10px);
             z-index: 1000;
             justify-content: center;
             align-items: center;
             animation: fadeIn 0.3s ease;
         }
-        .video-modal.active {
+        .video-modal.active,
+        .game-modal.active {
             display: flex;
         }
         .modal-content {
@@ -310,7 +533,7 @@
             background: #1e1a1a;
             border-radius: 32px;
             padding: 20px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
             border: 2px solid #ffcd94;
             text-align: center;
         }
@@ -318,9 +541,6 @@
             max-width: 100%;
             max-height: 70vh;
             border-radius: 24px;
-            display: block;
-            margin: 0 auto;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
         .close-modal {
             position: absolute;
@@ -329,7 +549,7 @@
             font-size: 2rem;
             color: #ffcf9a;
             cursor: pointer;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -337,425 +557,528 @@
             align-items: center;
             justify-content: center;
             transition: 0.2s;
-            font-weight: bold;
         }
         .close-modal:hover {
             background: #ff8866;
             color: white;
-            transform: scale(1.1);
         }
         .video-caption {
             margin-top: 12px;
             color: #ffecb3;
-            font-size: 1rem;
-            letter-spacing: 1px;
         }
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* 游戏专属样式 */
+        .game-container {
+            background: #fff6e8;
+            border-radius: 48px;
+            padding: 20px;
+            text-align: center;
+            width: 500px;
+            max-width: 90vw;
+        }
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #d96c1e;
+            background: #ffefcf;
+            padding: 8px 20px;
+            border-radius: 60px;
+            margin-bottom: 20px;
+        }
+        .game-canvas {
+            background: #fdf3e0;
+            border-radius: 40px;
+            box-shadow: inset 0 0 0 3px #ffd8a5, 0 10px 20px rgba(0, 0, 0, 0.2);
+            display: block;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+        .game-message {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            color: #aa5e1e;
+        }
+        .restart-btn {
+            background: #ff9f4a;
+            border: none;
+            color: white;
+            padding: 6px 20px;
+            border-radius: 60px;
+            font-size: 1rem;
+            margin-top: 12px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .restart-btn:hover {
+            background: #ff7a2a;
         }
     </style>
 </head>
 <body>
 
-<div class="love-card">
-    <div class="festival-badge">
-        🎈 6·1 儿童节特别版 🎈
+    <div class="love-card">
+        <div class="festival-badge">🎈 6·1 儿童节特别版 🎈</div>
+        <div class="breeze-text">
+            <span class="fan-icon">🍭</span> 熊国会小朋友，儿童节快乐！ <span class="fan-icon">🎈</span>
+        </div>
+        <div class="cloud-section">
+            <div class="cloud-art">
+                <div class="cloud-line">╭◜◝ ͡ ◜◝╮</div>
+                <div class="cloud-line">(　　　`3´ )༄༅༄༅</div>
+                <div class="cloud-line">╰◟◞ ͜ ◟◞╯　　༄༅༄༅ 🧸🍬🍭</div>
+                <div class="cloud-line">༄༅ 🎁 🎈 🎀</div>
+            </div>
+        </div>
+        <div class="cool-breeze">
+            <span class="cool-item">🍬</span><span class="cool-item">🍭</span><span class="cool-item">🎈</span><span class="cool-item">🧸</span><span class="cool-item">✨</span>
+        </div>
+        <div class="blessing">🎉 祝熊国会儿童节快乐！童心永驻，可爱无敌 🎉</div>
+        <div class="blessing blessing-dual">🎉 小熊陪你每一天，快乐成长 ۶•͈⚇•͈ა 🎉</div>
+
+        <!-- 🌟 我想你了按钮区域 -->
+        <div class="miss-you-area">
+            <button class="heart-miss-btn" id="missYouHeartBtn" aria-label="我想你了">❤️</button>
+            <div class="miss-counter-box">
+                <span>💌 想念次数</span>
+                <span class="miss-count" id="missCountDisplay">0</span>
+                <span class="last-time" id="lastClickTimeDisplay">还没按过呢</span>
+            </div>
+            <div class="history-badge" id="historyHint">✨ 每次想念都被珍藏 ✨</div>
+        </div>
+
+        <div style="margin-top: 1rem; font-size:1rem; color:#b45f3b;">🎀 愿你永远像孩子一样，被世界温柔以待 🎀</div>
+
+        <!-- 游戏入口按钮 -->
+        <button class="game-btn" id="openGameBtn">🎮 糖果大作战 · 戳我玩 🍬</button>
     </div>
-    <div class="breeze-text">
-        <span class="fan-icon">🍭</span> 熊国会小朋友，儿童节快乐！ <span class="fan-icon">🎈</span>
+
+    <div id="bgCloudContainer"></div>
+
+    <!-- 小狗区域 (替换原来的泰迪熊) -->
+    <div class="dog-container" id="dogContainer">
+        <img id="dogImage" src="dog.jpg" class="dog-image" alt="小狗">
+        <div class="dog-tip" id="dogTip">🐶 单击看视频 · 双击转圈圈</div>
     </div>
-    <div class="cloud-section">
-        <div class="cloud-art">
-            <div class="cloud-line">╭◜◝ ͡ ◜◝╮</div>
-            <div class="cloud-line">(　　　`3´ )༄༅༄༅</div>
-            <div class="cloud-line">╰◟◞ ͜ ◟◞╯　　༄༅༄༅ 🧸🍬🍭</div>
-            <div class="cloud-line">༄༅ 🎁 🎈 🎀</div>
+
+    <!-- 视频模态框 -->
+    <div id="videoModal" class="video-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModalBtn">&times;</span>
+            <video id="loveVideo" controls autoplay muted playsinline>
+                <source src="61.mp4" type="video/mp4">
+            </video>
+            <div class="video-caption">🎁 专属你的儿童节小电影 🎁</div>
         </div>
     </div>
-    <div class="cool-breeze">
-        <span class="cool-item">🍬</span>
-        <span class="cool-item">🍭</span>
-        <span class="cool-item">🎈</span>
-        <span class="cool-item">🧸</span>
-        <span class="cool-item">✨</span>
-    </div>
-    <div class="blessing">
-        🎉 祝熊国会儿童节快乐！童心永驻，可爱无敌 🎉
-    </div>
-    <div class="blessing blessing-dual">
-        🎉 小熊陪你每一天，快乐成长 ۶•͈⚇•͈ა 🎉
-    </div>
-    <div style="margin-top: 1rem; font-size:1rem; color:#b45f3b;">
-        <span>🎀 愿你永远像孩子一样，被世界温柔以待 🎀</span>
-    </div>
-</div>
 
-<div id="bgCloudContainer"></div>
-
-<!-- 右下角泰迪熊交互区域 -->
-<div class="teddy-container" id="teddyContainer">
-    <canvas id="teddyCanvas" class="teddy-canvas" width="150" height="150"></canvas>
-    <div class="teddy-tip" id="teddyTip">🐻 单击看惊喜视频 · 双击换动作</div>
-</div>
-
-<!-- 视频模态框（儿童节特别礼物） -->
-<div id="videoModal" class="video-modal">
-    <div class="modal-content">
-        <span class="close-modal" id="closeModalBtn">&times;</span>
-        <video id="loveVideo" controls autoplay muted playsinline>
-            <source src="61.mp4" type="video/mp4">
-            您的浏览器不支持 video 标签。
-        </video>
-        <div class="video-caption">🎁 专属你的儿童节小电影 🎁</div>
+    <!-- 游戏模态框 -->
+    <div id="gameModal" class="game-modal">
+        <div class="modal-content" style="background: transparent; border: none; box-shadow: none; padding: 0;">
+            <div class="game-container">
+                <div class="game-header">
+                    <span>🍬 糖果收集者 🍬</span>
+                    <span>⏱️ <span id="timerDisplay">15</span>s</span>
+                    <span>🍭 <span id="scoreDisplay">0</span></span>
+                </div>
+                <canvas id="gameCanvas" class="game-canvas" width="450" height="450"></canvas>
+                <div class="game-message" id="gameMessage">点击糖果，越快越多！</div>
+                <button class="restart-btn" id="restartGameBtn">✨ 再玩一次 ✨</button>
+                <span class="close-modal" id="closeGameBtn" style="position: static; margin-top: 12px; background: #ffaa77; color: #5c2e0e; display: inline-block; width: auto; padding: 6px 20px; border-radius: 60px; font-size: 0.9rem;">关闭游戏</span>
+            </div>
+        </div>
     </div>
-</div>
 
-<script>
-    (function() {
-        // ========= 儿童节特别版特效：更多糖果粒子 =========
-        const bodyEl = document.body;
-        let particleInterval = null;
-        const coolItems = ['🍬', '🍭', '🎈', '🧸', '🎀', '✨', '🍬', '🍭', '💖', '🎁'];
-        
-        function createWindParticle() {
-            const particle = document.createElement('div');
-            particle.classList.add('floating-particle');
-            const randomIcon = coolItems[Math.floor(Math.random() * coolItems.length)];
-            particle.innerHTML = randomIcon;
-            const size = 1 + Math.random() * 1.2;
-            particle.style.fontSize = `${size}rem`;
-            const startX = Math.random() * window.innerWidth;
-            const startY = window.innerHeight + 20;
-            particle.style.left = `${startX}px`;
-            particle.style.top = `${startY}px`;
-            const duration = 4 + Math.random() * 3;
-            particle.style.animation = `blowWind ${duration}s linear forwards`;
-            particle.style.transform = `rotate(${Math.random() * 60}deg)`;
-            bodyEl.appendChild(particle);
-            particle.addEventListener('animationend', () => { if(particle && particle.remove) particle.remove(); });
-        }
-        
-        function startCoolBreeze() {
-            if (particleInterval) clearInterval(particleInterval);
-            particleInterval = setInterval(() => {
-                if (document.hidden) return;
-                const count = Math.floor(Math.random() * 3) + 1;
-                for(let i=0; i<count; i++) createWindParticle();
-            }, 600);
-        }
-        
-        function createBgClouds() {
-            const container = document.getElementById('bgCloudContainer');
-            if(!container) return;
-            container.innerHTML = '';
-            const cloudCount = 6;
-            for(let i=0; i<cloudCount; i++) {
-                const cloud = document.createElement('div');
-                cloud.classList.add('bg-cloud');
-                const sizeW = 200 + Math.random() * 350;
-                const sizeH = 100 + Math.random() * 180;
-                cloud.style.width = `${sizeW}px`;
-                cloud.style.height = `${sizeH}px`;
-                cloud.style.left = `${Math.random() * 80}%`;
-                cloud.style.top = `${Math.random() * 80}%`;
-                cloud.style.opacity = 0.3 + Math.random() * 0.3;
-                cloud.style.background = `radial-gradient(circle, rgba(255,245,230,0.8) 0%, rgba(255,220,190,0.5) 100%)`;
-                cloud.style.animationDelay = `${Math.random() * 10}s`;
-                cloud.style.animationDuration = `${18 + Math.random() * 15}s`;
-                container.appendChild(cloud);
+    <script>
+        (function() {
+            // ========= 原有特效：吹风、背景云、爱心 =========
+            const bodyEl = document.body;
+            let particleInterval = null;
+            const coolItems = ['🍬', '🍭', '🎈', '🧸', '🎀', '✨', '🍬', '🍭', '💖', '🎁'];
+
+            function createWindParticle() {
+                const particle = document.createElement('div');
+                particle.classList.add('floating-particle');
+                particle.innerHTML = coolItems[Math.floor(Math.random() * coolItems.length)];
+                const size = 1 + Math.random() * 1.2;
+                particle.style.fontSize = `${size}rem`;
+                particle.style.left = Math.random() * window.innerWidth + 'px';
+                particle.style.top = window.innerHeight + 20 + 'px';
+                const duration = 4 + Math.random() * 3;
+                particle.style.animation = `blowWind ${duration}s linear forwards`;
+                particle.style.transform = `rotate(${Math.random() * 60}deg)`;
+                bodyEl.appendChild(particle);
+                particle.addEventListener('animationend', () => particle.remove());
             }
-        }
-        
-        function createFloatingHearts() {
-            setInterval(() => {
-                if(document.hidden) return;
-                const heartSpan = document.createElement('div');
-                heartSpan.style.position = 'fixed';
-                heartSpan.style.bottom = '-20px';
-                heartSpan.style.left = Math.random() * window.innerWidth + 'px';
-                heartSpan.style.fontSize = (1.2 + Math.random() * 1.5) + 'rem';
-                heartSpan.style.pointerEvents = 'none';
-                heartSpan.style.zIndex = '25';
-                heartSpan.style.filter = 'drop-shadow(0 0 6px #ff99aa)';
-                heartSpan.style.animation = 'floatUpHeart 5s ease-in forwards';
-                heartSpan.innerHTML = ['❤️', '💖', '🧡', '💛', '💚', '💙', '💜', '🎈', '🍭'][Math.floor(Math.random() * 9)];
-                document.body.appendChild(heartSpan);
-                heartSpan.addEventListener('animationend', () => heartSpan.remove());
-            }, 1500);
-        }
-        
-        function addClickBreezeEffect(e) {
-            const x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
-            const y = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-            if(!x && !y) return;
-            for(let i=0; i<5; i++) {
-                const extraParticle = document.createElement('div');
-                extraParticle.style.position = 'fixed';
-                extraParticle.style.left = x + (Math.random() - 0.5) * 30 + 'px';
-                extraParticle.style.top = y + (Math.random() - 0.5) * 30 + 'px';
-                extraParticle.style.fontSize = (1 + Math.random() * 1.2) + 'rem';
-                extraParticle.style.pointerEvents = 'none';
-                extraParticle.style.zIndex = '999';
-                extraParticle.style.opacity = '0.9';
-                extraParticle.style.animation = 'clickPopFade 0.9s forwards';
-                const icons = ['🍬', '🍭', '🎈', '✨', '❤️', '💖', '🎁', '🌸'];
-                extraParticle.innerHTML = icons[Math.floor(Math.random() * icons.length)];
-                document.body.appendChild(extraParticle);
-                extraParticle.addEventListener('animationend', () => extraParticle.remove());
+
+            function startCoolBreeze() {
+                if (particleInterval) clearInterval(particleInterval);
+                particleInterval = setInterval(() => {
+                    if (document.hidden) return;
+                    for (let i = 0; i < (Math.random() * 2 + 1); i++) createWindParticle();
+                }, 600);
             }
-        }
-        
-        function enhanceCloudMotion() {
-            document.querySelectorAll('.cloud-line').forEach(line => line.style.display = 'block');
-        }
-        
-        function initFanSwing() {
-            const fanIcon = document.querySelector('.fan-icon');
-            if(fanIcon) {
-                setInterval(() => { fanIcon.style.transform = `rotate(${Math.sin(Date.now() / 500) * 12}deg)`; }, 100);
-            }
-        }
-        
-        function initialBreeze() {
-            for(let i=0;i<20;i++) setTimeout(() => createWindParticle(), i*120);
-        }
-        
-        startCoolBreeze();
-        createBgClouds();
-        createFloatingHearts();
-        enhanceCloudMotion();
-        initFanSwing();
-        initialBreeze();
-        window.addEventListener('click', addClickBreezeEffect);
-        window.addEventListener('touchstart', addClickBreezeEffect);
-        window.addEventListener('beforeunload', () => { if(particleInterval) clearInterval(particleInterval); });
-        
-        // ========= 泰迪熊模块 (全功能保留) =========
-        const teddyCanvas = document.getElementById('teddyCanvas');
-        const ctx = teddyCanvas.getContext('2d');
-        let currentAction = 'sitting';   // 'sitting', 'lying', 'walking'
-        let walkPhase = 0;
-        let walkAnimationId = null;
-        const w = 150, h = 150;
-        
-        // 坐立姿态 (保持可爱)
-        function drawSitting() {
-            ctx.save();
-            ctx.clearRect(0, 0, w, h);
-            const gradBody = ctx.createLinearGradient(60, 70, 90, 110);
-            gradBody.addColorStop(0, '#F7C56E');
-            gradBody.addColorStop(1, '#E5A649');
-            ctx.beginPath();
-            ctx.ellipse(75, 95, 35, 40, 0, 0, Math.PI * 2);
-            ctx.fillStyle = gradBody;
-            ctx.fill();
-            ctx.strokeStyle = '#B97F2E';
-            ctx.lineWidth = 1.5;
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.arc(75, 55, 28, 0, Math.PI * 2);
-            ctx.fillStyle = '#F7C56E';
-            ctx.fill();
-            ctx.stroke();
-            ctx.beginPath(); ctx.ellipse(52, 35, 12, 14, -0.2, 0, Math.PI * 2); ctx.fillStyle = '#E5A649'; ctx.fill(); ctx.stroke();
-            ctx.beginPath(); ctx.ellipse(98, 35, 12, 14, 0.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-            ctx.fillStyle = '#B87C2E';
-            ctx.beginPath(); ctx.arc(52, 35, 5, 0, Math.PI * 2); ctx.fill();
-            ctx.beginPath(); ctx.arc(98, 35, 5, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#422C14';
-            ctx.beginPath(); ctx.arc(65, 52, 3, 0, Math.PI * 2); ctx.fill();
-            ctx.beginPath(); ctx.arc(85, 52, 3, 0, Math.PI * 2); ctx.fill();
-            ctx.beginPath(); ctx.arc(75, 63, 6, 0, Math.PI); ctx.fillStyle = '#E59A5E'; ctx.fill();
-            ctx.fillStyle = '#422C14';
-            ctx.beginPath(); ctx.ellipse(75, 61, 2, 3, 0, 0, Math.PI * 2); ctx.fill();
-            ctx.beginPath(); ctx.ellipse(75, 90, 20, 22, 0, 0, Math.PI * 2); ctx.fillStyle = '#FFDEA5'; ctx.fill();
-            ctx.fillStyle = '#E5A649';
-            ctx.beginPath(); ctx.ellipse(58, 120, 12, 15, -0.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-            ctx.beginPath(); ctx.ellipse(92, 120, 12, 15, 0.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-            ctx.beginPath(); ctx.ellipse(45, 88, 10, 18, -0.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-            ctx.beginPath(); ctx.ellipse(105, 88, 10, 18, 0.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-            ctx.fillStyle = '#FFAA88';
-            ctx.globalAlpha = 0.5;
-            ctx.beginPath(); ctx.arc(58, 60, 5, 0, Math.PI * 2); ctx.fill();
-            ctx.beginPath(); ctx.arc(92, 60, 5, 0, Math.PI * 2); ctx.fill();
-            ctx.globalAlpha = 1;
-            // 儿童节小领结
-            ctx.fillStyle = '#FF6F61';
-            ctx.beginPath(); ctx.ellipse(75, 80, 8, 6, 0, 0, Math.PI*2); ctx.fill();
-            ctx.restore();
-        }
-        
-        // 躺卧姿态
-        function drawLying() {
-            ctx.clearRect(0, 0, w, h);
-            ctx.save();
-            ctx.translate(75, 95);
-            ctx.rotate(-0.5);
-            ctx.beginPath();
-            ctx.ellipse(0, 0, 42, 32, 0, 0, Math.PI * 2);
-            ctx.fillStyle = '#F7C56E';
-            ctx.fill();
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.arc(38, -8, 26, 0, Math.PI * 2);
-            ctx.fillStyle = '#F7C56E';
-            ctx.fill();
-            ctx.stroke();
-            ctx.beginPath(); ctx.ellipse(48, -28, 10, 12, -0.3, 0, Math.PI * 2); ctx.fillStyle = '#E5A649'; ctx.fill(); ctx.stroke();
-            ctx.beginPath(); ctx.ellipse(30, -28, 10, 12, 0.3, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-            ctx.fillStyle = '#B87C2E';
-            ctx.beginPath(); ctx.arc(48, -28, 5, 0, Math.PI * 2); ctx.fill();
-            ctx.beginPath(); ctx.arc(30, -28, 5, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#422C14';
-            ctx.beginPath(); ctx.arc(48, -10, 2.5, 0, Math.PI * 2); ctx.fill();
-            ctx.beginPath(); ctx.arc(30, -10, 2.5, 0, Math.PI * 2); ctx.fill();
-            ctx.beginPath(); ctx.ellipse(39, -2, 6, 3, 0, 0, Math.PI * 2); ctx.fillStyle = '#E59A5E'; ctx.fill();
-            ctx.fillStyle = '#E5A649';
-            ctx.beginPath(); ctx.ellipse(-25, 10, 12, 18, 0.4, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-            ctx.beginPath(); ctx.ellipse(25, 12, 12, 18, -0.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-            ctx.beginPath(); ctx.ellipse(-20, -20, 10, 15, 0.6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-            ctx.beginPath(); ctx.ellipse(20, -22, 10, 15, -0.6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-            ctx.restore();
-        }
-        
-        // 走动姿态
-        function drawWalking(phase) {
-            ctx.clearRect(0, 0, w, h);
-            ctx.save();
-            const bobY = Math.sin(phase * Math.PI * 2) * 2;
-            ctx.beginPath();
-            ctx.ellipse(75, 85 + bobY, 34, 38, 0, 0, Math.PI * 2);
-            ctx.fillStyle = '#F7C56E';
-            ctx.fill();
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.arc(75, 48 + bobY*0.5, 27, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.stroke();
-            ctx.fillStyle = '#E5A649';
-            ctx.beginPath(); ctx.ellipse(53, 28 + bobY*0.3, 11, 13, -0.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-            ctx.beginPath(); ctx.ellipse(97, 28 + bobY*0.3, 11, 13, 0.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-            ctx.fillStyle = '#B87C2E';
-            ctx.beginPath(); ctx.arc(53, 28 + bobY*0.3, 5, 0, Math.PI*2); ctx.fill();
-            ctx.beginPath(); ctx.arc(97, 28 + bobY*0.3, 5, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = '#422C14';
-            ctx.beginPath(); ctx.arc(64, 46 + bobY*0.4, 3, 0, Math.PI*2); ctx.fill();
-            ctx.beginPath(); ctx.arc(86, 46 + bobY*0.4, 3, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = 'white';
-            ctx.beginPath(); ctx.arc(62, 44 + bobY*0.4, 1, 0, Math.PI*2); ctx.fill();
-            ctx.beginPath(); ctx.arc(84, 44 + bobY*0.4, 1, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = '#422C14';
-            ctx.beginPath(); ctx.ellipse(75, 57 + bobY*0.5, 5, 3, 0, 0, Math.PI*2); ctx.fill();
-            ctx.beginPath(); ctx.ellipse(75, 85 + bobY, 18, 20, 0, 0, Math.PI*2); ctx.fillStyle = '#FFDEA5'; ctx.fill();
-            const armSwing = Math.sin(phase * Math.PI * 2) * 0.6;
-            ctx.fillStyle = '#E5A649';
-            ctx.beginPath(); ctx.ellipse(48 + armSwing*3, 80 + bobY + armSwing, 10, 18, -0.8 + armSwing*0.5, 0, Math.PI*2); ctx.fill(); ctx.stroke();
-            ctx.beginPath(); ctx.ellipse(102 - armSwing*3, 80 + bobY - armSwing, 10, 18, 0.8 - armSwing*0.5, 0, Math.PI*2); ctx.fill(); ctx.stroke();
-            const legOffset = Math.sin(phase * Math.PI * 2) * 12;
-            ctx.beginPath(); ctx.ellipse(58 + legOffset*0.6, 118 + bobY - Math.abs(legOffset)*0.3, 12, 17, -0.4, 0, Math.PI*2); ctx.fill(); ctx.stroke();
-            ctx.beginPath(); ctx.ellipse(92 - legOffset*0.6, 118 + bobY - Math.abs(legOffset)*0.3, 12, 17, 0.4, 0, Math.PI*2); ctx.fill(); ctx.stroke();
-            ctx.fillStyle = '#FFAA88';
-            ctx.globalAlpha = 0.5;
-            ctx.beginPath(); ctx.arc(58, 55 + bobY*0.4, 5, 0, Math.PI*2); ctx.fill();
-            ctx.beginPath(); ctx.arc(92, 55 + bobY*0.4, 5, 0, Math.PI*2); ctx.fill();
-            ctx.globalAlpha = 1;
-            ctx.restore();
-        }
-        
-        function renderTeddy() {
-            if (currentAction === 'sitting') drawSitting();
-            else if (currentAction === 'lying') drawLying();
-            else if (currentAction === 'walking') drawWalking(walkPhase);
-        }
-        
-        function startWalkingAnimation() {
-            if (walkAnimationId) cancelAnimationFrame(walkAnimationId);
-            let startTime = null;
-            function animateWalk(timestamp) {
-                if (currentAction !== 'walking') {
-                    if (walkAnimationId) cancelAnimationFrame(walkAnimationId);
-                    walkAnimationId = null;
-                    renderTeddy();
-                    return;
+
+            function createBgClouds() {
+                const container = document.getElementById('bgCloudContainer');
+                if (!container) return;
+                container.innerHTML = '';
+                for (let i = 0; i < 6; i++) {
+                    const cloud = document.createElement('div');
+                    cloud.classList.add('bg-cloud');
+                    cloud.style.width = 200 + Math.random() * 350 + 'px';
+                    cloud.style.height = 100 + Math.random() * 180 + 'px';
+                    cloud.style.left = Math.random() * 80 + '%';
+                    cloud.style.top = Math.random() * 80 + '%';
+                    cloud.style.opacity = 0.3 + Math.random() * 0.3;
+                    cloud.style.background = `radial-gradient(circle, rgba(255,245,230,0.8), rgba(255,220,190,0.5))`;
+                    cloud.style.animationDelay = Math.random() * 10 + 's';
+                    container.appendChild(cloud);
                 }
-                if (!startTime) startTime = timestamp;
-                const elapsed = (timestamp - startTime) / 1000;
-                walkPhase = (elapsed * 1.8) % 1;
-                renderTeddy();
-                walkAnimationId = requestAnimationFrame(animateWalk);
             }
-            walkAnimationId = requestAnimationFrame(animateWalk);
-        }
-        
-        function stopWalkingAndRender() {
-            if (walkAnimationId) { cancelAnimationFrame(walkAnimationId); walkAnimationId = null; }
-            renderTeddy();
-        }
-        
-        function nextAction() {
-            const actions = ['sitting', 'lying', 'walking'];
-            let idx = actions.indexOf(currentAction);
-            idx = (idx + 1) % actions.length;
-            currentAction = actions[idx];
-            const tipDiv = document.getElementById('teddyTip');
-            if (currentAction === 'sitting') tipDiv.innerHTML = '🧸 乖乖坐好 · 双击换动作';
-            else if (currentAction === 'lying') tipDiv.innerHTML = '🛌 躺平休息 · 双击换动作';
-            else tipDiv.innerHTML = '🚶 快乐散步 · 双击换动作';
-            if (currentAction === 'walking') {
-                walkPhase = 0;
-                startWalkingAnimation();
-            } else {
-                stopWalkingAndRender();
+
+            function createFloatingHearts() {
+                setInterval(() => {
+                    if (document.hidden) return;
+                    const heartSpan = document.createElement('div');
+                    heartSpan.style.position = 'fixed';
+                    heartSpan.style.bottom = '-20px';
+                    heartSpan.style.left = Math.random() * window.innerWidth + 'px';
+                    heartSpan.style.fontSize = (1.2 + Math.random() * 1.5) + 'rem';
+                    heartSpan.style.pointerEvents = 'none';
+                    heartSpan.style.zIndex = '25';
+                    heartSpan.style.filter = 'drop-shadow(0 0 6px #ff99aa)';
+                    heartSpan.style.animation = 'floatUpHeart 5s ease-in forwards';
+                    heartSpan.innerHTML = ['❤️', '💖', '🧡', '💛', '💚', '🎈', '🍭'][Math.floor(Math.random() * 7)];
+                    document.body.appendChild(heartSpan);
+                    heartSpan.addEventListener('animationend', () => heartSpan.remove());
+                }, 1500);
             }
-        }
-        
-        // 视频模态框逻辑
-        const modal = document.getElementById('videoModal');
-        const videoEl = document.getElementById('loveVideo');
-        const closeBtn = document.getElementById('closeModalBtn');
-        
-        function openVideoModal() {
-            modal.classList.add('active');
-            videoEl.muted = false;
-            videoEl.play().catch(e => console.log("自动播放需交互"));
-        }
-        
-        function closeVideoModal() {
-            modal.classList.remove('active');
-            videoEl.pause();
-            videoEl.currentTime = 0;
-        }
-        
-        // 单击熊 -> 打开视频，双击 -> 切换动作
-        let clickTimer = null;
-        const teddyContainer = document.getElementById('teddyContainer');
-        teddyContainer.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (clickTimer) {
-                clearTimeout(clickTimer);
-                clickTimer = null;
-                nextAction();
-            } else {
-                clickTimer = setTimeout(() => {
-                    openVideoModal();
+
+            function addClickBreezeEffect(e) {
+                if (e.target.closest('.game-modal') || e.target.closest('.video-modal')) return;
+                const x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+                const y = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+                if (!x && !y) return;
+                for (let i = 0; i < 4; i++) {
+                    const p = document.createElement('div');
+                    p.style.position = 'fixed';
+                    p.style.left = x + (Math.random() - 0.5) * 30 + 'px';
+                    p.style.top = y + (Math.random() - 0.5) * 30 + 'px';
+                    p.style.fontSize = (1 + Math.random() * 1.2) + 'rem';
+                    p.style.pointerEvents = 'none';
+                    p.style.zIndex = '999';
+                    p.style.animation = 'clickPopFade 0.9s forwards';
+                    p.innerHTML = ['🍬', '🍭', '🎈', '❤️'][Math.floor(Math.random() * 4)];
+                    document.body.appendChild(p);
+                    p.addEventListener('animationend', () => p.remove());
+                }
+            }
+
+            function initFanSwing() {
+                const fanIcon = document.querySelector('.fan-icon');
+                if (fanIcon) setInterval(() => fanIcon.style.transform = `rotate(${Math.sin(Date.now()/500)*12}deg)`, 100);
+            }
+            startCoolBreeze();
+            createBgClouds();
+            createFloatingHearts();
+            initFanSwing();
+            window.addEventListener('click', addClickBreezeEffect);
+            window.addEventListener('beforeunload', () => particleInterval && clearInterval(particleInterval));
+
+            // ========= 想念按钮逻辑 =========
+            const missBtn = document.getElementById('missYouHeartBtn');
+            const missCountSpan = document.getElementById('missCountDisplay');
+            const lastTimeSpan = document.getElementById('lastClickTimeDisplay');
+            const historyHint = document.getElementById('historyHint');
+
+            let missData = { count: 0, lastTime: null };
+            try {
+                const stored = localStorage.getItem('bear_miss_you_data');
+                if (stored) {
+                    missData = JSON.parse(stored);
+                }
+            } catch (e) {}
+
+            function updateMissDisplay() {
+                missCountSpan.textContent = missData.count;
+                if (missData.lastTime) {
+                    const date = new Date(missData.lastTime);
+                    const formatted = `${date.getMonth()+1}/${date.getDate()} ${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}:${date.getSeconds().toString().padStart(2,'0')}`;
+                    lastTimeSpan.textContent = `🕒 ${formatted}`;
+                } else {
+                    lastTimeSpan.textContent = '还没按过呢';
+                }
+                if (missData.count > 0) {
+                    historyHint.innerHTML = `💗 你已经想了 ${missData.count} 次，小狗都知道啦 💗`;
+                } else {
+                    historyHint.innerHTML = '✨ 每次想念都被珍藏 ✨';
+                }
+            }
+
+            function saveMissData() {
+                localStorage.setItem('bear_miss_you_data', JSON.stringify(missData));
+            }
+
+            missBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                missData.count += 1;
+                missData.lastTime = new Date().toISOString();
+                saveMissData();
+                updateMissDisplay();
+
+                const rect = missBtn.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                for (let i = 0; i < 8; i++) {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = ['💖', '❤️', '💕', '💗', '💘', '💝', '✨', '🌸'][Math.floor(Math.random() * 8)];
+                    heart.style.position = 'fixed';
+                    heart.style.left = centerX + (Math.random() - 0.5) * 30 + 'px';
+                    heart.style.top = centerY + (Math.random() - 0.5) * 20 + 'px';
+                    heart.style.fontSize = (1.2 + Math.random() * 1.3) + 'rem';
+                    heart.style.pointerEvents = 'none';
+                    heart.style.zIndex = '999';
+                    heart.style.animation = 'clickPopFade 0.8s ease-out forwards';
+                    document.body.appendChild(heart);
+                    heart.addEventListener('animationend', () => heart.remove());
+                }
+            });
+
+            updateMissDisplay();
+
+            // ========= 小狗模块（替换泰迪熊） =========
+            const dogImage = document.getElementById('dogImage');
+            const dogTip = document.getElementById('dogTip');
+
+            // 视频模块
+            const modalVideo = document.getElementById('videoModal');
+            const video = document.getElementById('loveVideo');
+            const closeVideo = document.getElementById('closeModalBtn');
+
+            function openVideo() {
+                modalVideo.classList.add('active');
+                video.muted = false;
+                video.play().catch(e => {});
+            }
+
+            function closeVideoModal() {
+                modalVideo.classList.remove('active');
+                video.pause();
+                video.currentTime = 0;
+            }
+            closeVideo.addEventListener('click', closeVideoModal);
+            modalVideo.addEventListener('click', (e) => {
+                if (e.target === modalVideo) closeVideoModal();
+            });
+
+            // 小狗单击/双击逻辑
+            let clickTimer = null;
+            const dogContainer = document.getElementById('dogContainer');
+
+            dogContainer.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (clickTimer) {
+                    clearTimeout(clickTimer);
                     clickTimer = null;
-                }, 180);
+                    // 双击：转圈圈动画
+                    dogImage.classList.remove('dog-spin', 'dog-bounce');
+                    // 强制回流触发重播
+                    void dogImage.offsetWidth;
+                    dogImage.classList.add('dog-spin');
+                    dogTip.innerHTML = '🌀 小狗转圈圈啦！ 🌀';
+                    setTimeout(() => {
+                        dogImage.classList.remove('dog-spin');
+                        dogTip.innerHTML = '🐶 单击看视频 · 双击转圈圈';
+                    }, 600);
+                } else {
+                    clickTimer = setTimeout(() => {
+                        openVideo();
+                        clickTimer = null;
+                    }, 180);
+                }
+            });
+
+            // 图片加载失败时的兜底提示
+            dogImage.addEventListener('error', function() {
+                dogTip.innerHTML = '⚠️ 图片 dog.jpg 未找到，请放在同级目录下';
+                this.style.border = '3px solid #ff6666';
+            });
+
+            // ========= 游戏模块 =========
+            const gameModal = document.getElementById('gameModal');
+            const openGameBtn = document.getElementById('openGameBtn');
+            const closeGameBtn = document.getElementById('closeGameBtn');
+            const gameCanvas = document.getElementById('gameCanvas');
+            const gCtx = gameCanvas.getContext('2d');
+            const timerSpan = document.getElementById('timerDisplay');
+            const scoreSpan = document.getElementById('scoreDisplay');
+            const gameMessageDiv = document.getElementById('gameMessage');
+            const restartBtn = document.getElementById('restartGameBtn');
+
+            let gameActive = false;
+            let score = 0;
+            let timeLeft = 15;
+            let intervalId = null;
+            let animationId = null;
+
+            let candies = [];
+            const CANDY_COUNT = 6;
+            const RADIUS = 20;
+
+            function initCandies() {
+                candies = [];
+                for (let i = 0; i < CANDY_COUNT; i++) {
+                    candies.push({
+                        x: 40 + Math.random() * (gameCanvas.width - 80),
+                        y: 40 + Math.random() * (gameCanvas.height - 80),
+                        vx: (Math.random() - 0.5) * 2,
+                        vy: (Math.random() - 0.5) * 2
+                    });
+                }
             }
-        });
-        
-        closeBtn.addEventListener('click', closeVideoModal);
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeVideoModal();
-        });
-        window.addEventListener('resize', () => { renderTeddy(); });
-        
-        renderTeddy();
-        teddyContainer.addEventListener('mouseenter', () => {
-            teddyContainer.style.transform = 'scale(1.03)';
-            setTimeout(() => { if(teddyContainer) teddyContainer.style.transform = ''; }, 200);
-        });
-    })();
-</script>
+
+            function drawCandies() {
+                gCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+                gCtx.fillStyle = '#fdf3e0';
+                gCtx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+                for (let c of candies) {
+                    gCtx.save();
+                    gCtx.shadowBlur = 6;
+                    gCtx.shadowColor = "rgba(0,0,0,0.2)";
+                    gCtx.font = `${RADIUS*1.5}px "Segoe UI Emoji"`;
+                    gCtx.fillStyle = '#ffaa66';
+                    gCtx.beginPath();
+                    gCtx.arc(c.x, c.y, RADIUS - 2, 0, Math.PI * 2);
+                    gCtx.fill();
+                    gCtx.fillStyle = '#d45a1a';
+                    gCtx.font = `${RADIUS*1.4}px "Segoe UI Emoji"`;
+                    gCtx.fillText('🍬', c.x - 12, c.y + 10);
+                    gCtx.restore();
+                }
+            }
+
+            function updateCandies() {
+                if (!gameActive) return;
+                for (let c of candies) {
+                    c.x += c.vx;
+                    c.y += c.vy;
+                    if (c.x - RADIUS < 0) { c.x = RADIUS;
+                        c.vx = -c.vx; }
+                    if (c.x + RADIUS > gameCanvas.width) { c.x = gameCanvas.width - RADIUS;
+                        c.vx = -c.vx; }
+                    if (c.y - RADIUS < 0) { c.y = RADIUS;
+                        c.vy = -c.vy; }
+                    if (c.y + RADIUS > gameCanvas.height) { c.y = gameCanvas.height - RADIUS;
+                        c.vy = -c.vy; }
+                }
+                drawCandies();
+                animationId = requestAnimationFrame(updateCandies);
+            }
+
+            function handleCanvasClick(e) {
+                if (!gameActive) return;
+                const rect = gameCanvas.getBoundingClientRect();
+                const scaleX = gameCanvas.width / rect.width;
+                const scaleY = gameCanvas.height / rect.height;
+                let clientX, clientY;
+                if (e.touches) {
+                    clientX = e.touches[0].clientX;
+                    clientY = e.touches[0].clientY;
+                } else {
+                    clientX = e.clientX;
+                    clientY = e.clientY;
+                }
+                const canvasX = (clientX - rect.left) * scaleX;
+                const canvasY = (clientY - rect.top) * scaleY;
+                for (let i = 0; i < candies.length; i++) {
+                    const c = candies[i];
+                    const dx = canvasX - c.x;
+                    const dy = canvasY - c.y;
+                    const dist = Math.hypot(dx, dy);
+                    if (dist < RADIUS) {
+                        score++;
+                        scoreSpan.innerText = score;
+                        c.x = 40 + Math.random() * (gameCanvas.width - 80);
+                        c.y = 40 + Math.random() * (gameCanvas.height - 80);
+                        c.vx = (Math.random() - 0.5) * 2.5;
+                        c.vy = (Math.random() - 0.5) * 2.5;
+                        gameMessageDiv.innerHTML = '🎉 +1 好甜！ 🎉';
+                        setTimeout(() => { if (gameActive) gameMessageDiv.innerHTML = '继续点糖果！'; }, 400);
+                        break;
+                    }
+                }
+            }
+
+            function startGame() {
+                if (intervalId) clearInterval(intervalId);
+                if (animationId) cancelAnimationFrame(animationId);
+                gameActive = true;
+                score = 0;
+                timeLeft = 15;
+                scoreSpan.innerText = '0';
+                timerSpan.innerText = '15';
+                gameMessageDiv.innerHTML = '快戳糖果！🍬';
+                initCandies();
+                drawCandies();
+                updateCandies();
+                intervalId = setInterval(() => {
+                    if (!gameActive) return;
+                    timeLeft--;
+                    timerSpan.innerText = timeLeft;
+                    if (timeLeft <= 0) {
+                        gameActive = false;
+                        clearInterval(intervalId);
+                        if (animationId) cancelAnimationFrame(animationId);
+                        gameMessageDiv.innerHTML = `⏰ 时间到啦！你收集了 ${score} 颗糖果！ 🎁`;
+                        gCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+                        gCtx.fillStyle = '#fdf3e0';
+                        gCtx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+                        gCtx.font = 'bold 24px "Segoe UI"';
+                        gCtx.fillStyle = '#d96c1e';
+                        gCtx.fillText('🎉 GAME OVER 🎉', gameCanvas.width / 2 - 100, gameCanvas.height / 2);
+                    }
+                }, 1000);
+            }
+
+            function stopGameAndClose() {
+                gameActive = false;
+                if (intervalId) clearInterval(intervalId);
+                if (animationId) cancelAnimationFrame(animationId);
+                gameModal.classList.remove('active');
+            }
+
+            openGameBtn.addEventListener('click', () => {
+                if (gameModal.classList.contains('active')) return;
+                startGame();
+                gameModal.classList.add('active');
+            });
+            closeGameBtn.addEventListener('click', stopGameAndClose);
+            restartBtn.addEventListener('click', () => {
+                stopGameAndClose();
+                setTimeout(() => {
+                    startGame();
+                    gameModal.classList.add('active');
+                }, 100);
+            });
+            gameCanvas.addEventListener('click', handleCanvasClick);
+            gameCanvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                handleCanvasClick(e);
+            });
+            gameModal.addEventListener('click', (e) => { if (e.target === gameModal) stopGameAndClose(); });
+
+            // 窗口 resize 无操作（图片自适应）
+        })();
+    </script>
 </body>
 </html>
