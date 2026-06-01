@@ -24,7 +24,6 @@
             padding: 2rem 1rem;
         }
 
-        /* 主卡片 */
         .love-card {
             max-width: 950px;
             width: 100%;
@@ -39,9 +38,7 @@
             animation: gentleFloat 4s infinite ease-in-out;
         }
 
-        .love-card:hover {
-            transform: scale(1.01);
-        }
+        .love-card:hover { transform: scale(1.01); }
 
         .breeze-text {
             font-size: 2rem;
@@ -133,7 +130,6 @@
             border-radius: 60px;
         }
 
-        /* 想念按钮区域 */
         .miss-you-area {
             margin: 1.5rem 0 0.8rem;
             display: flex;
@@ -252,7 +248,6 @@
             animation: gentleFloat 2s infinite ease-in-out;
         }
 
-        /* 游戏按钮 */
         .game-btn {
             background: linear-gradient(135deg, #ffaa66, #ff6b8b);
             border: none;
@@ -277,7 +272,6 @@
             box-shadow: 0 10px 18px rgba(0, 0, 0, 0.25);
         }
 
-        /* 动画 */
         @keyframes floatCloud {
             0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
             100% { transform: translateX(8px) translateY(-5px) rotate(0.8deg); }
@@ -342,7 +336,6 @@
             100% { transform: translateY(-120vh) rotate(25deg); opacity: 0; }
         }
 
-        /* 响应式 */
         @media (max-width: 620px) {
             .love-card { padding: 1.2rem; }
             .cloud-line { font-size: 0.95rem; white-space: pre-wrap; }
@@ -352,7 +345,7 @@
             .heart-miss-btn { width: 70px; height: 70px; font-size: 2rem; }
         }
 
-        /* 🐶 实况小狗容器 (右下角) */
+        /* 🐶 实况小狗容器 (右下角) - 尺寸增大 */
         .dog-container {
             position: fixed;
             bottom: 20px;
@@ -370,8 +363,8 @@
         .dog-video {
             width: auto;
             height: auto;
-            max-width: 150px;
-            max-height: 150px;
+            max-width: 180px;
+            max-height: 180px;
             border-radius: 25px;
             object-fit: contain;
             background: rgba(255, 245, 220, 0.35);
@@ -406,11 +399,10 @@
             100% { opacity: 1; transform: scale(1.05); }
         }
         @media (max-width: 550px) {
-            .dog-video { max-width: 120px; max-height: 120px; border-radius: 20px; }
+            .dog-video { max-width: 140px; max-height: 140px; border-radius: 20px; }
             .dog-tip { font-size: 0.7rem; }
         }
 
-        /* 视频模态框 */
         .video-modal, .game-modal {
             display: none;
             position: fixed;
@@ -461,7 +453,6 @@
             to { opacity: 1; }
         }
 
-        /* 游戏专属样式 */
         .game-container {
             background: #fff6e8;
             border-radius: 48px;
@@ -668,7 +659,6 @@
             window.addEventListener('click', addClickBreezeEffect);
             window.addEventListener('beforeunload', () => particleInterval && clearInterval(particleInterval));
 
-            // 想念计数器
             const missBtn = document.getElementById('missYouHeartBtn');
             const missCountSpan = document.getElementById('missCountDisplay');
             const lastTimeSpan = document.getElementById('lastClickTimeDisplay');
@@ -722,7 +712,6 @@
 
             loadGlobalCount();
 
-            // 小狗视频
             const dogVideo = document.getElementById('dogVideo');
             const dogTip = document.getElementById('dogTip');
             const modalVideo = document.getElementById('videoModal');
@@ -747,7 +736,6 @@
                 }
             });
 
-            // ========= 糖果大作战游戏 (自适应+土味情话) =========
             const gameModal = document.getElementById('gameModal');
             const canvas = document.getElementById('gameCanvas');
             const ctx = canvas.getContext('2d');
@@ -765,9 +753,8 @@
             let candies = [];
             const CANDY_COUNT = 6;
             const RADIUS = 20;
-            let loveMsgTimer = null; // 土味情话定时器
+            let loveMsgTimer = null;
 
-            // 土味情话库
             const loveQuotes = [
                 "近朱者赤，近你者甜。",
                 "不要抱怨，抱我。",
@@ -782,7 +769,6 @@
                 "你有没有闻到什么烧焦的味道？那是我的心在燃烧。",
                 "我想吃碗面，你的心里面。",
                 "甜有100种方式，吃糖，蛋糕，还有每天98次的想你。",
-                "只许州官放火，不许你离开我。",
                 "你的名字，是我见过最短的情诗。"
             ];
 
@@ -835,7 +821,7 @@
             function handleCanvasClick(e) {
                 if (!gameActive) return;
                 const rect = canvas.getBoundingClientRect();
-                const scaleX = canvas.width / rect.width;   // 原始宽度 / 实际显示宽度
+                const scaleX = canvas.width / rect.width;
                 const scaleY = canvas.height / rect.height;
                 let clientX, clientY;
                 if (e.touches) {
@@ -859,8 +845,6 @@
                         c.y = 40 + Math.random() * (canvas.height - 80);
                         c.vx = (Math.random() - 0.5) * 2.5;
                         c.vy = (Math.random() - 0.5) * 2.5;
-                        
-                        // 显示随机土味情话
                         const randomLove = loveQuotes[Math.floor(Math.random() * loveQuotes.length)];
                         gameMessageDiv.innerHTML = randomLove;
                         clearTimeout(loveMsgTimer);
