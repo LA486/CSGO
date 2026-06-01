@@ -84,6 +84,18 @@
         .history-badge { margin-top: 0.5rem; font-size: 0.9rem; background: #fff2e6; border-radius: 30px; padding: 0.2rem 1.2rem; color: #9b5e4b; }
         .global-badge { display: inline-block; background: rgba(255,200,100,0.3); border-radius: 20px; padding: 0.15rem 0.8rem; font-size: 0.75rem; color: #b8782e; margin-left: 8px; animation: gentleFloat 2s infinite ease-in-out; }
 
+        /* 同步失败提示 */
+        #syncError {
+            display: none;
+            color: #ff4d4f;
+            font-size: 0.9rem;
+            margin-top: 0.4rem;
+            font-weight: 500;
+            background: rgba(255,240,240,0.8);
+            border-radius: 30px;
+            padding: 0.2rem 1.2rem;
+        }
+
         .game-btn {
             background: linear-gradient(135deg, #ffaa66, #ff6b8b); border: none;
             font-size: 1.3rem; font-weight: bold; padding: 0.7rem 1.8rem; border-radius: 60px;
@@ -121,7 +133,6 @@
         /* 小狗容器 - 左右宽度增加，可拖拽 */
         .dog-container {
             position: fixed;
-            /* 默认右下角位置，由JS动态设置 */
             z-index: 30;
             display: flex;
             flex-direction: column;
@@ -129,7 +140,6 @@
             gap: 8px;
             cursor: grab;
             transition: transform 0.2s;
-            /* 拖拽时取消过渡 */
         }
         .dog-container.dragging {
             transition: none;
@@ -140,7 +150,7 @@
         .dog-video {
             width: auto;
             height: auto;
-            max-width: 220px;   /* 增大左右宽度 */
+            max-width: 220px;
             max-height: 220px;
             border-radius: 25px;
             object-fit: contain;
@@ -150,7 +160,7 @@
             border: 3px solid rgba(255,215,175,0.6);
             padding: 2px;
             transition: transform 0.3s ease;
-            pointer-events: none; /* 让拖动事件在容器上处理 */
+            pointer-events: none;
         }
 
         .dog-video.dog-spin {
@@ -167,7 +177,7 @@
             color: #b45f2b;
             white-space: nowrap;
             animation: tipPulse 1.2s infinite alternate;
-            pointer-events: none; /* 让拖动事件在容器上处理 */
+            pointer-events: none;
         }
         @keyframes tipPulse { 0% { opacity: 0.7; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1.05); } }
 
@@ -217,6 +227,8 @@
             <span class="last-time" id="lastClickTimeDisplay">加载中…</span>
             <span class="global-badge" id="globalBadge">🌐 全球统一</span>
         </div>
+        <!-- 新增：同步失败提示 -->
+        <div id="syncError">⚠️ 网络开小差，同步失败，请稍后再试</div>
         <div class="history-badge" id="historyHint">✨ 每次想念都被珍藏 ✨</div>
     </div>
     <div style="margin-top: 1rem; font-size:1rem; color:#b45f3b;">🎀 愿你永远像孩子一样，被世界温柔以待 🎀</div>
@@ -225,7 +237,6 @@
 
 <div id="bgCloudContainer"></div>
 
-<!-- 可拖拽的小狗容器 -->
 <div class="dog-container" id="dogContainer">
     <video id="dogVideo" class="dog-video" autoplay loop muted playsinline>
         <source src="dog_live.mp4" type="video/mp4">
@@ -331,15 +342,18 @@
     window.addEventListener('click', addClickBreezeEffect);
     window.addEventListener('beforeunload', ()=> particleInterval && clearInterval(particleInterval));
 
-    // 想念计数器 (保持不变)
+    // ========== 全球统一想念计数器（完全依赖远程 API + 错误提示） ==========
     const missBtn = document.getElementById('missYouHeartBtn');
     const missCountSpan = document.getElementById('missCountDisplay');
     const lastTimeSpan = document.getElementById('lastClickTimeDisplay');
     const historyHint = document.getElementById('historyHint');
     const globalBadge = document.getElementById('globalBadge');
+    const syncError = document.getElementById('syncError');
     const API_NAMESPACE = 'xgh61miss';
     const API_BASE = 'https://api.countapi.xyz';
     let globalCount = 0, globalLastTime = null, apiAvailable = false;
+    let isRequesting = false;
+    let errorTimer = null;
 
     function fetchWithTimeout(url, timeout=4000) {
         const controller = new AbortController();
@@ -349,17 +363,28 @@
             .catch(e => { clearTimeout(id); throw e; });
     }
 
+    function showSyncError() {
+        if (syncError) {
+            syncError.style.display = 'block';
+            if (errorTimer) clearTimeout(errorTimer);
+            errorTimer = setTimeout(() => {
+                syncError.style.display = 'none';
+            }, 3000);
+        }
+    }
+
     async function updateCountDisplay() {
         missCountSpan.textContent = globalCount;
         lastTimeSpan.textContent = globalLastTime ? '🕒 ' + new Date(globalLastTime).toLocaleString() : '还没按过呢';
         historyHint.innerHTML = globalCount > 0 ? `💗 全世界已经想念了 ${globalCount} 次 💗` : '✨ 每次想念都被珍藏 ✨';
-        globalBadge.textContent = apiAvailable ? '🌐 全球同步' : '📱 本地模式';
+        globalBadge.textContent = apiAvailable ? '🌐 全球同步' : '📱 本地模式（获取失败）';
     }
 
     async function loadGlobalCount() {
         try {
             const data = await fetchWithTimeout(`${API_BASE}/get/${API_NAMESPACE}/counter`);
-            globalCount = data.value; apiAvailable = true;
+            globalCount = data.value;
+            apiAvailable = true;
         } catch(e) { apiAvailable = false; }
         try {
             const t = await fetchWithTimeout(`${API_BASE}/get/${API_NAMESPACE}/lasttime`);
@@ -369,10 +394,12 @@
     }
 
     missBtn.addEventListener('click', async (e) => {
-        globalCount++; globalLastTime = Date.now();
-        updateCountDisplay();
-        try { await fetchWithTimeout(`${API_BASE}/hit/${API_NAMESPACE}/counter`); } catch(e){}
-        try { await fetchWithTimeout(`${API_BASE}/set/${API_NAMESPACE}/lasttime?value=${globalLastTime}`); } catch(e){}
+        if (isRequesting) return;
+        isRequesting = true;
+        missBtn.disabled = true;
+        missBtn.style.opacity = '0.7';
+
+        // 立即播放动画（视觉反馈）
         const rect = missBtn.getBoundingClientRect();
         const cx = rect.left+rect.width/2, cy = rect.top+rect.height/2;
         for(let i=0;i<8;i++) {
@@ -382,6 +409,30 @@
             document.body.appendChild(h);
             setTimeout(()=>h.remove(), 800);
         }
+
+        try {
+            // 关键：调用 /hit 获取最新全局计数
+            const hitData = await fetchWithTimeout(`${API_BASE}/hit/${API_NAMESPACE}/counter`);
+            globalCount = hitData.value;
+            apiAvailable = true;
+            if (syncError) syncError.style.display = 'none';
+            if (errorTimer) { clearTimeout(errorTimer); errorTimer = null; }
+        } catch (err) {
+            apiAvailable = false;
+            showSyncError();
+        }
+
+        // 更新最后点击时间（本地时间，尝试存入服务器）
+        globalLastTime = Date.now();
+        try {
+            await fetchWithTimeout(`${API_BASE}/set/${API_NAMESPACE}/lasttime?value=${globalLastTime}`);
+        } catch(e) {}
+
+        updateCountDisplay();
+
+        missBtn.style.opacity = '1';
+        missBtn.disabled = false;
+        isRequesting = false;
     });
 
     loadGlobalCount();
@@ -391,7 +442,6 @@
     const dogVideo = document.getElementById('dogVideo');
     const dogTip = document.getElementById('dogTip');
 
-    // 初始化小狗位置（右下角）
     function setInitialPosition() {
         const containerWidth = dogContainer.offsetWidth;
         const containerHeight = dogContainer.offsetHeight;
@@ -404,20 +454,16 @@
     }
     setInitialPosition();
     window.addEventListener('resize', () => {
-        // 防止拖拽后重置位置，只在未拖拽过或想保留原逻辑？这里简单重新设置，但会覆盖拖动后的位置。
-        // 为了体验，仅在第一次加载时设置，后续拖动后不再重置。可加个标记。
         if (!dogContainer.dataset.dragged) {
             setInitialPosition();
         }
     });
 
-    // 拖拽状态
     let isDragging = false;
     let startX, startY, startLeft, startTop;
     let hasMoved = false;
-    const DRAG_THRESHOLD = 5; // 移动超过5px才算拖拽
+    const DRAG_THRESHOLD = 5;
 
-    // 鼠标/触摸事件
     dogContainer.addEventListener('mousedown', onDragStart);
     dogContainer.addEventListener('touchstart', onDragStart, { passive: false });
     window.addEventListener('mousemove', onDragMove);
@@ -426,7 +472,6 @@
     window.addEventListener('touchend', onDragEnd);
 
     function onDragStart(e) {
-        // 如果正在游戏模态框或视频模态框显示，不启动拖拽
         if (document.querySelector('.game-modal.active') || document.querySelector('.video-modal.active')) return;
         e.preventDefault();
         const point = e.touches ? e.touches[0] : e;
@@ -451,7 +496,6 @@
         if (hasMoved) {
             dogContainer.style.left = (startLeft + dx) + 'px';
             dogContainer.style.top = (startTop + dy) + 'px';
-            // 标记已拖动过，防止resize重置
             dogContainer.dataset.dragged = 'true';
         }
     }
@@ -460,24 +504,19 @@
         if (!isDragging) return;
         isDragging = false;
         dogContainer.classList.remove('dragging');
-        // 如果没有移动，触发点击逻辑；否则不触发
         if (!hasMoved) {
-            // 模拟点击事件，保持原有双击功能
             handleDogClick(e);
         }
-        // 重置
         startX = startY = startLeft = startTop = null;
         hasMoved = false;
     }
 
-    // 原有的单击/双击逻辑（从容器click事件迁移过来）
     let clickTimer = null;
     function handleDogClick(e) {
         e.stopPropagation();
         if (clickTimer) {
             clearTimeout(clickTimer);
             clickTimer = null;
-            // 双击：转圈圈
             dogVideo.classList.add('dog-spin');
             dogTip.textContent = '🌀 转圈圈啦！';
             setTimeout(() => {
@@ -486,7 +525,6 @@
             }, 600);
         } else {
             clickTimer = setTimeout(() => {
-                // 单击：打开视频
                 const modalVideo = document.getElementById('videoModal');
                 const videoEl = document.getElementById('loveVideo');
                 modalVideo.classList.add('active');
@@ -497,7 +535,6 @@
         }
     }
 
-    // 视频模态框关闭
     const modalVideo = document.getElementById('videoModal');
     const videoEl = document.getElementById('loveVideo');
     document.getElementById('closeModalBtn').addEventListener('click', () => {
@@ -511,7 +548,7 @@
         }
     });
 
-    // ========== 糖果游戏模块 (保持不变) ==========
+    // ========== 糖果游戏模块 ==========
     const gameModal = document.getElementById('gameModal');
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
