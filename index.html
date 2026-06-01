@@ -367,14 +367,13 @@
         }
         .dog-container:active { transform: scale(0.94); }
 
-        /* 视频不裁剪，保持原始比例 */
         .dog-video {
             width: auto;
             height: auto;
             max-width: 150px;
             max-height: 150px;
             border-radius: 25px;
-            object-fit: contain;          /* 完整显示，不裁剪 */
+            object-fit: contain;
             background: rgba(255, 245, 220, 0.35);
             backdrop-filter: blur(4px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -383,7 +382,6 @@
             transition: transform 0.3s ease;
         }
 
-        /* 双击旋转动画 */
         .dog-video.dog-spin {
             animation: dogSpin 0.6s ease-in-out forwards;
         }
@@ -469,13 +467,14 @@
             border-radius: 48px;
             padding: 20px;
             text-align: center;
-            width: 500px;
-            max-width: 90vw;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
         }
         .game-header {
             display: flex;
             justify-content: space-between;
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             font-weight: bold;
             color: #d96c1e;
             background: #ffefcf;
@@ -486,12 +485,20 @@
         .game-canvas {
             background: #fdf3e0;
             border-radius: 40px;
-            box-shadow: inset 0 0 0 3px #ffd8a5, 0 10px 20px rgba(0,0,0,0.2);
+            box-shadow: inset 0 0 0 3px #ffd8a5, 0 10px 20px rgba(0, 0, 0, 0.2);
             display: block;
             margin: 0 auto;
             cursor: pointer;
+            width: 100%;
+            height: auto;
+            max-width: 450px;
         }
-        .game-message { margin-top: 15px; font-size: 1.2rem; color: #aa5e1e; }
+        .game-message {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            color: #aa5e1e;
+            min-height: 2rem;
+        }
         .restart-btn {
             background: #ff9f4a;
             border: none;
@@ -544,7 +551,6 @@
 
     <div id="bgCloudContainer"></div>
 
-    <!-- 🐶 实况小狗区域 (不裁剪，保持原比例) -->
     <div class="dog-container" id="dogContainer">
         <video id="dogVideo" class="dog-video" autoplay loop muted playsinline>
             <source src="dog_live.mp4" type="video/mp4">
@@ -697,15 +703,18 @@
                 updateCountDisplay();
             }
 
-            missBtn.addEventListener('click', async () => {
+            missBtn.addEventListener('click', async (e) => {
                 globalCount++; globalLastTime = Date.now();
                 updateCountDisplay();
                 try { await fetchWithTimeout(`${API_BASE}/hit/${API_NAMESPACE}/counter`); } catch(e){}
                 try { await fetchWithTimeout(`${API_BASE}/set/${API_NAMESPACE}/lasttime?value=${globalLastTime}`); } catch(e){}
+                const rect = missBtn.getBoundingClientRect();
+                const centerX = rect.left + rect.width/2;
+                const centerY = rect.top + rect.height/2;
                 for (let i=0;i<8;i++) {
                     const h = document.createElement('div');
                     h.innerHTML = ['💖','❤️','💕','💗','💘','💝','✨','🌸'][i%8];
-                    h.style.cssText = `position:fixed; left:${event.clientX+(Math.random()-0.5)*30}px; top:${event.clientY+(Math.random()-0.5)*20}px; font-size:1.5rem; pointer-events:none; z-index:999; animation:clickPopFade 0.8s forwards;`;
+                    h.style.cssText = `position:fixed; left:${centerX+(Math.random()-0.5)*30}px; top:${centerY+(Math.random()-0.5)*20}px; font-size:1.5rem; pointer-events:none; z-index:999; animation:clickPopFade 0.8s forwards;`;
                     document.body.appendChild(h);
                     setTimeout(() => h.remove(), 800);
                 }
@@ -738,31 +747,192 @@
                 }
             });
 
-            // 游戏模块 (保持原样)
+            // ========= 糖果大作战游戏 (自适应+土味情话) =========
             const gameModal = document.getElementById('gameModal');
             const canvas = document.getElementById('gameCanvas');
             const ctx = canvas.getContext('2d');
-            let gameActive = false, score = 0, timeLeft = 15, interval, anim;
-            const candies = [], RADIUS = 20;
-            function initCandies() { candies.length = 0; for(let i=0;i<6;i++) candies.push({ x:40+Math.random()*(canvas.width-80), y:40+Math.random()*(canvas.height-80), vx:(Math.random()-0.5)*2, vy:(Math.random()-0.5)*2 }); }
-            function draw() { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle='#fdf3e0'; ctx.fillRect(0,0,canvas.width,canvas.height); candies.forEach(c=>{ ctx.save(); ctx.shadowBlur=6; ctx.beginPath(); ctx.arc(c.x,c.y,RADIUS-2,0,Math.PI*2); ctx.fillStyle='#ffaa66'; ctx.fill(); ctx.fillStyle='#d45a1a'; ctx.font='26px "Segoe UI Emoji"'; ctx.fillText('🍬',c.x-14,c.y+9); ctx.restore(); }); }
-            function update() { if(!gameActive) return; candies.forEach(c=>{ c.x+=c.vx; c.y+=c.vy; if(c.x<RADIUS||c.x>canvas.width-RADIUS) c.vx*=-1; if(c.y<RADIUS||c.y>canvas.height-RADIUS) c.vy*=-1; }); draw(); anim = requestAnimationFrame(update); }
-            canvas.addEventListener('click', e => {
-                if(!gameActive) return;
-                const rect = canvas.getBoundingClientRect();
-                const mx = (e.clientX-rect.left)*(canvas.width/rect.width), my = (e.clientY-rect.top)*(canvas.height/rect.height);
-                for(let c of candies) if(Math.hypot(mx-c.x, my-c.y) < RADIUS) { score++; document.getElementById('scoreDisplay').textContent=score; c.x=40+Math.random()*(canvas.width-80); c.y=40+Math.random()*(canvas.height-80); break; }
-            });
-            function startGame() {
-                if(interval) clearInterval(interval); if(anim) cancelAnimationFrame(anim);
-                gameActive=true; score=0; timeLeft=15; document.getElementById('scoreDisplay').textContent='0'; document.getElementById('timerDisplay').textContent='15';
-                initCandies(); draw(); update();
-                interval = setInterval(() => { if(!gameActive) return; timeLeft--; document.getElementById('timerDisplay').textContent=timeLeft; if(timeLeft<=0) { gameActive=false; clearInterval(interval); cancelAnimationFrame(anim); document.getElementById('gameMessage').innerHTML=`⏰ 收集了 ${score} 颗糖果！`; } }, 1000);
+            const timerSpan = document.getElementById('timerDisplay');
+            const scoreSpan = document.getElementById('scoreDisplay');
+            const gameMessageDiv = document.getElementById('gameMessage');
+            const restartBtn = document.getElementById('restartGameBtn');
+            const closeGameBtn = document.getElementById('closeGameBtn');
+
+            let gameActive = false;
+            let score = 0;
+            let timeLeft = 15;
+            let intervalId = null;
+            let animationId = null;
+            let candies = [];
+            const CANDY_COUNT = 6;
+            const RADIUS = 20;
+            let loveMsgTimer = null; // 土味情话定时器
+
+            // 土味情话库
+            const loveQuotes = [
+                "近朱者赤，近你者甜。",
+                "不要抱怨，抱我。",
+                "最近有谣言说我喜欢你，我要澄清一下，那不是谣言。",
+                "你知道我的缺点是什么吗？是缺点你。",
+                "我想买一块地，你的死心塌地。",
+                "你累不累？你在我心里跑了一天了。",
+                "这是我的手背，这是我的脚背，你是我的宝贝。",
+                "我觉得你特别像一款游戏，我的世界。",
+                "只许州官放火，不许你离开我。",
+                "你近视吗？不近视为什么看不出来我喜欢你。",
+                "你有没有闻到什么烧焦的味道？那是我的心在燃烧。",
+                "我想吃碗面，你的心里面。",
+                "甜有100种方式，吃糖，蛋糕，还有每天98次的想你。",
+                "只许州官放火，不许你离开我。",
+                "你的名字，是我见过最短的情诗。"
+            ];
+
+            function initCandies() {
+                candies = [];
+                for (let i = 0; i < CANDY_COUNT; i++) {
+                    candies.push({
+                        x: 40 + Math.random() * (canvas.width - 80),
+                        y: 40 + Math.random() * (canvas.height - 80),
+                        vx: (Math.random() - 0.5) * 2,
+                        vy: (Math.random() - 0.5) * 2
+                    });
+                }
             }
-            document.getElementById('openGameBtn').addEventListener('click', ()=>{ gameModal.classList.add('active'); startGame(); });
-            document.getElementById('closeGameBtn').addEventListener('click', ()=>{ gameActive=false; gameModal.classList.remove('active'); });
-            document.getElementById('restartGameBtn').addEventListener('click', startGame);
-            gameModal.addEventListener('click', e => { if(e.target === gameModal) { gameActive=false; gameModal.classList.remove('active'); } });
+
+            function drawCandies() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#fdf3e0';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                for (let c of candies) {
+                    ctx.save();
+                    ctx.shadowBlur = 6;
+                    ctx.shadowColor = "rgba(0,0,0,0.2)";
+                    ctx.font = `${RADIUS*1.5}px "Segoe UI Emoji"`;
+                    ctx.fillStyle = '#ffaa66';
+                    ctx.beginPath();
+                    ctx.arc(c.x, c.y, RADIUS - 2, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#d45a1a';
+                    ctx.font = `${RADIUS*1.4}px "Segoe UI Emoji"`;
+                    ctx.fillText('🍬', c.x - 12, c.y + 10);
+                    ctx.restore();
+                }
+            }
+
+            function updateCandies() {
+                if (!gameActive) return;
+                for (let c of candies) {
+                    c.x += c.vx;
+                    c.y += c.vy;
+                    if (c.x - RADIUS < 0) { c.x = RADIUS; c.vx = -c.vx; }
+                    if (c.x + RADIUS > canvas.width) { c.x = canvas.width - RADIUS; c.vx = -c.vx; }
+                    if (c.y - RADIUS < 0) { c.y = RADIUS; c.vy = -c.vy; }
+                    if (c.y + RADIUS > canvas.height) { c.y = canvas.height - RADIUS; c.vy = -c.vy; }
+                }
+                drawCandies();
+                animationId = requestAnimationFrame(updateCandies);
+            }
+
+            function handleCanvasClick(e) {
+                if (!gameActive) return;
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;   // 原始宽度 / 实际显示宽度
+                const scaleY = canvas.height / rect.height;
+                let clientX, clientY;
+                if (e.touches) {
+                    clientX = e.touches[0].clientX;
+                    clientY = e.touches[0].clientY;
+                } else {
+                    clientX = e.clientX;
+                    clientY = e.clientY;
+                }
+                const canvasX = (clientX - rect.left) * scaleX;
+                const canvasY = (clientY - rect.top) * scaleY;
+                for (let i = 0; i < candies.length; i++) {
+                    const c = candies[i];
+                    const dx = canvasX - c.x;
+                    const dy = canvasY - c.y;
+                    const dist = Math.hypot(dx, dy);
+                    if (dist < RADIUS) {
+                        score++;
+                        scoreSpan.innerText = score;
+                        c.x = 40 + Math.random() * (canvas.width - 80);
+                        c.y = 40 + Math.random() * (canvas.height - 80);
+                        c.vx = (Math.random() - 0.5) * 2.5;
+                        c.vy = (Math.random() - 0.5) * 2.5;
+                        
+                        // 显示随机土味情话
+                        const randomLove = loveQuotes[Math.floor(Math.random() * loveQuotes.length)];
+                        gameMessageDiv.innerHTML = randomLove;
+                        clearTimeout(loveMsgTimer);
+                        loveMsgTimer = setTimeout(() => {
+                            if (gameActive) gameMessageDiv.innerHTML = '继续点糖果！';
+                        }, 3000);
+                        break;
+                    }
+                }
+            }
+
+            function startGame() {
+                if (intervalId) clearInterval(intervalId);
+                if (animationId) cancelAnimationFrame(animationId);
+                if (loveMsgTimer) clearTimeout(loveMsgTimer);
+                gameActive = true;
+                score = 0;
+                timeLeft = 15;
+                scoreSpan.innerText = '0';
+                timerSpan.innerText = '15';
+                gameMessageDiv.innerHTML = '快戳糖果！🍬';
+                initCandies();
+                drawCandies();
+                updateCandies();
+                intervalId = setInterval(() => {
+                    if (!gameActive) return;
+                    timeLeft--;
+                    timerSpan.innerText = timeLeft;
+                    if (timeLeft <= 0) {
+                        gameActive = false;
+                        clearInterval(intervalId);
+                        if (animationId) cancelAnimationFrame(animationId);
+                        gameMessageDiv.innerHTML = `⏰ 时间到啦！你收集了 ${score} 颗糖果！ 🎁`;
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.fillStyle = '#fdf3e0';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        ctx.font = 'bold 24px "Segoe UI"';
+                        ctx.fillStyle = '#d96c1e';
+                        ctx.fillText('🎉 GAME OVER 🎉', canvas.width / 2 - 100, canvas.height / 2);
+                    }
+                }, 1000);
+            }
+
+            function stopGameAndClose() {
+                gameActive = false;
+                if (intervalId) clearInterval(intervalId);
+                if (animationId) cancelAnimationFrame(animationId);
+                if (loveMsgTimer) clearTimeout(loveMsgTimer);
+                gameModal.classList.remove('active');
+            }
+
+            document.getElementById('openGameBtn').addEventListener('click', () => {
+                if (gameModal.classList.contains('active')) return;
+                startGame();
+                gameModal.classList.add('active');
+            });
+            closeGameBtn.addEventListener('click', stopGameAndClose);
+            restartBtn.addEventListener('click', () => {
+                stopGameAndClose();
+                setTimeout(() => {
+                    startGame();
+                    gameModal.classList.add('active');
+                }, 100);
+            });
+            canvas.addEventListener('click', handleCanvasClick);
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                handleCanvasClick(e);
+            });
+            gameModal.addEventListener('click', (e) => {
+                if (e.target === gameModal) stopGameAndClose();
+            });
         })();
     </script>
 </body>
