@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>熊国会专属 · 夏日清风 · 泰迪熊视频惊喜</title>
+    <title>熊国会 · 六一儿童节快乐 · 专属乐园</title>
     <style>
         * {
             margin: 0;
@@ -14,7 +14,7 @@
 
         body {
             min-height: 100vh;
-            background: linear-gradient(145deg, #f9d8c6 0%, #ffe6d5 35%, #b3e0ff 100%);
+            background: linear-gradient(145deg, #fde8cd 0%, #fff0db 35%, #c4e0fa 100%);
             font-family: 'Segoe UI', 'Quicksand', system-ui, 'Poppins', 'Comic Neue', cursive;
             display: flex;
             align-items: center;
@@ -26,9 +26,9 @@
 
         /* 主卡片，文字区域柔和精致 */
         .love-card {
-            max-width: 850px;
+            max-width: 900px;
             width: 100%;
-            background: rgba(255, 250, 240, 0.88);
+            background: rgba(255, 250, 240, 0.92);
             backdrop-filter: blur(12px);
             border-radius: 80px 80px 80px 60px;
             box-shadow: 0 30px 45px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 215, 175, 0.8) inset, 0 8px 20px rgba(255, 105, 180, 0.2);
@@ -46,13 +46,24 @@
         .breeze-text {
             font-size: 2rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #ff8866, #ff4d6d, #ffaa55);
+            background: linear-gradient(135deg, #ffaa44, #ff6b8b, #66ccff);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
             text-shadow: 0 2px 8px rgba(255, 80, 100, 0.3);
-            margin-bottom: 1.2rem;
+            margin-bottom: 1rem;
             display: inline-block;
+        }
+
+        .festival-badge {
+            display: inline-block;
+            background: rgba(255,220,150,0.8);
+            border-radius: 60px;
+            padding: 0.2rem 1rem;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+            color: #d2691e;
+            backdrop-filter: blur(4px);
         }
 
         .cloud-section {
@@ -110,7 +121,7 @@
         .blessing {
             font-size: 1.9rem;
             font-weight: bold;
-            background: linear-gradient(120deg, #ff6699, #ffbb77);
+            background: linear-gradient(120deg, #ff9966, #ff5e7e);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
@@ -129,6 +140,19 @@
             border-radius: 60px;
         }
 
+        /* 儿童节小装饰 */
+        .candy-cane {
+            display: inline-block;
+            font-size: 1.5rem;
+            margin: 0 0.2rem;
+            animation: bounce 1s infinite alternate;
+        }
+        @keyframes bounce {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-6px); }
+        }
+
+        /* 原有动画 */
         @keyframes floatCloud {
             0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
             100% { transform: translateX(8px) translateY(-5px) rotate(0.8deg); }
@@ -156,7 +180,7 @@
             z-index: 20;
             font-size: 1.4rem;
             animation: blowWind 6s linear forwards;
-            filter: drop-shadow(0 0 4px cyan);
+            filter: drop-shadow(0 0 4px gold);
         }
 
         @keyframes blowWind {
@@ -261,7 +285,7 @@
             .teddy-container { bottom: 12px; right: 12px; }
         }
 
-        /* ========= 视频模态框 (新页面效果) ========= */
+        /* ========= 视频模态框 ========= */
         .video-modal {
             display: none;
             position: fixed;
@@ -330,42 +354,40 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        @media (max-width: 650px) {
-            .modal-content { padding: 12px; }
-            .close-modal { top: 2px; right: 8px; width: 32px; height: 32px; font-size: 1.6rem; }
-            .video-caption { font-size: 0.8rem; }
-        }
     </style>
 </head>
 <body>
 
 <div class="love-card">
+    <div class="festival-badge">
+        🎈 6·1 儿童节特别版 🎈
+    </div>
     <div class="breeze-text">
-        <span class="fan-icon">🌀</span> 老婆天热我给你吹吹 <span class="fan-icon">🍃</span>
+        <span class="fan-icon">🍭</span> 熊国会小朋友，儿童节快乐！ <span class="fan-icon">🎈</span>
     </div>
     <div class="cloud-section">
         <div class="cloud-art">
             <div class="cloud-line">╭◜◝ ͡ ◜◝╮</div>
             <div class="cloud-line">(　　　`3´ )༄༅༄༅</div>
-            <div class="cloud-line">╰◟◞ ͜ ◟◞╯　　༄༅༄༅ ❄️ ❄️ ❄️</div>
-            <div class="cloud-line">༄༅ ❄️ ❄️</div>
+            <div class="cloud-line">╰◟◞ ͜ ◟◞╯　　༄༅༄༅ 🧸🍬🍭</div>
+            <div class="cloud-line">༄༅ 🎁 🎈 🎀</div>
         </div>
     </div>
     <div class="cool-breeze">
-        <span class="cool-item">❄️</span>
-        <span class="cool-item">🍃</span>
-        <span class="cool-item">💨</span>
-        <span class="cool-item">❄️</span>
+        <span class="cool-item">🍬</span>
+        <span class="cool-item">🍭</span>
+        <span class="cool-item">🎈</span>
+        <span class="cool-item">🧸</span>
         <span class="cool-item">✨</span>
     </div>
     <div class="blessing">
-        🎉熊国会天下第一好！小狗永远爱你🎉
+        🎉 祝熊国会儿童节快乐！童心永驻，可爱无敌 🎉
     </div>
     <div class="blessing blessing-dual">
-        🎉熊国会天下第一好！小狗永远爱你🎉
+        🎉 小熊陪你每一天，快乐成长 ۶•͈⚇•͈ა 🎉
     </div>
     <div style="margin-top: 1rem; font-size:1rem; color:#b45f3b;">
-        <span>💨 微风拂面 · 爱意永存 💖</span>
+        <span>🎀 愿你永远像孩子一样，被世界温柔以待 🎀</span>
     </div>
 </div>
 
@@ -374,27 +396,27 @@
 <!-- 右下角泰迪熊交互区域 -->
 <div class="teddy-container" id="teddyContainer">
     <canvas id="teddyCanvas" class="teddy-canvas" width="150" height="150"></canvas>
-    <div class="teddy-tip" id="teddyTip">🐻 单击看视频 · 双击换动作</div>
+    <div class="teddy-tip" id="teddyTip">🐻 单击看惊喜视频 · 双击换动作</div>
 </div>
 
-<!-- 视频模态框（新页面中间区域） -->
+<!-- 视频模态框（儿童节特别礼物） -->
 <div id="videoModal" class="video-modal">
     <div class="modal-content">
         <span class="close-modal" id="closeModalBtn">&times;</span>
         <video id="loveVideo" controls autoplay muted playsinline>
-            <source src="321.mp4" type="video/mp4">
+            <source src="61.mp4" type="video/mp4">
             您的浏览器不支持 video 标签。
         </video>
-        <div class="video-caption">❤️ 专属回忆 · 温暖时光 ❤️</div>
+        <div class="video-caption">🎁 专属你的儿童节小电影 🎁</div>
     </div>
 </div>
 
 <script>
     (function() {
-        // ========= 保留原有吹风粒子 & 背景云 & 爱心效果 =========
+        // ========= 儿童节特别版特效：更多糖果粒子 =========
         const bodyEl = document.body;
         let particleInterval = null;
-        const coolItems = ['❄️', '🍃', '💨', '✨', '💙', '🌸', '💧', '🌀', '❤️', '🎐'];
+        const coolItems = ['🍬', '🍭', '🎈', '🧸', '🎀', '✨', '🍬', '🍭', '💖', '🎁'];
         
         function createWindParticle() {
             const particle = document.createElement('div');
@@ -418,16 +440,16 @@
             if (particleInterval) clearInterval(particleInterval);
             particleInterval = setInterval(() => {
                 if (document.hidden) return;
-                const count = Math.floor(Math.random() * 2) + 1;
+                const count = Math.floor(Math.random() * 3) + 1;
                 for(let i=0; i<count; i++) createWindParticle();
-            }, 700);
+            }, 600);
         }
         
         function createBgClouds() {
             const container = document.getElementById('bgCloudContainer');
             if(!container) return;
             container.innerHTML = '';
-            const cloudCount = 5;
+            const cloudCount = 6;
             for(let i=0; i<cloudCount; i++) {
                 const cloud = document.createElement('div');
                 cloud.classList.add('bg-cloud');
@@ -457,14 +479,13 @@
                 heartSpan.style.zIndex = '25';
                 heartSpan.style.filter = 'drop-shadow(0 0 6px #ff99aa)';
                 heartSpan.style.animation = 'floatUpHeart 5s ease-in forwards';
-                heartSpan.innerHTML = ['❤️', '💖', '💗', '💘', '💝', '🧡', '💕', '💞', '❤️‍🔥'][Math.floor(Math.random() * 9)];
+                heartSpan.innerHTML = ['❤️', '💖', '🧡', '💛', '💚', '💙', '💜', '🎈', '🍭'][Math.floor(Math.random() * 9)];
                 document.body.appendChild(heartSpan);
                 heartSpan.addEventListener('animationend', () => heartSpan.remove());
-            }, 1800);
+            }, 1500);
         }
         
         function addClickBreezeEffect(e) {
-            // 如果点击的是模态框或者其内部，不触发额外粒子（避免干扰），但无伤大雅
             const x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
             const y = e.clientY || (e.touches ? e.touches[0].clientY : 0);
             if(!x && !y) return;
@@ -478,7 +499,7 @@
                 extraParticle.style.zIndex = '999';
                 extraParticle.style.opacity = '0.9';
                 extraParticle.style.animation = 'clickPopFade 0.9s forwards';
-                const icons = ['💨', '❄️', '🍃', '❤️', '💖', '🌀', '🎐', '🌸'];
+                const icons = ['🍬', '🍭', '🎈', '✨', '❤️', '💖', '🎁', '🌸'];
                 extraParticle.innerHTML = icons[Math.floor(Math.random() * icons.length)];
                 document.body.appendChild(extraParticle);
                 extraParticle.addEventListener('animationend', () => extraParticle.remove());
@@ -497,7 +518,7 @@
         }
         
         function initialBreeze() {
-            for(let i=0;i<16;i++) setTimeout(() => createWindParticle(), i*130);
+            for(let i=0;i<20;i++) setTimeout(() => createWindParticle(), i*120);
         }
         
         startCoolBreeze();
@@ -510,7 +531,7 @@
         window.addEventListener('touchstart', addClickBreezeEffect);
         window.addEventListener('beforeunload', () => { if(particleInterval) clearInterval(particleInterval); });
         
-        // ========= 泰迪熊模块: 交互 (单击看视频 / 双击换动作) =========
+        // ========= 泰迪熊模块 (全功能保留) =========
         const teddyCanvas = document.getElementById('teddyCanvas');
         const ctx = teddyCanvas.getContext('2d');
         let currentAction = 'sitting';   // 'sitting', 'lying', 'walking'
@@ -518,7 +539,7 @@
         let walkAnimationId = null;
         const w = 150, h = 150;
         
-        // ---- 绘图函数 (坐立/躺卧/走动) 完整保留 ----
+        // 坐立姿态 (保持可爱)
         function drawSitting() {
             ctx.save();
             ctx.clearRect(0, 0, w, h);
@@ -559,9 +580,13 @@
             ctx.beginPath(); ctx.arc(58, 60, 5, 0, Math.PI * 2); ctx.fill();
             ctx.beginPath(); ctx.arc(92, 60, 5, 0, Math.PI * 2); ctx.fill();
             ctx.globalAlpha = 1;
+            // 儿童节小领结
+            ctx.fillStyle = '#FF6F61';
+            ctx.beginPath(); ctx.ellipse(75, 80, 8, 6, 0, 0, Math.PI*2); ctx.fill();
             ctx.restore();
         }
         
+        // 躺卧姿态
         function drawLying() {
             ctx.clearRect(0, 0, w, h);
             ctx.save();
@@ -594,6 +619,7 @@
             ctx.restore();
         }
         
+        // 走动姿态
         function drawWalking(phase) {
             ctx.clearRect(0, 0, w, h);
             ctx.save();
@@ -673,9 +699,9 @@
             idx = (idx + 1) % actions.length;
             currentAction = actions[idx];
             const tipDiv = document.getElementById('teddyTip');
-            if (currentAction === 'sitting') tipDiv.innerHTML = '🐻 单击看视频 · 双击换动作 🧸坐立';
-            else if (currentAction === 'lying') tipDiv.innerHTML = '🐻 单击看视频 · 双击换动作 🛌躺卧';
-            else tipDiv.innerHTML = '🐻 单击看视频 · 双击换动作 🚶走走';
+            if (currentAction === 'sitting') tipDiv.innerHTML = '🧸 乖乖坐好 · 双击换动作';
+            else if (currentAction === 'lying') tipDiv.innerHTML = '🛌 躺平休息 · 双击换动作';
+            else tipDiv.innerHTML = '🚶 快乐散步 · 双击换动作';
             if (currentAction === 'walking') {
                 walkPhase = 0;
                 startWalkingAnimation();
@@ -684,30 +710,24 @@
             }
         }
         
-        // ---------- 视频模态框逻辑 ----------
+        // 视频模态框逻辑
         const modal = document.getElementById('videoModal');
         const videoEl = document.getElementById('loveVideo');
         const closeBtn = document.getElementById('closeModalBtn');
         
         function openVideoModal() {
             modal.classList.add('active');
-            // 尝试播放（由于用户刚刚点击了熊，属于用户交互，可以自动播放带声音，但为了兼容性保留muted+controls）
-            videoEl.muted = false;  // 取消静音，让用户有声音体验（如果浏览器策略允许）
-            videoEl.play().catch(e => {
-                // 如果自动播放被阻止，让用户手动点击播放即可，不影响体验
-                console.log("自动播放需用户交互", e);
-            });
+            videoEl.muted = false;
+            videoEl.play().catch(e => console.log("自动播放需交互"));
         }
         
         function closeVideoModal() {
             modal.classList.remove('active');
             videoEl.pause();
-            // 可选重置视频到开头
             videoEl.currentTime = 0;
         }
         
-        // 单击熊 -> 打开视频模态框（新页面中间区域）
-        // 双击熊 -> 切换动作
+        // 单击熊 -> 打开视频，双击 -> 切换动作
         let clickTimer = null;
         const teddyContainer = document.getElementById('teddyContainer');
         teddyContainer.addEventListener('click', (e) => {
@@ -715,28 +735,22 @@
             if (clickTimer) {
                 clearTimeout(clickTimer);
                 clickTimer = null;
-                // 双击：切换动作
                 nextAction();
             } else {
                 clickTimer = setTimeout(() => {
-                    // 单击：打开视频
                     openVideoModal();
                     clickTimer = null;
                 }, 180);
             }
         });
         
-        // 关闭模态框事件
         closeBtn.addEventListener('click', closeVideoModal);
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeVideoModal();
         });
-        // 防止熊的事件冒泡干扰
         window.addEventListener('resize', () => { renderTeddy(); });
         
-        // 初始化熊姿态
         renderTeddy();
-        // 额外添加鼠标悬浮特效
         teddyContainer.addEventListener('mouseenter', () => {
             teddyContainer.style.transform = 'scale(1.03)';
             setTimeout(() => { if(teddyContainer) teddyContainer.style.transform = ''; }, 200);
