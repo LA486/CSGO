@@ -84,7 +84,6 @@
         .history-badge { margin-top: 0.5rem; font-size: 0.9rem; background: #fff2e6; border-radius: 30px; padding: 0.2rem 1.2rem; color: #9b5e4b; }
         .global-badge { display: inline-block; background: rgba(255,200,100,0.3); border-radius: 20px; padding: 0.15rem 0.8rem; font-size: 0.75rem; color: #b8782e; margin-left: 8px; animation: gentleFloat 2s infinite ease-in-out; }
 
-        /* 同步失败提示 */
         #syncError {
             display: none;
             color: #ff4d4f;
@@ -130,7 +129,6 @@
             .heart-miss-btn { width: 70px; height: 70px; font-size: 2rem; }
         }
 
-        /* 小狗容器 - 左右宽度增加，可拖拽 */
         .dog-container {
             position: fixed;
             z-index: 30;
@@ -227,7 +225,6 @@
             <span class="last-time" id="lastClickTimeDisplay">加载中…</span>
             <span class="global-badge" id="globalBadge">🌐 全球统一</span>
         </div>
-        <!-- 新增：同步失败提示 -->
         <div id="syncError">⚠️ 网络开小差，同步失败，请稍后再试</div>
         <div class="history-badge" id="historyHint">✨ 每次想念都被珍藏 ✨</div>
     </div>
@@ -342,25 +339,54 @@
     window.addEventListener('click', addClickBreezeEffect);
     window.addEventListener('beforeunload', ()=> particleInterval && clearInterval(particleInterval));
 
-    // ========== 全球统一想念计数器（完全依赖远程 API + 错误提示） ==========
+    // ========== Supabase 全球统一想念计数器 ==========
+    const SUPABASE_URL = 'https://cgvnzfbdqmqguagtjhfi.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNndm56ZmJkcW1xZ3VhZ3RqaGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg3NjY4MDAsImV4cCI6MjA2NDM0MjgwMH0.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNndm56ZmJkcW1xZ3VhZ3RqaGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg3NjY4MDAsImV4cCI6MjA2NDM0MjgwMH0';
+    
     const missBtn = document.getElementById('missYouHeartBtn');
     const missCountSpan = document.getElementById('missCountDisplay');
     const lastTimeSpan = document.getElementById('lastClickTimeDisplay');
     const historyHint = document.getElementById('historyHint');
     const globalBadge = document.getElementById('globalBadge');
     const syncError = document.getElementById('syncError');
-    const API_NAMESPACE = 'xgh61miss';
-    const API_BASE = 'https://api.countapi.xyz';
-    let globalCount = 0, globalLastTime = null, apiAvailable = false;
+    
+    let globalCount = 0;
+    let globalLastTime = null;
+    let apiAvailable = false;
     let isRequesting = false;
     let errorTimer = null;
 
-    function fetchWithTimeout(url, timeout=4000) {
+    async function supabaseRequest(endpoint, options = {}) {
+        const url = `${SUPABASE_URL}/rest/v1/${endpoint}`;
+        const headers = {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'Content-Type': 'application/json',
+            ...options.headers
+        };
+
         const controller = new AbortController();
-        const id = setTimeout(() => controller.abort(), timeout);
-        return fetch(url, {signal: controller.signal})
-            .then(r => { clearTimeout(id); return r.json(); })
-            .catch(e => { clearTimeout(id); throw e; });
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+        try {
+            const response = await fetch(url, {
+                ...options,
+                headers,
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const text = await response.text();
+            if (!text) return [];
+            return JSON.parse(text);
+        } catch (error) {
+            clearTimeout(timeoutId);
+            throw error;
+        }
     }
 
     function showSyncError() {
@@ -377,19 +403,21 @@
         missCountSpan.textContent = globalCount;
         lastTimeSpan.textContent = globalLastTime ? '🕒 ' + new Date(globalLastTime).toLocaleString() : '还没按过呢';
         historyHint.innerHTML = globalCount > 0 ? `💗 全世界已经想念了 ${globalCount} 次 💗` : '✨ 每次想念都被珍藏 ✨';
-        globalBadge.textContent = apiAvailable ? '🌐 全球同步' : '📱 本地模式（获取失败）';
+        globalBadge.textContent = apiAvailable ? '🌐 Supabase 全球同步' : '📱 本地模式（获取失败）';
     }
 
     async function loadGlobalCount() {
         try {
-            const data = await fetchWithTimeout(`${API_BASE}/get/${API_NAMESPACE}/counter`);
-            globalCount = data.value;
-            apiAvailable = true;
-        } catch(e) { apiAvailable = false; }
-        try {
-            const t = await fetchWithTimeout(`${API_BASE}/get/${API_NAMESPACE}/lasttime`);
-            globalLastTime = t.value;
-        } catch(e) {}
+            const data = await supabaseRequest('miss_counter?id=eq.1&select=count,last_time');
+            if (data && data.length > 0) {
+                globalCount = data[0].count || 0;
+                globalLastTime = data[0].last_time || null;
+                apiAvailable = true;
+            }
+        } catch (e) {
+            console.warn('Supabase 连接失败:', e);
+            apiAvailable = false;
+        }
         updateCountDisplay();
     }
 
@@ -399,37 +427,45 @@
         missBtn.disabled = true;
         missBtn.style.opacity = '0.7';
 
-        // 立即播放动画（视觉反馈）
         const rect = missBtn.getBoundingClientRect();
-        const cx = rect.left+rect.width/2, cy = rect.top+rect.height/2;
-        for(let i=0;i<8;i++) {
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        for (let i = 0; i < 8; i++) {
             const h = document.createElement('div');
-            h.innerHTML = ['💖','❤️','💕','💗','💘','💝','✨','🌸'][i%8];
+            h.innerHTML = ['💖','❤️','💕','💗','💘','💝','✨','🌸'][i % 8];
             h.style.cssText = `position:fixed; left:${cx+(Math.random()-0.5)*30}px; top:${cy+(Math.random()-0.5)*20}px; font-size:1.5rem; pointer-events:none; z-index:999; animation:clickPopFade 0.8s forwards;`;
             document.body.appendChild(h);
-            setTimeout(()=>h.remove(), 800);
+            setTimeout(() => h.remove(), 800);
         }
 
         try {
-            // 关键：调用 /hit 获取最新全局计数
-            const hitData = await fetchWithTimeout(`${API_BASE}/hit/${API_NAMESPACE}/counter`);
-            globalCount = hitData.value;
-            apiAvailable = true;
-            if (syncError) syncError.style.display = 'none';
-            if (errorTimer) { clearTimeout(errorTimer); errorTimer = null; }
+            const current = await supabaseRequest('miss_counter?id=eq.1&select=count');
+            if (current && current.length > 0) {
+                const newCount = (current[0].count || 0) + 1;
+                const now = Date.now();
+                
+                await supabaseRequest('miss_counter?id=eq.1', {
+                    method: 'PATCH',
+                    body: JSON.stringify({
+                        count: newCount,
+                        last_time: now
+                    })
+                });
+                
+                globalCount = newCount;
+                globalLastTime = now;
+                apiAvailable = true;
+                
+                if (syncError) syncError.style.display = 'none';
+                if (errorTimer) { clearTimeout(errorTimer); errorTimer = null; }
+            }
         } catch (err) {
+            console.warn('更新想念次数失败:', err);
             apiAvailable = false;
             showSyncError();
         }
 
-        // 更新最后点击时间（本地时间，尝试存入服务器）
-        globalLastTime = Date.now();
-        try {
-            await fetchWithTimeout(`${API_BASE}/set/${API_NAMESPACE}/lasttime?value=${globalLastTime}`);
-        } catch(e) {}
-
         updateCountDisplay();
-
         missBtn.style.opacity = '1';
         missBtn.disabled = false;
         isRequesting = false;
@@ -475,327 +511,4 @@
         if (document.querySelector('.game-modal.active') || document.querySelector('.video-modal.active')) return;
         e.preventDefault();
         const point = e.touches ? e.touches[0] : e;
-        startX = point.clientX;
-        startY = point.clientY;
-        startLeft = parseFloat(dogContainer.style.left) || 0;
-        startTop = parseFloat(dogContainer.style.top) || 0;
-        isDragging = true;
-        hasMoved = false;
-        dogContainer.classList.add('dragging');
-    }
-
-    function onDragMove(e) {
-        if (!isDragging) return;
-        e.preventDefault();
-        const point = e.touches ? e.touches[0] : e;
-        const dx = point.clientX - startX;
-        const dy = point.clientY - startY;
-        if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) {
-            hasMoved = true;
-        }
-        if (hasMoved) {
-            dogContainer.style.left = (startLeft + dx) + 'px';
-            dogContainer.style.top = (startTop + dy) + 'px';
-            dogContainer.dataset.dragged = 'true';
-        }
-    }
-
-    function onDragEnd(e) {
-        if (!isDragging) return;
-        isDragging = false;
-        dogContainer.classList.remove('dragging');
-        if (!hasMoved) {
-            handleDogClick(e);
-        }
-        startX = startY = startLeft = startTop = null;
-        hasMoved = false;
-    }
-
-    let clickTimer = null;
-    function handleDogClick(e) {
-        e.stopPropagation();
-        if (clickTimer) {
-            clearTimeout(clickTimer);
-            clickTimer = null;
-            dogVideo.classList.add('dog-spin');
-            dogTip.textContent = '🌀 转圈圈啦！';
-            setTimeout(() => {
-                dogVideo.classList.remove('dog-spin');
-                dogTip.textContent = '🐶 单击看视频 · 双击转圈圈';
-            }, 600);
-        } else {
-            clickTimer = setTimeout(() => {
-                const modalVideo = document.getElementById('videoModal');
-                const videoEl = document.getElementById('loveVideo');
-                modalVideo.classList.add('active');
-                videoEl.muted = false;
-                videoEl.play().catch(()=>{});
-                clickTimer = null;
-            }, 180);
-        }
-    }
-
-    const modalVideo = document.getElementById('videoModal');
-    const videoEl = document.getElementById('loveVideo');
-    document.getElementById('closeModalBtn').addEventListener('click', () => {
-        modalVideo.classList.remove('active');
-        videoEl.pause();
-    });
-    modalVideo.addEventListener('click', e => {
-        if (e.target === modalVideo) {
-            modalVideo.classList.remove('active');
-            videoEl.pause();
-        }
-    });
-
-    // ========== 糖果游戏模块 ==========
-    const gameModal = document.getElementById('gameModal');
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-    const timerSpan = document.getElementById('timerDisplay');
-    const scoreSpan = document.getElementById('scoreDisplay');
-    const gameMessageDiv = document.getElementById('gameMessage');
-    const restartBtn = document.getElementById('restartGameBtn');
-    const closeGameBtn = document.getElementById('closeGameBtn');
-
-    let gameActive = false, score = 0, timeLeft = 15, intervalId = null, animationId = null;
-    let candies = [];
-    const CANDY_COUNT = 6, RADIUS = 20;
-    let loveMsgTimer = null;
-
-    const loveQuotes = [
-        "你知道我想喝什么吗？我想呵护你。",
-        "莫文蔚的阴天，孙燕姿的雨天，都不如你和我聊天。",
-        "我觉得你特别像一款游戏，我的世界。",
-        "遇到你之后，我再也没吃过糖，因为你太甜了。",
-        "你有打火机吗？没有啊？那你是怎么点燃我的心的？",
-        "猜猜我的心在哪边？左边？错啦，在你那边。",
-        "我想去取个东西，取什么？娶你。",
-        "你能不能别再走来走去了？不然我眼里就全是你了。",
-        "最近有谣言说我喜欢你，我要澄清一下，那不是谣言。",
-        "我觉得你今天有点怪，哪里怪？怪好看的。",
-        "牛肉、猪肉、羊肉，你猜我最喜欢哪种肉？是你这心头肉。",
-        "你知道我的缺点是什么吗？缺点你。",
-        "手可不可以借我牵一下？反正迟早都是我的。",
-        "我想买一块地，你的死心塌地。",
-        "天气这么冷，你知道怎么取暖吗？钻进我怀里。",
-        "你累不累啊？不累。可你都在我心里跑了一整天了。",
-        "别到处走了，就留在我身边吧。",
-        "你是不是会魔法？不然怎么我看一眼就开心。",
-        "苦海无涯，回头是我。",
-        "我最近学会了一门新技能，算命。我掐指一算，你命里缺我。",
-        "你知道我最喜欢吃什么水果吗？是你这个开心果。",
-        "全世界有 70 亿人，我偏偏遇见了你，好幸运。",
-        "我们来玩个游戏吧，一二三，木头人，不许动！糟糕，我心动了。",
-        "能不能帮我洗个东西？洗什么？喜欢我。",
-        "我觉得你今天有点不一样，具体哪不一样？更让我心动了。",
-        "从今往后，山河远阔，人间星河，无一不是你。",
-        "听说奶茶和甜点很甜，直到遇见你，我才知道什么是真的甜。",
-        "我迷路了，你知道去往你心里的路怎么走吗？",
-        "不要抱怨生活了，抱我。",
-        "你是什么血型？理想型。",
-        "风止意难平，意难平全是你。",
-        "我想在你那里买一扇门，什么门？我们的余生之门。",
-        "星星都睡着了，唯独我还在想你。",
-        "你知道为什么我总感冒吗？因为我对你没有抵抗力。",
-        "近朱者赤，近你者甜。",
-        "我想变成一只猫，每天赖在你身边。",
-        "遇见你的时候，上帝只说了四个字：在劫难逃。",
-        "别再发光啦，我都快被你闪晕了。",
-        "我有一个超能力，超级喜欢你。",
-        "蛋糕、糖果、蜂蜜，都甜不过你的微笑。",
-        "你能不能闭嘴？我没说话啊。那为什么我满脑子都是你的声音？",
-        "我想去环游世界，不用走远，围着你转就好。",
-        "今天的风好大，吹得我好想你。",
-        "你是碳酸饮料吗？不然我怎么一见到你就开心得冒泡。",
-        "生是你的人，死是你的鬼，这辈子都赖定你了。",
-        "月亮很亮，亮也没用，没用也亮。就像我喜欢你，喜欢没用，没用也喜欢。",
-        "请问你有女朋友吗？没有的话，介意有一个吗？",
-        "我的钱包丢了，因为心都被你偷走了。",
-        "落叶归根，我归你。",
-        "你知道我最喜欢什么神吗？你的眼神。",
-        "把你的手给我，我帮你看看手相，你命里缺我。",
-        "本来想浪迹天涯，结果遇见你，只想在家陪你。",
-        "白开水淡而无味，有你相伴才万般有趣。",
-        "你是不是偷了东西？偷了我的快乐。",
-        "一日不见如隔三秋，我已经想你无数个秋天了。",
-        "我觉得空气都变甜了，原来是你来了。",
-        "不想看风景了，因为最美的风景就在眼前。",
-        "能不能做我的导航？带我走完往后的路。",
-        "花开十里不如你，春风万里不及你。",
-        "我不喜欢喝酒，但我愿意沉醉在你的温柔里。",
-        "云朵漂浮在天空，而你漂浮在我的心上。",
-        "遇到你之后，我再也不想独自前行。",
-        "你像冬日暖阳，一下子温暖了我的全部。",
-        "别躲啦，我早就盯上你了。",
-        "酸甜苦辣我都尝过，唯独喜欢你最上头。",
-        "星河万里，我只看向你。",
-        "想把所有温柔和偏爱，全都留给你。",
-        "我没有什么野心，只想一辈子拥有你。",
-        "目光所及皆是你，心之所向唯有你。",
-        "别人再好与我无关，你再普通我都喜欢。",
-        "这是我的手背，这是我的脚背，你是我的宝贝。",
-        "只许州官放火，不许你离开我。",
-        "你近视吗？不近视为什么看不出来我喜欢你。",
-        "我想吃碗面，你的心里面。",
-        "甜有100种方式，吃糖，蛋糕，还有每天98次的想你。",
-        "你的名字，是我见过最短的情诗。",
-        "有一天小鸭子走路，走着走着脚酸了，因为它踩到柠檬了。",
-        "什么动物最容易摔倒？狐狸，因为它很狡猾（脚滑）。",
-        "一颗糖走在路上，走着走着腿软了，变成软糖。",
-        "为什么海鸥飞到巴黎就不走了？因为巴黎欧莱雅（鸥来呀）。",
-        "布和纸最怕什么？不（布）怕一万，只（纸）怕万一。",
-        "有一天火柴头痒，挠着挠着就着火了。",
-        "小白加小白等于什么？等于小白兔（two）。",
-        "麒麟到了北极会变成什么？冰淇淋（冰麒麟）。",
-        "什么门永远关不上？球门。",
-        "冬瓜、黄瓜、西瓜都能吃，什么瓜不能吃？傻瓜。",
-        "小明走在路上，走着走着脚累了，于是他踮起脚尖走，因为踮脚不累。",
-        "为什么数学书总是很忧郁？因为它有太多的问题。",
-        "鸡蛋跑到了山东，变成了鲁（卤）蛋。",
-        "鲨鱼吃了绿豆会怎么样？变成绿豆沙（鲨）。",
-        "有一天土豆去找包子决斗，路上被一条河拦住了，叫荷兰豆（河拦豆）。",
-        "决斗时土豆捅了包子一刀，变成了豆沙（杀）包。",
-        "什么水永远用不完？泪水。",
-        "青蛙为什么会飞？因为它吃了仙丹。那蛇为什么会飞？因为它吃了青蛙。老鹰为什么会飞？因为老鹰本来就会飞。",
-        "小白羊、小黑羊过马路，谁最小心？小白羊，因为小白免（免）撞。",
-        "铅笔姓什么？姓萧，削（萧）铅笔。",
-        "两只壁虎趴在墙上，一只掉下去了，另一只为什么也掉下去了？因为它拍手叫好，没抓稳。",
-        "什么动物天天熬夜？熊猫，不然怎么有黑眼圈。",
-        "红豆从楼上跳下来变成了什么？绿豆，因为吓绿了。",
-        "太平洋的中间是什么？是“平”字。",
-        "为什么大雁冬天要往南飞？因为走过去太慢了。",
-        "有一天面包饿了，把自己吃了。",
-        "狼来了，打一个水果。杨桃（羊逃）。",
-        "什么东西越洗越脏？水。",
-        "蜜蜂停在日历上，打一成语。风和日丽（蜂和日历）。",
-        "许仙给老婆买了一顶帽子，白娘子戴上之后就不能动了，因为那是鸭舌（压蛇）帽。"
-    ];
-
-    function initCandies() {
-        candies = [];
-        for(let i=0;i<CANDY_COUNT;i++) {
-            candies.push({
-                x: 40 + Math.random()*(canvas.width-80),
-                y: 40 + Math.random()*(canvas.height-80),
-                vx: (Math.random()-0.5)*2,
-                vy: (Math.random()-0.5)*2
-            });
-        }
-    }
-
-    function drawCandies() {
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle = '#fdf3e0';
-        ctx.fillRect(0,0,canvas.width,canvas.height);
-        for(let c of candies) {
-            ctx.save();
-            ctx.shadowBlur = 6;
-            ctx.shadowColor = "rgba(0,0,0,0.2)";
-            ctx.font = `${RADIUS*1.5}px "Segoe UI Emoji"`;
-            ctx.fillStyle = '#ffaa66';
-            ctx.beginPath(); ctx.arc(c.x, c.y, RADIUS-2, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = '#d45a1a';
-            ctx.font = `${RADIUS*1.4}px "Segoe UI Emoji"`;
-            ctx.fillText('🍬', c.x-12, c.y+10);
-            ctx.restore();
-        }
-    }
-
-    function updateCandies() {
-        if(!gameActive) return;
-        for(let c of candies) {
-            c.x += c.vx; c.y += c.vy;
-            if(c.x - RADIUS < 0) { c.x = RADIUS; c.vx = -c.vx; }
-            if(c.x + RADIUS > canvas.width) { c.x = canvas.width - RADIUS; c.vx = -c.vx; }
-            if(c.y - RADIUS < 0) { c.y = RADIUS; c.vy = -c.vy; }
-            if(c.y + RADIUS > canvas.height) { c.y = canvas.height - RADIUS; c.vy = -c.vy; }
-        }
-        drawCandies();
-        animationId = requestAnimationFrame(updateCandies);
-    }
-
-    function handleCanvasClick(e) {
-        if(!gameActive) return;
-        const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
-        let clientX, clientY;
-        if(e.touches) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
-        else { clientX = e.clientX; clientY = e.clientY; }
-        const canvasX = (clientX - rect.left) * scaleX;
-        const canvasY = (clientY - rect.top) * scaleY;
-        for(let c of candies) {
-            if(Math.hypot(canvasX - c.x, canvasY - c.y) < RADIUS) {
-                score++;
-                scoreSpan.innerText = score;
-                c.x = 40 + Math.random()*(canvas.width-80);
-                c.y = 40 + Math.random()*(canvas.height-80);
-                c.vx = (Math.random()-0.5)*2.5;
-                c.vy = (Math.random()-0.5)*2.5;
-                const randomLove = loveQuotes[Math.floor(Math.random() * loveQuotes.length)];
-                gameMessageDiv.innerHTML = randomLove;
-                clearTimeout(loveMsgTimer);
-                loveMsgTimer = setTimeout(() => {
-                    if(gameActive) gameMessageDiv.innerHTML = '继续点糖果！';
-                }, 3000);
-                break;
-            }
-        }
-    }
-
-    function startGame() {
-        if(intervalId) clearInterval(intervalId);
-        if(animationId) cancelAnimationFrame(animationId);
-        if(loveMsgTimer) clearTimeout(loveMsgTimer);
-        gameActive = true; score = 0; timeLeft = 15;
-        scoreSpan.innerText = '0'; timerSpan.innerText = '15';
-        gameMessageDiv.innerHTML = '快戳糖果！🍬';
-        initCandies(); drawCandies(); updateCandies();
-        intervalId = setInterval(() => {
-            if(!gameActive) return;
-            timeLeft--;
-            timerSpan.innerText = timeLeft;
-            if(timeLeft <= 0) {
-                gameActive = false;
-                clearInterval(intervalId);
-                if(animationId) cancelAnimationFrame(animationId);
-                gameMessageDiv.innerHTML = `⏰ 时间到啦！你收集了 ${score} 颗糖果！ 🎁`;
-                ctx.clearRect(0,0,canvas.width,canvas.height);
-                ctx.fillStyle = '#fdf3e0'; ctx.fillRect(0,0,canvas.width,canvas.height);
-                ctx.font = 'bold 24px "Segoe UI"'; ctx.fillStyle = '#d96c1e';
-                ctx.fillText('🎉 GAME OVER 🎉', canvas.width/2-100, canvas.height/2);
-            }
-        }, 1000);
-    }
-
-    function stopGameAndClose() {
-        gameActive = false;
-        if(intervalId) clearInterval(intervalId);
-        if(animationId) cancelAnimationFrame(animationId);
-        if(loveMsgTimer) clearTimeout(loveMsgTimer);
-        gameModal.classList.remove('active');
-    }
-
-    document.getElementById('openGameBtn').addEventListener('click', () => {
-        if(gameModal.classList.contains('active')) return;
-        startGame();
-        gameModal.classList.add('active');
-    });
-    closeGameBtn.addEventListener('click', stopGameAndClose);
-    restartBtn.addEventListener('click', () => {
-        stopGameAndClose();
-        setTimeout(() => { startGame(); gameModal.classList.add('active'); }, 100);
-    });
-    canvas.addEventListener('click', handleCanvasClick);
-    canvas.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        handleCanvasClick(e);
-    });
-    gameModal.addEventListener('click', (e) => {
-        if(e.target === gameModal) stopGameAndClose();
-    });
-})();
-</script>
-</body>
-</html>
+       
