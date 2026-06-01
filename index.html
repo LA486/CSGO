@@ -118,14 +118,63 @@
             .heart-miss-btn { width: 70px; height: 70px; font-size: 2rem; }
         }
 
-        .dog-container { position: fixed; bottom: 20px; right: 20px; z-index: 30; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.2s; }
+        /* 小狗容器 - 左右宽度增加，可拖拽 */
+        .dog-container {
+            position: fixed;
+            /* 默认右下角位置，由JS动态设置 */
+            z-index: 30;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: grab;
+            transition: transform 0.2s;
+            /* 拖拽时取消过渡 */
+        }
+        .dog-container.dragging {
+            transition: none;
+            cursor: grabbing;
+        }
         .dog-container:active { transform: scale(0.94); }
-        .dog-video { width: auto; height: auto; max-width: 180px; max-height: 180px; border-radius: 25px; object-fit: contain; background: rgba(255,245,220,0.35); backdrop-filter: blur(4px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); border: 3px solid rgba(255,215,175,0.6); padding: 2px; transition: transform 0.3s ease; }
-        .dog-video.dog-spin { animation: dogSpin 0.6s ease-in-out forwards; }
+
+        .dog-video {
+            width: auto;
+            height: auto;
+            max-width: 220px;   /* 增大左右宽度 */
+            max-height: 220px;
+            border-radius: 25px;
+            object-fit: contain;
+            background: rgba(255,245,220,0.35);
+            backdrop-filter: blur(4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            border: 3px solid rgba(255,215,175,0.6);
+            padding: 2px;
+            transition: transform 0.3s ease;
+            pointer-events: none; /* 让拖动事件在容器上处理 */
+        }
+
+        .dog-video.dog-spin {
+            animation: dogSpin 0.6s ease-in-out forwards;
+        }
         @keyframes dogSpin { from { transform: rotate(0deg) scale(1); } to { transform: rotate(360deg) scale(1.1); } }
-        .dog-tip { background: rgba(255,255,210,0.85); border-radius: 40px; padding: 5px 12px; font-size: 0.8rem; font-weight: bold; color: #b45f2b; white-space: nowrap; animation: tipPulse 1.2s infinite alternate; }
+
+        .dog-tip {
+            background: rgba(255,255,210,0.85);
+            border-radius: 40px;
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #b45f2b;
+            white-space: nowrap;
+            animation: tipPulse 1.2s infinite alternate;
+            pointer-events: none; /* 让拖动事件在容器上处理 */
+        }
         @keyframes tipPulse { 0% { opacity: 0.7; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1.05); } }
-        @media (max-width: 550px) { .dog-video { max-width: 140px; max-height: 140px; } .dog-tip { font-size: 0.7rem; } }
+
+        @media (max-width: 550px) {
+            .dog-video { max-width: 160px; max-height: 160px; }
+            .dog-tip { font-size: 0.7rem; }
+        }
 
         .video-modal, .game-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 1000; justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
         .video-modal.active, .game-modal.active { display: flex; }
@@ -176,6 +225,7 @@
 
 <div id="bgCloudContainer"></div>
 
+<!-- 可拖拽的小狗容器 -->
 <div class="dog-container" id="dogContainer">
     <video id="dogVideo" class="dog-video" autoplay loop muted playsinline>
         <source src="dog_live.mp4" type="video/mp4">
@@ -281,7 +331,7 @@
     window.addEventListener('click', addClickBreezeEffect);
     window.addEventListener('beforeunload', ()=> particleInterval && clearInterval(particleInterval));
 
-    // 想念计数器
+    // 想念计数器 (保持不变)
     const missBtn = document.getElementById('missYouHeartBtn');
     const missCountSpan = document.getElementById('missCountDisplay');
     const lastTimeSpan = document.getElementById('lastClickTimeDisplay');
@@ -336,32 +386,132 @@
 
     loadGlobalCount();
 
-    // 小狗视频
+    // ========== 小狗视频 + 拖拽功能 ==========
+    const dogContainer = document.getElementById('dogContainer');
     const dogVideo = document.getElementById('dogVideo');
     const dogTip = document.getElementById('dogTip');
-    const modalVideo = document.getElementById('videoModal');
-    const videoEl = document.getElementById('loveVideo');
-    document.getElementById('closeModalBtn').addEventListener('click', ()=>{ modalVideo.classList.remove('active'); videoEl.pause(); });
-    modalVideo.addEventListener('click', e => { if(e.target===modalVideo){ modalVideo.classList.remove('active'); videoEl.pause(); } });
 
-    let clickTimer = null;
-    document.getElementById('dogContainer').addEventListener('click', e => {
-        e.stopPropagation();
-        if(clickTimer) {
-            clearTimeout(clickTimer); clickTimer = null;
-            dogVideo.classList.add('dog-spin');
-            dogTip.textContent = '🌀 转圈圈啦！';
-            setTimeout(() => { dogVideo.classList.remove('dog-spin'); dogTip.textContent = '🐶 单击看视频 · 双击转圈圈'; }, 600);
-        } else {
-            clickTimer = setTimeout(() => {
-                modalVideo.classList.add('active');
-                videoEl.muted = false; videoEl.play().catch(()=>{});
-                clickTimer = null;
-            }, 180);
+    // 初始化小狗位置（右下角）
+    function setInitialPosition() {
+        const containerWidth = dogContainer.offsetWidth;
+        const containerHeight = dogContainer.offsetHeight;
+        const rightGap = 20;
+        const bottomGap = 20;
+        dogContainer.style.left = (window.innerWidth - containerWidth - rightGap) + 'px';
+        dogContainer.style.top = (window.innerHeight - containerHeight - bottomGap) + 'px';
+        dogContainer.style.right = 'auto';
+        dogContainer.style.bottom = 'auto';
+    }
+    setInitialPosition();
+    window.addEventListener('resize', () => {
+        // 防止拖拽后重置位置，只在未拖拽过或想保留原逻辑？这里简单重新设置，但会覆盖拖动后的位置。
+        // 为了体验，仅在第一次加载时设置，后续拖动后不再重置。可加个标记。
+        if (!dogContainer.dataset.dragged) {
+            setInitialPosition();
         }
     });
 
-    // 游戏模块
+    // 拖拽状态
+    let isDragging = false;
+    let startX, startY, startLeft, startTop;
+    let hasMoved = false;
+    const DRAG_THRESHOLD = 5; // 移动超过5px才算拖拽
+
+    // 鼠标/触摸事件
+    dogContainer.addEventListener('mousedown', onDragStart);
+    dogContainer.addEventListener('touchstart', onDragStart, { passive: false });
+    window.addEventListener('mousemove', onDragMove);
+    window.addEventListener('touchmove', onDragMove, { passive: false });
+    window.addEventListener('mouseup', onDragEnd);
+    window.addEventListener('touchend', onDragEnd);
+
+    function onDragStart(e) {
+        // 如果正在游戏模态框或视频模态框显示，不启动拖拽
+        if (document.querySelector('.game-modal.active') || document.querySelector('.video-modal.active')) return;
+        e.preventDefault();
+        const point = e.touches ? e.touches[0] : e;
+        startX = point.clientX;
+        startY = point.clientY;
+        startLeft = parseFloat(dogContainer.style.left) || 0;
+        startTop = parseFloat(dogContainer.style.top) || 0;
+        isDragging = true;
+        hasMoved = false;
+        dogContainer.classList.add('dragging');
+    }
+
+    function onDragMove(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+        const point = e.touches ? e.touches[0] : e;
+        const dx = point.clientX - startX;
+        const dy = point.clientY - startY;
+        if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) {
+            hasMoved = true;
+        }
+        if (hasMoved) {
+            dogContainer.style.left = (startLeft + dx) + 'px';
+            dogContainer.style.top = (startTop + dy) + 'px';
+            // 标记已拖动过，防止resize重置
+            dogContainer.dataset.dragged = 'true';
+        }
+    }
+
+    function onDragEnd(e) {
+        if (!isDragging) return;
+        isDragging = false;
+        dogContainer.classList.remove('dragging');
+        // 如果没有移动，触发点击逻辑；否则不触发
+        if (!hasMoved) {
+            // 模拟点击事件，保持原有双击功能
+            handleDogClick(e);
+        }
+        // 重置
+        startX = startY = startLeft = startTop = null;
+        hasMoved = false;
+    }
+
+    // 原有的单击/双击逻辑（从容器click事件迁移过来）
+    let clickTimer = null;
+    function handleDogClick(e) {
+        e.stopPropagation();
+        if (clickTimer) {
+            clearTimeout(clickTimer);
+            clickTimer = null;
+            // 双击：转圈圈
+            dogVideo.classList.add('dog-spin');
+            dogTip.textContent = '🌀 转圈圈啦！';
+            setTimeout(() => {
+                dogVideo.classList.remove('dog-spin');
+                dogTip.textContent = '🐶 单击看视频 · 双击转圈圈';
+            }, 600);
+        } else {
+            clickTimer = setTimeout(() => {
+                // 单击：打开视频
+                const modalVideo = document.getElementById('videoModal');
+                const videoEl = document.getElementById('loveVideo');
+                modalVideo.classList.add('active');
+                videoEl.muted = false;
+                videoEl.play().catch(()=>{});
+                clickTimer = null;
+            }, 180);
+        }
+    }
+
+    // 视频模态框关闭
+    const modalVideo = document.getElementById('videoModal');
+    const videoEl = document.getElementById('loveVideo');
+    document.getElementById('closeModalBtn').addEventListener('click', () => {
+        modalVideo.classList.remove('active');
+        videoEl.pause();
+    });
+    modalVideo.addEventListener('click', e => {
+        if (e.target === modalVideo) {
+            modalVideo.classList.remove('active');
+            videoEl.pause();
+        }
+    });
+
+    // ========== 糖果游戏模块 (保持不变) ==========
     const gameModal = document.getElementById('gameModal');
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
@@ -376,7 +526,6 @@
     const CANDY_COUNT = 6, RADIUS = 20;
     let loveMsgTimer = null;
 
-    // ★ 全新的超长土味情话库（含冷笑话）★
     const loveQuotes = [
         "你知道我想喝什么吗？我想呵护你。",
         "莫文蔚的阴天，孙燕姿的雨天，都不如你和我聊天。",
