@@ -268,7 +268,6 @@
             color: #9b5e4b;
         }
 
-        /* 全局计数提示 */
         .global-badge {
             display: inline-block;
             background: rgba(255, 200, 100, 0.3);
@@ -341,7 +340,6 @@
             }
         }
 
-        /* 吹风粒子 */
         .floating-particle {
             position: fixed;
             pointer-events: none;
@@ -466,28 +464,42 @@
             background: rgba(255, 245, 220, 0.35);
             backdrop-filter: blur(4px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, filter 0.3s ease, border-radius 0.3s ease;
             border: 3px solid rgba(255, 215, 175, 0.6);
             padding: 4px;
+            /* 🌟 实况效果：持续轻微的呼吸摇摆动画 */
+            animation: dogLive 3s ease-in-out infinite;
         }
-        .dog-image.dog-spin {
-            transform: rotate(360deg) scale(1.1);
-        }
-        .dog-image.dog-bounce {
-            animation: dogBounce 0.5s ease;
-        }
-        @keyframes dogBounce {
+
+        /* 实况小狗动画 */
+        @keyframes dogLive {
             0% {
                 transform: scale(1) rotate(0deg);
             }
-            30% {
-                transform: scale(1.2) rotate(-8deg);
+            25% {
+                transform: scale(1.03) rotate(1.5deg);
             }
-            60% {
-                transform: scale(0.9) rotate(8deg);
+            50% {
+                transform: scale(1) rotate(0deg);
+            }
+            75% {
+                transform: scale(0.97) rotate(-1.5deg);
             }
             100% {
                 transform: scale(1) rotate(0deg);
+            }
+        }
+
+        /* 双击旋转动画（会覆盖实况动画） */
+        .dog-image.dog-spin {
+            animation: dogSpin 0.6s ease-in-out forwards;
+        }
+
+        @keyframes dogSpin {
+            from {
+                transform: rotate(0deg) scale(1);
+            }
+            to {
+                transform: rotate(360deg) scale(1.1);
             }
         }
 
@@ -661,7 +673,7 @@
         <div class="blessing">🎉 祝熊国会儿童节快乐！童心永驻，可爱无敌 🎉</div>
         <div class="blessing blessing-dual">🎉 小熊陪你每一天，快乐成长 ۶•͈⚇•͈ა 🎉</div>
 
-        <!-- 🌟 我想你了按钮区域 (全局统一计数) -->
+        <!-- 我想你了按钮区域 (全局统一计数) -->
         <div class="miss-you-area">
             <button class="heart-miss-btn" id="missYouHeartBtn" aria-label="我想你了">❤️</button>
             <div class="miss-counter-box">
@@ -681,7 +693,7 @@
 
     <div id="bgCloudContainer"></div>
 
-    <!-- 小狗区域 (右下角) -->
+    <!-- 🐶 实况小狗区域 (右下角) -->
     <div class="dog-container" id="dogContainer">
         <img id="dogImage" src="dog.jpg" class="dog-image" alt="小狗">
         <div class="dog-tip" id="dogTip">🐶 单击看视频 · 双击转圈圈</div>
@@ -819,19 +831,16 @@
             const historyHint = document.getElementById('historyHint');
             const globalBadge = document.getElementById('globalBadge');
 
-            // 全局计数API配置
             const API_NAMESPACE = 'xgh61miss';
             const API_KEY_COUNTER = 'counter';
             const API_KEY_LASTTIME = 'lasttime';
             const API_BASE = 'https://api.countapi.xyz';
-            const FETCH_TIMEOUT = 4000; // 4秒超时
+            const FETCH_TIMEOUT = 4000;
 
-            // 当前缓存的值
             let globalCount = 0;
             let globalLastTime = null;
             let apiAvailable = false;
 
-            // 带超时的fetch
             function fetchWithTimeout(url, timeout = FETCH_TIMEOUT) {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), timeout);
@@ -847,7 +856,6 @@
                     });
             }
 
-            // 从全局API获取计数
             async function fetchGlobalCount() {
                 try {
                     const data = await fetchWithTimeout(`${API_BASE}/get/${API_NAMESPACE}/${API_KEY_COUNTER}`);
@@ -863,7 +871,6 @@
                 return null;
             }
 
-            // 从全局API获取最后时间
             async function fetchGlobalLastTime() {
                 try {
                     const data = await fetchWithTimeout(`${API_BASE}/get/${API_NAMESPACE}/${API_KEY_LASTTIME}`);
@@ -877,7 +884,6 @@
                 return null;
             }
 
-            // 增加全局计数
             async function hitGlobalCount() {
                 try {
                     const data = await fetchWithTimeout(`${API_BASE}/hit/${API_NAMESPACE}/${API_KEY_COUNTER}`);
@@ -893,7 +899,6 @@
                 return null;
             }
 
-            // 设置全局最后时间
             async function setGlobalLastTime(timestamp) {
                 try {
                     await fetchWithTimeout(`${API_BASE}/set/${API_NAMESPACE}/${API_KEY_LASTTIME}?value=${timestamp}`);
@@ -903,24 +908,20 @@
                 }
             }
 
-            // 格式化时间显示
             function formatTime(timestamp) {
                 if (!timestamp || timestamp === 0) return '还没按过呢';
                 const date = new Date(timestamp);
                 return `${date.getMonth()+1}/${date.getDate()} ${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}:${date.getSeconds().toString().padStart(2,'0')}`;
             }
 
-            // 更新UI显示
             function updateMissDisplay() {
                 missCountSpan.textContent = globalCount;
                 lastTimeSpan.textContent = '🕒 ' + formatTime(globalLastTime);
-
                 if (globalCount > 0) {
                     historyHint.innerHTML = `💗 全世界已经想念了 ${globalCount} 次，小狗都知道啦 💗`;
                 } else {
                     historyHint.innerHTML = '✨ 每次想念都被珍藏 ✨';
                 }
-
                 if (apiAvailable) {
                     globalBadge.textContent = '🌐 全球同步';
                     globalBadge.style.color = '#2e8b57';
@@ -930,18 +931,14 @@
                 }
             }
 
-            // 初始化：从API加载数据
             async function initMissCounter() {
                 missCountSpan.textContent = '…';
                 lastTimeSpan.textContent = '加载中…';
-
                 const countResult = await fetchGlobalCount();
                 const timeResult = await fetchGlobalLastTime();
-
                 if (countResult !== null) {
                     globalCount = countResult;
                 } else {
-                    // API不可用，回退到localStorage
                     try {
                         const stored = localStorage.getItem('bear_miss_you_data');
                         if (stored) {
@@ -955,43 +952,31 @@
                     }
                     apiAvailable = false;
                 }
-
                 if (timeResult !== null) {
                     globalLastTime = timeResult;
                 }
-
                 updateMissDisplay();
             }
 
-            // 点击想念按钮
             missBtn.addEventListener('click', async function(e) {
                 e.stopPropagation();
-
-                // 先乐观更新UI
                 const now = Date.now();
                 globalCount++;
                 globalLastTime = now;
                 updateMissDisplay();
-
-                // 保存到localStorage作为备份
                 try {
                     localStorage.setItem('bear_miss_you_data', JSON.stringify({
                         count: globalCount,
                         lastTime: now
                     }));
                 } catch (e) {}
-
-                // 异步更新全局API
                 const apiCountResult = await hitGlobalCount();
                 if (apiCountResult !== null) {
                     globalCount = apiCountResult;
                 }
-                // 更新时间戳
                 setGlobalLastTime(now);
-                // 刷新显示
                 updateMissDisplay();
 
-                // 飞出小心心特效
                 const rect = missBtn.getBoundingClientRect();
                 const centerX = rect.left + rect.width / 2;
                 const centerY = rect.top + rect.height / 2;
@@ -1010,14 +995,12 @@
                 }
             });
 
-            // 启动计数器初始化
             initMissCounter();
 
-            // ========= 小狗模块 =========
+            // ========= 小狗模块（实况效果） =========
             const dogImage = document.getElementById('dogImage');
             const dogTip = document.getElementById('dogTip');
 
-            // 视频模块
             const modalVideo = document.getElementById('videoModal');
             const video = document.getElementById('loveVideo');
             const closeVideo = document.getElementById('closeModalBtn');
@@ -1038,7 +1021,6 @@
                 if (e.target === modalVideo) closeVideoModal();
             });
 
-            // 小狗单击/双击逻辑
             let clickTimer = null;
             const dogContainer = document.getElementById('dogContainer');
 
@@ -1047,9 +1029,7 @@
                 if (clickTimer) {
                     clearTimeout(clickTimer);
                     clickTimer = null;
-                    // 双击：转圈圈动画
-                    dogImage.classList.remove('dog-spin', 'dog-bounce');
-                    void dogImage.offsetWidth;
+                    // 双击：转圈圈动画（暂时覆盖实况动画）
                     dogImage.classList.add('dog-spin');
                     dogTip.innerHTML = '🌀 小狗转圈圈啦！ 🌀';
                     setTimeout(() => {
@@ -1064,14 +1044,12 @@
                 }
             });
 
-            // 图片加载失败时的兜底提示
             dogImage.addEventListener('error', function() {
                 dogTip.innerHTML = '⚠️ 图片 dog.jpg 未找到，请放在同级目录下';
                 this.style.border = '3px solid #ff6666';
                 this.style.background = '#ffe8e8';
             });
 
-            // 图片加载成功
             dogImage.addEventListener('load', function() {
                 dogTip.innerHTML = '🐶 单击看视频 · 双击转圈圈';
             });
