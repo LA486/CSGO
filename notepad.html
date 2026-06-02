@@ -171,6 +171,7 @@
         .dog-tip { background: rgba(255,255,210,0.85); border-radius: 40px; padding: 5px 12px; font-size: 0.8rem; font-weight: bold; color: #b45f2b; white-space: nowrap; animation: tipPulse 1.2s infinite alternate; pointer-events: none; }
         @keyframes tipPulse { 0% { opacity: 0.7; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1.05); } }
 
+        /* 记事本 - 原图大小，单击打开，双击删除 */
         .notepad-float {
             position: fixed; z-index: 28; display: flex;
             flex-direction: column; align-items: center; gap: 5px;
@@ -181,20 +182,22 @@
         .notepad-float:active { transform: scale(0.95); }
         .notepad-float.deleted { animation: deletePop 0.5s ease-out forwards; }
         .notepad-img {
-            width: 180px;
-            height: 180px;
-            border-radius: 20px;
+            width: auto;
+            height: auto;
+            max-width: 200px;
+            max-height: 200px;
             object-fit: contain;
             pointer-events: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(139,92,246,0.4), 0 0 0 3px rgba(255,240,255,0.6);
+            animation: notepadFloat 3.5s infinite ease-in-out;
+            padding: 3px;
             background: rgba(255,255,255,0.3);
             backdrop-filter: blur(4px);
-            box-shadow: 0 12px 30px rgba(139,92,246,0.5), 0 0 0 5px rgba(255,240,255,0.8);
-            animation: notepadFloat 3.5s infinite ease-in-out;
-            padding: 5px;
         }
         @keyframes notepadFloat {
-            0%, 100% { transform: translateY(0) rotate(-2deg); }
-            50% { transform: translateY(-10px) rotate(2deg); }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
         }
         .notepad-tip {
             background: rgba(255,255,210,0.85); border-radius: 40px;
@@ -206,7 +209,7 @@
         @media (max-width: 550px) {
             .dog-video { max-width: 160px; max-height: 160px; }
             .dog-tip { font-size: 0.7rem; }
-            .notepad-img { width: 130px; height: 130px; }
+            .notepad-img { max-width: 150px; max-height: 150px; }
             .notepad-tip { font-size: 0.7rem; }
         }
 
@@ -596,6 +599,7 @@
     // ========== 记事本 - 单击打开 / 双击删除 ==========
     const notepadFloat = document.getElementById('notepadFloat');
     const notepadImg = document.getElementById('notepadImg');
+    const notepadTip = document.querySelector('.notepad-tip');
 
     function setNotepadInitialPosition() {
         const nw = notepadFloat.offsetWidth, nh = notepadFloat.offsetHeight;
@@ -644,6 +648,7 @@
         npStartX = npStartY = npStartLeft = npStartTop = null; npHasMoved = false;
     }
 
+    // 记事本多击检测：单击打开，双击删除
     let npClickCount = 0, npClickTimer = null;
     function handleNotepadMultiClick(e) {
         e.stopPropagation();
@@ -651,20 +656,23 @@
         if (npClickTimer) clearTimeout(npClickTimer);
         npClickTimer = setTimeout(() => {
             if (npClickCount === 1) {
+                // 单击：打开记事本
                 window.location.href = 'notepad.html';
             } else if (npClickCount >= 2) {
+                // 双击：删除记事本
                 notepadFloat.classList.add('deleted');
-                document.querySelector('.notepad-tip').textContent = '💔 记事本消失了...';
+                notepadTip.textContent = '💔 记事本消失了...';
                 setTimeout(() => { notepadFloat.style.display = 'none'; }, 500);
             }
-            npClickCount = 0; npClickTimer = null;
+            npClickCount = 0;
+            npClickTimer = null;
         }, 300);
     }
 
     notepadImg.addEventListener('error', () => {
         notepadImg.style.display = 'none';
         const fallback = document.createElement('div');
-        fallback.style.cssText = 'width:180px;height:180px;border-radius:20px;background:linear-gradient(135deg,#8b5cf6,#6366f1);display:flex;align-items:center;justify-content:center;font-size:4rem;box-shadow:0 12px 30px rgba(139,92,246,0.5),0 0 0 5px rgba(255,240,255,0.8);animation:notepadFloat 3.5s infinite ease-in-out;padding:5px;';
+        fallback.style.cssText = 'width:180px;height:180px;border-radius:15px;background:linear-gradient(135deg,#8b5cf6,#6366f1);display:flex;align-items:center;justify-content:center;font-size:4rem;box-shadow:0 10px 25px rgba(139,92,246,0.4),0 0 0 3px rgba(255,240,255,0.6);animation:notepadFloat 3.5s infinite ease-in-out;padding:3px;';
         fallback.textContent = '📖';
         notepadImg.parentNode.insertBefore(fallback, notepadImg);
     });
