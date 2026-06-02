@@ -84,6 +84,48 @@
         .history-badge { margin-top: 0.5rem; font-size: 0.9rem; background: #fff2e6; border-radius: 30px; padding: 0.2rem 1.2rem; color: #9b5e4b; }
         .global-badge { display: inline-block; background: rgba(255,200,100,0.3); border-radius: 20px; padding: 0.15rem 0.8rem; font-size: 0.75rem; color: #b8782e; margin-left: 8px; animation: gentleFloat 2s infinite ease-in-out; }
 
+        .drama-section {
+            background: rgba(255,240,250,0.7); border-radius: 40px;
+            padding: 1.2rem; margin: 1.5rem 0; backdrop-filter: blur(4px);
+            border: 2px dashed #ffb6c1;
+        }
+        .section-title {
+            font-size: 1.4rem; font-weight: bold; margin-bottom: 0.8rem;
+            background: linear-gradient(135deg, #ff6b8b, #ff9966);
+            background-clip: text; -webkit-background-clip: text; color: transparent;
+        }
+        .input-row { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 0.8rem; }
+        .custom-input {
+            padding: 0.5rem 1rem; border-radius: 30px; border: 2px solid #ffb6c1;
+            background: rgba(255,255,255,0.9); font-size: 0.95rem; outline: none;
+            font-family: inherit; min-width: 180px;
+        }
+        .custom-input:focus { border-color: #ff6b8b; }
+        .add-btn {
+            background: linear-gradient(135deg, #ff6b8b, #ff9966); border: none;
+            color: white; padding: 0.5rem 1.2rem; border-radius: 30px;
+            cursor: pointer; font-weight: bold; font-size: 0.9rem;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .add-btn:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(255,107,139,0.4); }
+        .drama-list { list-style: none; max-height: 200px; overflow-y: auto; text-align: left; padding: 0 0.5rem; }
+        .drama-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.5rem 0.8rem; margin: 0.3rem 0;
+            background: rgba(255,255,255,0.7); border-radius: 20px;
+            font-size: 0.95rem; color: #5c3a3a; animation: fadeIn 0.3s ease;
+        }
+        .drama-item-info { flex: 1; display: flex; align-items: center; gap: 8px; }
+        .drama-ep { color: #ff6b8b; font-weight: bold; font-size: 0.85rem; }
+        .delete-btn {
+            background: #ffe0e0; border: none; color: #ff4d4f;
+            width: 28px; height: 28px; border-radius: 50%;
+            cursor: pointer; font-size: 0.9rem; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .delete-btn:hover { background: #ff4d4f; color: white; }
+        .drama-empty { color: #b8a0a0; font-size: 0.9rem; padding: 1rem; text-align: center; }
+
         .game-btn {
             background: linear-gradient(135deg, #ffaa66, #ff6b8b); border: none;
             font-size: 1.3rem; font-weight: bold; padding: 0.7rem 1.8rem; border-radius: 60px;
@@ -96,16 +138,14 @@
         @keyframes gentleFloat { 0% { transform: translateY(0); } 100% { transform: translateY(-6px); } }
         @keyframes spinFlurry { 0% { transform: rotate(0) scale(0.9); opacity: 0.7; } 100% { transform: rotate(12deg) scale(1.2); opacity: 1; } }
         @keyframes floatUpSmall { 0% { transform: translateY(0); } 100% { transform: translateY(-8px); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .floating-particle { position: fixed; pointer-events: none; z-index: 20; font-size: 1.4rem; animation: blowWind 6s linear forwards; filter: drop-shadow(0 0 4px gold); }
         @keyframes blowWind { 0% { transform: translate(0,0) rotate(0deg); opacity: 0.8; } 100% { transform: translate(180px,-120px) rotate(360deg); opacity: 0; } }
-
         .bg-cloud { position: fixed; background: rgba(255,255,250,0.7); border-radius: 1000px; filter: blur(20px); z-index: 0; pointer-events: none; animation: bgCloudMove 20s infinite alternate; }
         @keyframes bgCloudMove { 0% { transform: translate(-3%,0); } 100% { transform: translate(5%,-8%); } }
-
         .fan-icon { display: inline-block; animation: fanSwing 2s infinite ease; font-size: 1.9rem; margin-right: 6px; }
         @keyframes fanSwing { 0% { transform: rotate(-15deg); } 100% { transform: rotate(15deg); } }
-
         @keyframes clickPopFade { 0% { transform: scale(0.3) translateY(0); opacity: 1; } 100% { transform: scale(1.5) translateY(-40px); opacity: 0; } }
         @keyframes floatUpHeart { 0% { transform: translateY(0) rotate(0deg); opacity: 0.9; } 100% { transform: translateY(-120vh) rotate(25deg); opacity: 0; } }
 
@@ -116,61 +156,56 @@
             .blessing { font-size: 1.4rem; }
             .game-btn { font-size: 1rem; padding: 0.5rem 1.2rem; }
             .heart-miss-btn { width: 70px; height: 70px; font-size: 2rem; }
+            .custom-input { min-width: 140px; }
+            .input-row { flex-direction: column; align-items: center; }
         }
 
-        .dog-container {
-            position: fixed;
-            z-index: 30;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            cursor: grab;
-            transition: transform 0.2s;
-        }
-        .dog-container.dragging {
-            transition: none;
-            cursor: grabbing;
-        }
+        /* 小狗 - 保持原有功能 */
+        .dog-container { position: fixed; z-index: 30; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: grab; transition: transform 0.2s; }
+        .dog-container.dragging { transition: none; cursor: grabbing; }
         .dog-container:active { transform: scale(0.94); }
-
-        .dog-video {
-            width: auto;
-            height: auto;
-            max-width: 220px;
-            max-height: 220px;
-            border-radius: 25px;
-            object-fit: contain;
-            background: rgba(255,245,220,0.35);
-            backdrop-filter: blur(4px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            border: 3px solid rgba(255,215,175,0.6);
-            padding: 2px;
-            transition: transform 0.3s ease;
-            pointer-events: none;
-        }
-
-        .dog-video.dog-spin {
-            animation: dogSpin 0.6s ease-in-out forwards;
-        }
+        .dog-video { width: auto; height: auto; max-width: 220px; max-height: 220px; border-radius: 25px; object-fit: contain; background: rgba(255,245,220,0.35); backdrop-filter: blur(4px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); border: 3px solid rgba(255,215,175,0.6); padding: 2px; transition: transform 0.3s ease; pointer-events: none; }
+        .dog-video.dog-spin { animation: dogSpin 0.6s ease-in-out forwards; }
         @keyframes dogSpin { from { transform: rotate(0deg) scale(1); } to { transform: rotate(360deg) scale(1.1); } }
-
-        .dog-tip {
-            background: rgba(255,255,210,0.85);
-            border-radius: 40px;
-            padding: 5px 12px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: #b45f2b;
-            white-space: nowrap;
-            animation: tipPulse 1.2s infinite alternate;
-            pointer-events: none;
-        }
+        .dog-tip { background: rgba(255,255,210,0.85); border-radius: 40px; padding: 5px 12px; font-size: 0.8rem; font-weight: bold; color: #b45f2b; white-space: nowrap; animation: tipPulse 1.2s infinite alternate; pointer-events: none; }
         @keyframes tipPulse { 0% { opacity: 0.7; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1.05); } }
+
+        /* 书本 - 新增跳转记事本 */
+        .book-container {
+            position: fixed; z-index: 29; display: flex;
+            flex-direction: column; align-items: center; gap: 5px;
+            cursor: pointer; transition: transform 0.3s ease;
+        }
+        .book-container:hover { transform: scale(1.1); }
+        .book-container:active { transform: scale(0.9); }
+        .book-icon {
+            width: 75px; height: 75px; border-radius: 15px 5px 5px 15px;
+            background: linear-gradient(135deg, #8b5cf6, #6366f1, #4f46e5);
+            box-shadow: 0 10px 25px rgba(99,102,241,0.4), 0 0 0 4px rgba(255,240,255,0.8);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.2rem; animation: bookFloat 3s infinite ease-in-out;
+            position: relative; overflow: hidden;
+        }
+        .book-icon::after {
+            content: ''; position: absolute; left: 6px; top: 0; bottom: 0;
+            width: 3px; background: rgba(255,255,255,0.4); border-radius: 2px;
+        }
+        @keyframes bookFloat {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        .book-tip {
+            background: rgba(255,255,210,0.85); border-radius: 40px;
+            padding: 4px 12px; font-size: 0.75rem; font-weight: bold;
+            color: #6366f1; white-space: nowrap; pointer-events: none;
+            animation: tipPulse 1.5s infinite alternate;
+        }
 
         @media (max-width: 550px) {
             .dog-video { max-width: 160px; max-height: 160px; }
             .dog-tip { font-size: 0.7rem; }
+            .book-icon { width: 60px; height: 60px; font-size: 1.8rem; }
+            .book-tip { font-size: 0.65rem; }
         }
 
         .video-modal, .game-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 1000; justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
@@ -180,7 +215,6 @@
         .close-modal { position: absolute; top: 8px; right: 18px; font-size: 2rem; color: #ffcf9a; cursor: pointer; background: rgba(0,0,0,0.5); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
         .close-modal:hover { background: #ff8866; color: white; }
         .video-caption { margin-top: 12px; color: #ffecb3; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .game-container { background: #fff6e8; border-radius: 48px; padding: 20px; text-align: center; width: 100%; max-width: 500px; margin: 0 auto; }
         .game-header { display: flex; justify-content: space-between; font-size: 1.4rem; font-weight: bold; color: #d96c1e; background: #ffefcf; padding: 8px 20px; border-radius: 60px; margin-bottom: 20px; }
@@ -221,17 +255,37 @@
         <div id="syncError" style="display: none; color: #ff4d4f; font-size: 0.9rem; margin-top: 0.4rem; font-weight: 500; background: rgba(255,240,240,0.8); border-radius: 30px; padding: 0.2rem 1.2rem;">⚠️ 网络开小差，同步失败，请稍后再试</div>
         <div class="history-badge" id="historyHint">✨ 每次想念都被珍藏 ✨</div>
     </div>
+
+    <div class="drama-section">
+        <div class="section-title">📺 熊国会的追剧收藏夹</div>
+        <div class="input-row">
+            <input type="text" class="custom-input" id="dramaNameInput" placeholder="输入剧名...">
+            <input type="text" class="custom-input" id="dramaEpInput" placeholder="看到第几集？" style="max-width: 120px;">
+            <button class="add-btn" id="dramaAddBtn">➕ 添加追剧</button>
+        </div>
+        <ul class="drama-list" id="dramaList">
+            <li class="drama-empty">✨ 还没有追剧记录，快来添加吧~</li>
+        </ul>
+    </div>
+
     <div style="margin-top: 1rem; font-size:1rem; color:#b45f3b;">🎀 愿你永远像孩子一样，被世界温柔以待 🎀</div>
     <button class="game-btn" id="openGameBtn">🎮 糖果大作战 · 戳我玩 🍬</button>
 </div>
 
 <div id="bgCloudContainer"></div>
 
+<!-- 小狗 - 保持原有功能 -->
 <div class="dog-container" id="dogContainer">
     <video id="dogVideo" class="dog-video" autoplay loop muted playsinline>
         <source src="dog_live.mp4" type="video/mp4">
     </video>
     <div class="dog-tip" id="dogTip">🐶 单击看视频 · 双击转圈圈</div>
+</div>
+
+<!-- 书本 - 新增，点击跳转记事本 -->
+<div class="book-container" id="bookContainer" title="打开记事本 📝">
+    <div class="book-icon">📖</div>
+    <div class="book-tip">📝 小熊的记事本</div>
 </div>
 
 <div id="videoModal" class="video-modal">
@@ -343,54 +397,26 @@
     const globalBadge = document.getElementById('globalBadge');
     const syncError = document.getElementById('syncError');
     
-    let globalCount = 0;
-    let globalLastTime = null;
-    let apiAvailable = false;
-    let isRequesting = false;
-    let errorTimer = null;
+    let globalCount = 0, globalLastTime = null, apiAvailable = false, isRequesting = false, errorTimer = null;
     const MAX_RETRIES = 3;
 
     async function supabaseRequest(endpoint, options = {}, retry = 0) {
         const url = `${SUPABASE_URL}/rest/v1/${endpoint}`;
-        const headers = {
-            'apikey': SUPABASE_ANON_KEY,
-            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-            'Content-Type': 'application/json',
-            ...options.headers
-        };
-
+        const headers = { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`, 'Content-Type': 'application/json', ...options.headers };
         try {
-            const response = await fetch(url, {
-                ...options,
-                headers,
-                mode: 'cors'
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
-            }
-
+            const response = await fetch(url, { ...options, headers, mode: 'cors' });
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const text = await response.text();
             if (!text) return [];
             return JSON.parse(text);
         } catch (error) {
-            if (retry < MAX_RETRIES) {
-                console.log(`重试第 ${retry + 1} 次...`);
-                await new Promise(resolve => setTimeout(resolve, 1000 * (retry + 1)));
-                return supabaseRequest(endpoint, options, retry + 1);
-            }
+            if (retry < MAX_RETRIES) { await new Promise(r => setTimeout(r, 1000 * (retry + 1))); return supabaseRequest(endpoint, options, retry + 1); }
             throw error;
         }
     }
 
     function showSyncError() {
-        if (syncError) {
-            syncError.style.display = 'block';
-            if (errorTimer) clearTimeout(errorTimer);
-            errorTimer = setTimeout(() => {
-                syncError.style.display = 'none';
-            }, 3000);
-        }
+        if (syncError) { syncError.style.display = 'block'; if (errorTimer) clearTimeout(errorTimer); errorTimer = setTimeout(() => { syncError.style.display = 'none'; }, 3000); }
     }
 
     async function updateCountDisplay() {
@@ -403,27 +429,16 @@
     async function loadGlobalCount() {
         try {
             const data = await supabaseRequest('miss_counter?id=eq.1&select=count,last_time');
-            if (data && data.length > 0) {
-                globalCount = data[0].count || 0;
-                globalLastTime = data[0].last_time || null;
-                apiAvailable = true;
-            }
-        } catch (e) {
-            console.warn('Supabase 连接失败:', e);
-            apiAvailable = false;
-        }
+            if (data && data.length > 0) { globalCount = data[0].count || 0; globalLastTime = data[0].last_time || null; apiAvailable = true; }
+        } catch (e) { apiAvailable = false; }
         updateCountDisplay();
     }
 
     missBtn.addEventListener('click', async (e) => {
         if (isRequesting) return;
-        isRequesting = true;
-        missBtn.disabled = true;
-        missBtn.style.opacity = '0.7';
-
+        isRequesting = true; missBtn.disabled = true; missBtn.style.opacity = '0.7';
         const rect = missBtn.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
+        const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2;
         for (let i = 0; i < 8; i++) {
             const h = document.createElement('div');
             h.innerHTML = ['💖','❤️','💕','💗','💘','💝','✨','🌸'][i % 8];
@@ -431,69 +446,66 @@
             document.body.appendChild(h);
             setTimeout(() => h.remove(), 800);
         }
-
         try {
             const current = await supabaseRequest('miss_counter?id=eq.1&select=count');
             if (current && current.length > 0) {
                 const newCount = (current[0].count || 0) + 1;
                 const now = Date.now();
-                
-                await supabaseRequest('miss_counter?id=eq.1', {
-                    method: 'PATCH',
-                    body: JSON.stringify({
-                        count: newCount,
-                        last_time: now
-                    })
-                });
-                
-                globalCount = newCount;
-                globalLastTime = now;
-                apiAvailable = true;
-                
+                await supabaseRequest('miss_counter?id=eq.1', { method: 'PATCH', body: JSON.stringify({ count: newCount, last_time: now }) });
+                globalCount = newCount; globalLastTime = now; apiAvailable = true;
                 if (syncError) syncError.style.display = 'none';
                 if (errorTimer) { clearTimeout(errorTimer); errorTimer = null; }
             }
-        } catch (err) {
-            console.warn('更新想念次数失败:', err);
-            apiAvailable = false;
-            showSyncError();
-        }
-
+        } catch (err) { apiAvailable = false; showSyncError(); }
         updateCountDisplay();
-        missBtn.style.opacity = '1';
-        missBtn.disabled = false;
-        isRequesting = false;
+        missBtn.style.opacity = '1'; missBtn.disabled = false; isRequesting = false;
     });
 
     loadGlobalCount();
 
-    // ========== 小狗视频 + 拖拽功能 ==========
+    // ========== 剧集收藏夹 ==========
+    const dramaNameInput = document.getElementById('dramaNameInput');
+    const dramaEpInput = document.getElementById('dramaEpInput');
+    const dramaAddBtn = document.getElementById('dramaAddBtn');
+    const dramaList = document.getElementById('dramaList');
+    let dramaData = JSON.parse(localStorage.getItem('xgh_drama_list') || '[]');
+
+    function saveDramaData() { localStorage.setItem('xgh_drama_list', JSON.stringify(dramaData)); }
+    function renderDramaList() {
+        dramaList.innerHTML = '';
+        if (dramaData.length === 0) { dramaList.innerHTML = '<li class="drama-empty">✨ 还没有追剧记录，快来添加吧~</li>'; return; }
+        dramaData.forEach((item, index) => {
+            const li = document.createElement('li'); li.className = 'drama-item';
+            li.innerHTML = `<div class="drama-item-info"><span>📺</span><span>${escapeHTML(item.name)}</span>${item.ep ? `<span class="drama-ep">第${escapeHTML(item.ep)}集</span>` : ''}</div><button class="delete-btn" onclick="deleteDrama(${index})" title="删除">×</button>`;
+            dramaList.appendChild(li);
+        });
+    }
+    function escapeHTML(str) { const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
+    window.deleteDrama = function(index) { dramaData.splice(index, 1); saveDramaData(); renderDramaList(); };
+    dramaAddBtn.addEventListener('click', () => {
+        const name = dramaNameInput.value.trim(), ep = dramaEpInput.value.trim();
+        if (!name) { alert('请输入剧名哦~'); return; }
+        dramaData.push({ name, ep }); saveDramaData(); renderDramaList();
+        dramaNameInput.value = ''; dramaEpInput.value = ''; dramaNameInput.focus();
+    });
+    dramaNameInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') dramaAddBtn.click(); });
+    renderDramaList();
+
+    // ========== 小狗视频 + 拖拽（保持原有功能） ==========
     const dogContainer = document.getElementById('dogContainer');
     const dogVideo = document.getElementById('dogVideo');
     const dogTip = document.getElementById('dogTip');
-
     function setInitialPosition() {
-        const containerWidth = dogContainer.offsetWidth;
-        const containerHeight = dogContainer.offsetHeight;
-        const rightGap = 20;
-        const bottomGap = 20;
-        dogContainer.style.left = (window.innerWidth - containerWidth - rightGap) + 'px';
-        dogContainer.style.top = (window.innerHeight - containerHeight - bottomGap) + 'px';
-        dogContainer.style.right = 'auto';
-        dogContainer.style.bottom = 'auto';
+        const w = dogContainer.offsetWidth, h = dogContainer.offsetHeight;
+        dogContainer.style.left = (window.innerWidth - w - 20) + 'px';
+        dogContainer.style.top = (window.innerHeight - h - 20) + 'px';
+        dogContainer.style.right = 'auto'; dogContainer.style.bottom = 'auto';
     }
     setInitialPosition();
-    window.addEventListener('resize', () => {
-        if (!dogContainer.dataset.dragged) {
-            setInitialPosition();
-        }
-    });
+    window.addEventListener('resize', () => { if (!dogContainer.dataset.dragged) setInitialPosition(); });
 
-    let isDragging = false;
-    let startX, startY, startLeft, startTop;
-    let hasMoved = false;
+    let isDragging = false, startX, startY, startLeft, startTop, hasMoved = false;
     const DRAG_THRESHOLD = 5;
-
     dogContainer.addEventListener('mousedown', onDragStart);
     dogContainer.addEventListener('touchstart', onDragStart, { passive: false });
     window.addEventListener('mousemove', onDragMove);
@@ -505,80 +517,70 @@
         if (document.querySelector('.game-modal.active') || document.querySelector('.video-modal.active')) return;
         e.preventDefault();
         const point = e.touches ? e.touches[0] : e;
-        startX = point.clientX;
-        startY = point.clientY;
+        startX = point.clientX; startY = point.clientY;
         startLeft = parseFloat(dogContainer.style.left) || 0;
         startTop = parseFloat(dogContainer.style.top) || 0;
-        isDragging = true;
-        hasMoved = false;
+        isDragging = true; hasMoved = false;
         dogContainer.classList.add('dragging');
     }
-
     function onDragMove(e) {
         if (!isDragging) return;
         e.preventDefault();
         const point = e.touches ? e.touches[0] : e;
-        const dx = point.clientX - startX;
-        const dy = point.clientY - startY;
-        if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) {
-            hasMoved = true;
-        }
+        const dx = point.clientX - startX, dy = point.clientY - startY;
+        if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) hasMoved = true;
         if (hasMoved) {
             dogContainer.style.left = (startLeft + dx) + 'px';
             dogContainer.style.top = (startTop + dy) + 'px';
             dogContainer.dataset.dragged = 'true';
         }
     }
-
     function onDragEnd(e) {
         if (!isDragging) return;
-        isDragging = false;
-        dogContainer.classList.remove('dragging');
-        if (!hasMoved) {
-            handleDogClick(e);
-        }
-        startX = startY = startLeft = startTop = null;
-        hasMoved = false;
+        isDragging = false; dogContainer.classList.remove('dragging');
+        if (!hasMoved) handleDogClick(e);
+        startX = startY = startLeft = startTop = null; hasMoved = false;
     }
 
     let clickTimer = null;
     function handleDogClick(e) {
         e.stopPropagation();
         if (clickTimer) {
-            clearTimeout(clickTimer);
-            clickTimer = null;
-            dogVideo.classList.add('dog-spin');
-            dogTip.textContent = '🌀 转圈圈啦！';
-            setTimeout(() => {
-                dogVideo.classList.remove('dog-spin');
-                dogTip.textContent = '🐶 单击看视频 · 双击转圈圈';
-            }, 600);
+            clearTimeout(clickTimer); clickTimer = null;
+            dogVideo.classList.add('dog-spin'); dogTip.textContent = '🌀 转圈圈啦！';
+            setTimeout(() => { dogVideo.classList.remove('dog-spin'); dogTip.textContent = '🐶 单击看视频 · 双击转圈圈'; }, 600);
         } else {
             clickTimer = setTimeout(() => {
-                const modalVideo = document.getElementById('videoModal');
-                const videoEl = document.getElementById('loveVideo');
-                modalVideo.classList.add('active');
-                videoEl.muted = false;
-                videoEl.play().catch(()=>{});
+                document.getElementById('videoModal').classList.add('active');
+                document.getElementById('loveVideo').muted = false;
+                document.getElementById('loveVideo').play().catch(()=>{});
                 clickTimer = null;
             }, 180);
         }
     }
 
-    const modalVideo = document.getElementById('videoModal');
-    const videoEl = document.getElementById('loveVideo');
     document.getElementById('closeModalBtn').addEventListener('click', () => {
-        modalVideo.classList.remove('active');
-        videoEl.pause();
+        document.getElementById('videoModal').classList.remove('active');
+        document.getElementById('loveVideo').pause();
     });
-    modalVideo.addEventListener('click', e => {
-        if (e.target === modalVideo) {
-            modalVideo.classList.remove('active');
-            videoEl.pause();
+    document.getElementById('videoModal').addEventListener('click', e => {
+        if (e.target === document.getElementById('videoModal')) {
+            document.getElementById('videoModal').classList.remove('active');
+            document.getElementById('loveVideo').pause();
         }
     });
 
-    // ========== 糖果大作战 - 闯关模式 ==========
+    // ========== 书本点击跳转记事本 ==========
+    document.getElementById('bookContainer').addEventListener('click', () => {
+        window.location.href = 'notepad.html';
+    });
+
+    // 书本位置：左上角
+    const bookContainer = document.getElementById('bookContainer');
+    bookContainer.style.left = '20px';
+    bookContainer.style.top = '20px';
+
+    // ========== 糖果大作战 ==========
     const gameModal = document.getElementById('gameModal');
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
@@ -591,155 +593,75 @@
 
     let gameActive = false, score = 0, timeLeft = 15, intervalId = null, animationId = null;
     let candies = [];
-    let currentLevel = 1;
-    let levelTargetScore = 10;
-    let baseCandyCount = 5;
+    let currentLevel = 1, levelTargetScore = 10, baseCandyCount = 5;
     let CANDY_COUNT = 5, RADIUS = 20;
     let loveMsgTimer = null;
 
     const loveQuotes = [
-        "你知道我想喝什么吗？我想呵护你。",
-        "莫文蔚的阴天，孙燕姿的雨天，都不如你和我聊天。",
-        "我觉得你特别像一款游戏，我的世界。",
-        "遇到你之后，我再也没吃过糖，因为你太甜了。",
-        "你有打火机吗？没有啊？那你是怎么点燃我的心的？",
-        "猜猜我的心在哪边？左边？错啦，在你那边。",
-        "我想去取个东西，取什么？娶你。",
-        "你能不能别再走来走去了？不然我眼里就全是你了。",
-        "最近有谣言说我喜欢你，我要澄清一下，那不是谣言。",
-        "我觉得你今天有点怪，哪里怪？怪好看的。",
-        "牛肉、猪肉、羊肉，你猜我最喜欢哪种肉？是你这心头肉。",
-        "你知道我的缺点是什么吗？缺点你。",
-        "手可不可以借我牵一下？反正迟早都是我的。",
-        "我想买一块地，你的死心塌地。",
-        "天气这么冷，你知道怎么取暖吗？钻进我怀里。",
-        "你累不累啊？不累。可你都在我心里跑了一整天了。",
-        "别到处走了，就留在我身边吧。",
-        "你是不是会魔法？不然怎么我看一眼就开心。",
-        "苦海无涯，回头是我。",
-        "我最近学会了一门新技能，算命。我掐指一算，你命里缺我。",
-        "你知道我最喜欢吃什么水果吗？是你这个开心果。",
-        "全世界有 70 亿人，我偏偏遇见了你，好幸运。",
-        "我们来玩个游戏吧，一二三，木头人，不许动！糟糕，我心动了。",
-        "能不能帮我洗个东西？洗什么？喜欢我。",
-        "我觉得你今天有点不一样，具体哪不一样？更让我心动了。",
-        "从今往后，山河远阔，人间星河，无一不是你。",
-        "听说奶茶和甜点很甜，直到遇见你，我才知道什么是真的甜。",
-        "我迷路了，你知道去往你心里的路怎么走吗？",
-        "不要抱怨生活了，抱我。",
-        "你是什么血型？理想型。",
-        "风止意难平，意难平全是你。",
-        "我想在你那里买一扇门，什么门？我们的余生之门。",
-        "星星都睡着了，唯独我还在想你。",
-        "你知道为什么我总感冒吗？因为我对你没有抵抗力。",
-        "近朱者赤，近你者甜。",
-        "我想变成一只猫，每天赖在你身边。",
-        "遇见你的时候，上帝只说了四个字：在劫难逃。",
-        "别再发光啦，我都快被你闪晕了。",
-        "我有一个超能力，超级喜欢你。",
-        "蛋糕、糖果、蜂蜜，都甜不过你的微笑。",
-        "你能不能闭嘴？我没说话啊。那为什么我满脑子都是你的声音？",
-        "我想去环游世界，不用走远，围着你转就好。",
-        "今天的风好大，吹得我好想你。",
-        "你是碳酸饮料吗？不然我怎么一见到你就开心得冒泡。",
-        "生是你的人，死是你的鬼，这辈子都赖定你了。",
-        "月亮很亮，亮也没用，没用也亮。就像我喜欢你，喜欢没用，没用也喜欢。",
-        "请问你有女朋友吗？没有的话，介意有一个吗？",
-        "我的钱包丢了，因为心都被你偷走了。",
-        "落叶归根，我归你。",
-        "你知道我最喜欢什么神吗？你的眼神。",
-        "把你的手给我，我帮你看看手相，你命里缺我。",
-        "本来想浪迹天涯，结果遇见你，只想在家陪你。",
-        "白开水淡而无味，有你相伴才万般有趣。",
-        "你是不是偷了东西？偷了我的快乐。",
-        "一日不见如隔三秋，我已经想你无数个秋天了。",
-        "我觉得空气都变甜了，原来是你来了。",
-        "不想看风景了，因为最美的风景就在眼前。",
-        "能不能做我的导航？带我走完往后的路。",
-        "花开十里不如你，春风万里不及你。",
-        "我不喜欢喝酒，但我愿意沉醉在你的温柔里。",
-        "云朵漂浮在天空，而你漂浮在我的心上。",
-        "遇到你之后，我再也不想独自前行。",
-        "你像冬日暖阳，一下子温暖了我的全部。",
-        "别躲啦，我早就盯上你了。",
-        "酸甜苦辣我都尝过，唯独喜欢你最上头。",
-        "星河万里，我只看向你。",
-        "想把所有温柔和偏爱，全都留给你。",
-        "我没有什么野心，只想一辈子拥有你。",
-        "目光所及皆是你，心之所向唯有你。",
-        "别人再好与我无关，你再普通我都喜欢。",
-        "这是我的手背，这是我的脚背，你是我的宝贝。",
-        "只许州官放火，不许你离开我。",
-        "你近视吗？不近视为什么看不出来我喜欢你。",
-        "我想吃碗面，你的心里面。",
-        "甜有100种方式，吃糖，蛋糕，还有每天98次的想你。",
-        "你的名字，是我见过最短的情诗。",
-        "有一天小鸭子走路，走着走着脚酸了，因为它踩到柠檬了。",
-        "什么动物最容易摔倒？狐狸，因为它很狡猾（脚滑）。",
-        "一颗糖走在路上，走着走着腿软了，变成软糖。",
-        "为什么海鸥飞到巴黎就不走了？因为巴黎欧莱雅（鸥来呀）。",
-        "布和纸最怕什么？不（布）怕一万，只（纸）怕万一。",
-        "有一天火柴头痒，挠着挠着就着火了。",
-        "小白加小白等于什么？等于小白兔（two）。",
-        "麒麟到了北极会变成什么？冰淇淋（冰麒麟）。",
-        "什么门永远关不上？球门。",
-        "冬瓜、黄瓜、西瓜都能吃，什么瓜不能吃？傻瓜。",
-        "小明走在路上，走着走着脚累了，于是他踮起脚尖走，因为踮脚不累。",
-        "为什么数学书总是很忧郁？因为它有太多的问题。",
-        "鸡蛋跑到了山东，变成了鲁（卤）蛋。",
-        "鲨鱼吃了绿豆会怎么样？变成绿豆沙（鲨）。",
-        "有一天土豆去找包子决斗，路上被一条河拦住了，叫荷兰豆（河拦豆）。",
-        "决斗时土豆捅了包子一刀，变成了豆沙（杀）包。",
-        "什么水永远用不完？泪水。",
-        "青蛙为什么会飞？因为它吃了仙丹。那蛇为什么会飞？因为它吃了青蛙。老鹰为什么会飞？因为老鹰本来就会飞。",
-        "小白羊、小黑羊过马路，谁最小心？小白羊，因为小白免（免）撞。",
-        "铅笔姓什么？姓萧，削（萧）铅笔。",
-        "两只壁虎趴在墙上，一只掉下去了，另一只为什么也掉下去了？因为它拍手叫好，没抓稳。",
-        "什么动物天天熬夜？熊猫，不然怎么有黑眼圈。",
-        "红豆从楼上跳下来变成了什么？绿豆，因为吓绿了。",
-        "太平洋的中间是什么？是平字。",
-        "为什么大雁冬天要往南飞？因为走过去太慢了。",
-        "有一天面包饿了，把自己吃了。",
-        "狼来了，打一个水果。杨桃（羊逃）。",
-        "什么东西越洗越脏？水。",
-        "蜜蜂停在日历上，打一成语。风和日丽（蜂和日历）。",
-        "许仙给老婆买了一顶帽子，白娘子戴上之后就不能动了，因为那是鸭舌（压蛇）帽。"
+        "你知道我想喝什么吗？我想呵护你。","莫文蔚的阴天，孙燕姿的雨天，都不如你和我聊天。",
+        "我觉得你特别像一款游戏，我的世界。","遇到你之后，我再也没吃过糖，因为你太甜了。",
+        "你有打火机吗？没有啊？那你是怎么点燃我的心的？","猜猜我的心在哪边？左边？错啦，在你那边。",
+        "我想去取个东西，取什么？娶你。","你能不能别再走来走去了？不然我眼里就全是你了。",
+        "最近有谣言说我喜欢你，我要澄清一下，那不是谣言。","我觉得你今天有点怪，哪里怪？怪好看的。",
+        "牛肉、猪肉、羊肉，你猜我最喜欢哪种肉？是你这心头肉。","你知道我的缺点是什么吗？缺点你。",
+        "手可不可以借我牵一下？反正迟早都是我的。","我想买一块地，你的死心塌地。",
+        "天气这么冷，你知道怎么取暖吗？钻进我怀里。","你累不累啊？不累。可你都在我心里跑了一整天了。",
+        "别到处走了，就留在我身边吧。","你是不是会魔法？不然怎么我看一眼就开心。",
+        "苦海无涯，回头是我。","我最近学会了一门新技能，算命。我掐指一算，你命里缺我。",
+        "你知道我最喜欢吃什么水果吗？是你这个开心果。","全世界有 70 亿人，我偏偏遇见了你，好幸运。",
+        "我们来玩个游戏吧，一二三，木头人，不许动！糟糕，我心动了。","能不能帮我洗个东西？洗什么？喜欢我。",
+        "我觉得你今天有点不一样，具体哪不一样？更让我心动了。","从今往后，山河远阔，人间星河，无一不是你。",
+        "听说奶茶和甜点很甜，直到遇见你，我才知道什么是真的甜。","我迷路了，你知道去往你心里的路怎么走吗？",
+        "不要抱怨生活了，抱我。","你是什么血型？理想型。","风止意难平，意难平全是你。",
+        "我想在你那里买一扇门，什么门？我们的余生之门。","星星都睡着了，唯独我还在想你。",
+        "你知道为什么我总感冒吗？因为我对你没有抵抗力。","近朱者赤，近你者甜。",
+        "我想变成一只猫，每天赖在你身边。","遇见你的时候，上帝只说了四个字：在劫难逃。",
+        "别再发光啦，我都快被你闪晕了。","我有一个超能力，超级喜欢你。","蛋糕、糖果、蜂蜜，都甜不过你的微笑。",
+        "你能不能闭嘴？我没说话啊。那为什么我满脑子都是你的声音？","我想去环游世界，不用走远，围着你转就好。",
+        "今天的风好大，吹得我好想你。","你是碳酸饮料吗？不然我怎么一见到你就开心得冒泡。",
+        "生是你的人，死是你的鬼，这辈子都赖定你了。","月亮很亮，亮也没用，没用也亮。就像我喜欢你，喜欢没用，没用也喜欢。",
+        "请问你有女朋友吗？没有的话，介意有一个吗？","我的钱包丢了，因为心都被你偷走了。",
+        "落叶归根，我归你。","你知道我最喜欢什么神吗？你的眼神。","把你的手给我，我帮你看看手相，你命里缺我。",
+        "本来想浪迹天涯，结果遇见你，只想在家陪你。","白开水淡而无味，有你相伴才万般有趣。",
+        "你是不是偷了东西？偷了我的快乐。","一日不见如隔三秋，我已经想你无数个秋天了。",
+        "我觉得空气都变甜了，原来是你来了。","不想看风景了，因为最美的风景就在眼前。",
+        "能不能做我的导航？带我走完往后的路。","花开十里不如你，春风万里不及你。",
+        "我不喜欢喝酒，但我愿意沉醉在你的温柔里。","云朵漂浮在天空，而你漂浮在我的心上。",
+        "遇到你之后，我再也不想独自前行。","你像冬日暖阳，一下子温暖了我的全部。",
+        "别躲啦，我早就盯上你了。","酸甜苦辣我都尝过，唯独喜欢你最上头。","星河万里，我只看向你。",
+        "想把所有温柔和偏爱，全都留给你。","我没有什么野心，只想一辈子拥有你。",
+        "目光所及皆是你，心之所向唯有你。","别人再好与我无关，你再普通我都喜欢。",
+        "这是我的手背，这是我的脚背，你是我的宝贝。","只许州官放火，不许你离开我。",
+        "你近视吗？不近视为什么看不出来我喜欢你。","我想吃碗面，你的心里面。",
+        "甜有100种方式，吃糖，蛋糕，还有每天98次的想你。","你的名字，是我见过最短的情诗。"
     ];
 
     function showLevelUpEffect() {
-        const effect = document.createElement('div');
-        effect.className = 'level-up-effect';
+        const effect = document.createElement('div'); effect.className = 'level-up-effect';
         effect.innerHTML = `🎉 第${currentLevel}关通过！`;
         document.body.appendChild(effect);
         setTimeout(() => effect.remove(), 1500);
     }
 
     function initCandies() {
-        candies = [];
-        CANDY_COUNT = baseCandyCount + currentLevel;
+        candies = []; CANDY_COUNT = baseCandyCount + currentLevel;
         for(let i=0;i<CANDY_COUNT;i++) {
             candies.push({
-                x: 40 + Math.random()*(canvas.width-80),
-                y: 40 + Math.random()*(canvas.height-80),
-                vx: (Math.random()-0.5)*(2 + currentLevel * 0.5),
-                vy: (Math.random()-0.5)*(2 + currentLevel * 0.5)
+                x: 40 + Math.random()*(canvas.width-80), y: 40 + Math.random()*(canvas.height-80),
+                vx: (Math.random()-0.5)*(2 + currentLevel * 0.5), vy: (Math.random()-0.5)*(2 + currentLevel * 0.5)
             });
         }
     }
 
     function drawCandies() {
         ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle = '#fdf3e0';
-        ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = '#fdf3e0'; ctx.fillRect(0,0,canvas.width,canvas.height);
         for(let c of candies) {
             ctx.save();
-            ctx.shadowBlur = 6;
-            ctx.shadowColor = "rgba(0,0,0,0.2)";
-            ctx.font = `${RADIUS*1.5}px "Segoe UI Emoji"`;
-            ctx.fillStyle = '#ffaa66';
+            ctx.shadowBlur = 6; ctx.shadowColor = "rgba(0,0,0,0.2)";
+            ctx.font = `${RADIUS*1.5}px "Segoe UI Emoji"`; ctx.fillStyle = '#ffaa66';
             ctx.beginPath(); ctx.arc(c.x, c.y, RADIUS-2, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = '#d45a1a';
-            ctx.font = `${RADIUS*1.4}px "Segoe UI Emoji"`;
+            ctx.fillStyle = '#d45a1a'; ctx.font = `${RADIUS*1.4}px "Segoe UI Emoji"`;
             ctx.fillText('🍬', c.x-12, c.y+10);
             ctx.restore();
         }
@@ -761,17 +683,14 @@
     function handleCanvasClick(e) {
         if(!gameActive) return;
         const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
+        const scaleX = canvas.width / rect.width, scaleY = canvas.height / rect.height;
         let clientX, clientY;
         if(e.touches) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
         else { clientX = e.clientX; clientY = e.clientY; }
-        const canvasX = (clientX - rect.left) * scaleX;
-        const canvasY = (clientY - rect.top) * scaleY;
+        const canvasX = (clientX - rect.left) * scaleX, canvasY = (clientY - rect.top) * scaleY;
         for(let c of candies) {
             if(Math.hypot(canvasX - c.x, canvasY - c.y) < RADIUS) {
-                score++;
-                scoreSpan.innerText = score;
+                score++; scoreSpan.innerText = score;
                 c.x = 40 + Math.random()*(canvas.width-80);
                 c.y = 40 + Math.random()*(canvas.height-80);
                 c.vx = (Math.random()-0.5)*(2.5 + currentLevel);
@@ -782,24 +701,18 @@
                 loveMsgTimer = setTimeout(() => {
                     if(gameActive) gameMessageDiv.innerHTML = `🎯 第${currentLevel}关：还需${levelTargetScore - score}颗糖果晋级！`;
                 }, 3000);
-                
-                // 检查是否达到关卡目标
-                if(score >= levelTargetScore) {
-                    levelUp();
-                }
+                if(score >= levelTargetScore) levelUp();
                 break;
             }
         }
     }
 
     function levelUp() {
-        currentLevel++;
-        levelTargetScore += 10 + currentLevel * 2;
+        currentLevel++; levelTargetScore += 10 + currentLevel * 2;
         timeLeft = 15 + currentLevel * 2;
         timerSpan.innerText = timeLeft;
         levelDisplay.innerHTML = `🏆 第${currentLevel}关`;
-        score = 0;
-        scoreSpan.innerText = '0';
+        score = 0; scoreSpan.innerText = '0';
         showLevelUpEffect();
         gameMessageDiv.innerHTML = `🎉 晋级第${currentLevel}关！目标：${levelTargetScore}颗糖果！糖果移动更快了哦~`;
         initCandies();
@@ -809,23 +722,16 @@
         if(intervalId) clearInterval(intervalId);
         if(animationId) cancelAnimationFrame(animationId);
         if(loveMsgTimer) clearTimeout(loveMsgTimer);
-        currentLevel = 1;
-        levelTargetScore = 10;
-        score = 0;
-        timeLeft = 15;
-        scoreSpan.innerText = '0';
-        timerSpan.innerText = '15';
-        levelDisplay.innerHTML = '🏆 第1关';
-        gameActive = true;
+        currentLevel = 1; levelTargetScore = 10; score = 0; timeLeft = 15;
+        scoreSpan.innerText = '0'; timerSpan.innerText = '15';
+        levelDisplay.innerHTML = '🏆 第1关'; gameActive = true;
         gameMessageDiv.innerHTML = '🎯 第1关：收集10颗糖果晋级！';
         initCandies(); drawCandies(); updateCandies();
         intervalId = setInterval(() => {
             if(!gameActive) return;
-            timeLeft--;
-            timerSpan.innerText = timeLeft;
+            timeLeft--; timerSpan.innerText = timeLeft;
             if(timeLeft <= 0) {
-                gameActive = false;
-                clearInterval(intervalId);
+                gameActive = false; clearInterval(intervalId);
                 if(animationId) cancelAnimationFrame(animationId);
                 const totalScore = (currentLevel - 1) * levelTargetScore + score;
                 gameMessageDiv.innerHTML = `⏰ 时间到啦！你闯到第${currentLevel}关，总共收集了 ${totalScore} 颗糖果！ 🎁`;
@@ -849,22 +755,13 @@
 
     document.getElementById('openGameBtn').addEventListener('click', () => {
         if(gameModal.classList.contains('active')) return;
-        startGame();
-        gameModal.classList.add('active');
+        startGame(); gameModal.classList.add('active');
     });
     closeGameBtn.addEventListener('click', stopGameAndClose);
-    restartBtn.addEventListener('click', () => {
-        stopGameAndClose();
-        setTimeout(() => { startGame(); gameModal.classList.add('active'); }, 100);
-    });
+    restartBtn.addEventListener('click', () => { stopGameAndClose(); setTimeout(() => { startGame(); gameModal.classList.add('active'); }, 100); });
     canvas.addEventListener('click', handleCanvasClick);
-    canvas.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        handleCanvasClick(e);
-    }, { passive: false });
-    gameModal.addEventListener('click', (e) => {
-        if(e.target === gameModal) stopGameAndClose();
-    });
+    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); handleCanvasClick(e); }, { passive: false });
+    gameModal.addEventListener('click', (e) => { if(e.target === gameModal) stopGameAndClose(); });
 })();
 </script>
 </body>
