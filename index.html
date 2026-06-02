@@ -188,6 +188,10 @@
         .game-message { margin-top: 15px; font-size: 1.2rem; color: #aa5e1e; min-height: 2rem; }
         .restart-btn { background: #ff9f4a; border: none; color: white; padding: 6px 20px; border-radius: 60px; font-size: 1rem; margin-top: 12px; cursor: pointer; font-weight: bold; }
         .restart-btn:hover { background: #ff7a2a; }
+        .level-badge { display: inline-block; background: linear-gradient(135deg, #ff6b6b, #ffa500); color: white; padding: 4px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .level-up-effect { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3rem; z-index: 2000; animation: levelUpPop 1.5s ease-out forwards; pointer-events: none; }
+        @keyframes levelUpPop { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(2); opacity: 0; } }
     </style>
 </head>
 <body>
@@ -244,13 +248,14 @@
     <div class="modal-content" style="background: transparent; border: none; box-shadow: none; padding: 0;">
         <div class="game-container">
             <div class="game-header">
-                <span>🍬 糖果收集者 🍬</span>
+                <span>🍬 糖果大作战</span>
+                <span class="level-badge" id="levelDisplay">🏆 第1关</span>
                 <span>⏱️ <span id="timerDisplay">15</span>s</span>
                 <span>🍭 <span id="scoreDisplay">0</span></span>
             </div>
             <canvas id="gameCanvas" class="game-canvas" width="450" height="450"></canvas>
-            <div class="game-message" id="gameMessage">点击糖果，越快越多！</div>
-            <button class="restart-btn" id="restartGameBtn">✨ 再玩一次 ✨</button>
+            <div class="game-message" id="gameMessage">🎯 第1关：收集10颗糖果晋级！</div>
+            <button class="restart-btn" id="restartGameBtn">✨ 重新开始 ✨</button>
             <span class="close-modal" id="closeGameBtn" style="position: static; margin-top: 12px; background: #ffaa77; color: #5c2e0e; display: inline-block; width: auto; padding: 6px 20px; border-radius: 60px; font-size: 0.9rem;">关闭游戏</span>
         </div>
     </div>
@@ -327,7 +332,7 @@
     window.addEventListener('click', addClickBreezeEffect);
     window.addEventListener('beforeunload', ()=> particleInterval && clearInterval(particleInterval));
 
-    // ========== Supabase 全球统一想念计数器 (增强版含重试机制) ==========
+    // ========== Supabase 全球统一想念计数器 ==========
     const SUPABASE_URL = 'https://cgvnzfbdqmqguagtjhfi.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_W_1tTixY0j-gF8roUH9HRQ__hiuYCLG';
     
@@ -343,7 +348,6 @@
     let apiAvailable = false;
     let isRequesting = false;
     let errorTimer = null;
-    let retryCount = 0;
     const MAX_RETRIES = 3;
 
     async function supabaseRequest(endpoint, options = {}, retry = 0) {
@@ -392,7 +396,7 @@
     async function updateCountDisplay() {
         missCountSpan.textContent = globalCount;
         lastTimeSpan.textContent = globalLastTime ? '🕒 ' + new Date(globalLastTime).toLocaleString() : '还没按过呢';
-        historyHint.innerHTML = globalCount > 0 ? `💗 全世界已经想念了 ${globalCount} 次 💗` : '✨ 每次想念都被珍藏 ✨';
+        historyHint.innerHTML = globalCount > 0 ? `🍪 小熊饼干已经想念了 ${globalCount} 次 🍪` : '✨ 每次想念都被珍藏 ✨';
         globalBadge.textContent = apiAvailable ? '🌐 Supabase 全球同步' : '📱 本地模式（获取失败）';
     }
 
@@ -403,7 +407,6 @@
                 globalCount = data[0].count || 0;
                 globalLastTime = data[0].last_time || null;
                 apiAvailable = true;
-                retryCount = 0;
             }
         } catch (e) {
             console.warn('Supabase 连接失败:', e);
@@ -575,19 +578,23 @@
         }
     });
 
-    // ========== 糖果游戏模块 ==========
+    // ========== 糖果大作战 - 闯关模式 ==========
     const gameModal = document.getElementById('gameModal');
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const timerSpan = document.getElementById('timerDisplay');
     const scoreSpan = document.getElementById('scoreDisplay');
     const gameMessageDiv = document.getElementById('gameMessage');
+    const levelDisplay = document.getElementById('levelDisplay');
     const restartBtn = document.getElementById('restartGameBtn');
     const closeGameBtn = document.getElementById('closeGameBtn');
 
     let gameActive = false, score = 0, timeLeft = 15, intervalId = null, animationId = null;
     let candies = [];
-    const CANDY_COUNT = 6, RADIUS = 20;
+    let currentLevel = 1;
+    let levelTargetScore = 10;
+    let baseCandyCount = 5;
+    let CANDY_COUNT = 5, RADIUS = 20;
     let loveMsgTimer = null;
 
     const loveQuotes = [
@@ -699,14 +706,23 @@
         "许仙给老婆买了一顶帽子，白娘子戴上之后就不能动了，因为那是鸭舌（压蛇）帽。"
     ];
 
+    function showLevelUpEffect() {
+        const effect = document.createElement('div');
+        effect.className = 'level-up-effect';
+        effect.innerHTML = `🎉 第${currentLevel}关通过！`;
+        document.body.appendChild(effect);
+        setTimeout(() => effect.remove(), 1500);
+    }
+
     function initCandies() {
         candies = [];
+        CANDY_COUNT = baseCandyCount + currentLevel;
         for(let i=0;i<CANDY_COUNT;i++) {
             candies.push({
                 x: 40 + Math.random()*(canvas.width-80),
                 y: 40 + Math.random()*(canvas.height-80),
-                vx: (Math.random()-0.5)*2,
-                vy: (Math.random()-0.5)*2
+                vx: (Math.random()-0.5)*(2 + currentLevel * 0.5),
+                vy: (Math.random()-0.5)*(2 + currentLevel * 0.5)
             });
         }
     }
@@ -758,26 +774,50 @@
                 scoreSpan.innerText = score;
                 c.x = 40 + Math.random()*(canvas.width-80);
                 c.y = 40 + Math.random()*(canvas.height-80);
-                c.vx = (Math.random()-0.5)*2.5;
-                c.vy = (Math.random()-0.5)*2.5;
+                c.vx = (Math.random()-0.5)*(2.5 + currentLevel);
+                c.vy = (Math.random()-0.5)*(2.5 + currentLevel);
                 const randomLove = loveQuotes[Math.floor(Math.random() * loveQuotes.length)];
                 gameMessageDiv.innerHTML = randomLove;
                 clearTimeout(loveMsgTimer);
                 loveMsgTimer = setTimeout(() => {
-                    if(gameActive) gameMessageDiv.innerHTML = '继续点糖果！';
+                    if(gameActive) gameMessageDiv.innerHTML = `🎯 第${currentLevel}关：还需${levelTargetScore - score}颗糖果晋级！`;
                 }, 3000);
+                
+                // 检查是否达到关卡目标
+                if(score >= levelTargetScore) {
+                    levelUp();
+                }
                 break;
             }
         }
+    }
+
+    function levelUp() {
+        currentLevel++;
+        levelTargetScore += 10 + currentLevel * 2;
+        timeLeft = 15 + currentLevel * 2;
+        timerSpan.innerText = timeLeft;
+        levelDisplay.innerHTML = `🏆 第${currentLevel}关`;
+        score = 0;
+        scoreSpan.innerText = '0';
+        showLevelUpEffect();
+        gameMessageDiv.innerHTML = `🎉 晋级第${currentLevel}关！目标：${levelTargetScore}颗糖果！糖果移动更快了哦~`;
+        initCandies();
     }
 
     function startGame() {
         if(intervalId) clearInterval(intervalId);
         if(animationId) cancelAnimationFrame(animationId);
         if(loveMsgTimer) clearTimeout(loveMsgTimer);
-        gameActive = true; score = 0; timeLeft = 15;
-        scoreSpan.innerText = '0'; timerSpan.innerText = '15';
-        gameMessageDiv.innerHTML = '快戳糖果！🍬';
+        currentLevel = 1;
+        levelTargetScore = 10;
+        score = 0;
+        timeLeft = 15;
+        scoreSpan.innerText = '0';
+        timerSpan.innerText = '15';
+        levelDisplay.innerHTML = '🏆 第1关';
+        gameActive = true;
+        gameMessageDiv.innerHTML = '🎯 第1关：收集10颗糖果晋级！';
         initCandies(); drawCandies(); updateCandies();
         intervalId = setInterval(() => {
             if(!gameActive) return;
@@ -787,11 +827,14 @@
                 gameActive = false;
                 clearInterval(intervalId);
                 if(animationId) cancelAnimationFrame(animationId);
-                gameMessageDiv.innerHTML = `⏰ 时间到啦！你收集了 ${score} 颗糖果！ 🎁`;
+                const totalScore = (currentLevel - 1) * levelTargetScore + score;
+                gameMessageDiv.innerHTML = `⏰ 时间到啦！你闯到第${currentLevel}关，总共收集了 ${totalScore} 颗糖果！ 🎁`;
                 ctx.clearRect(0,0,canvas.width,canvas.height);
                 ctx.fillStyle = '#fdf3e0'; ctx.fillRect(0,0,canvas.width,canvas.height);
                 ctx.font = 'bold 24px "Segoe UI"'; ctx.fillStyle = '#d96c1e';
-                ctx.fillText('🎉 GAME OVER 🎉', canvas.width/2-100, canvas.height/2);
+                ctx.fillText('🎉 GAME OVER 🎉', canvas.width/2-100, canvas.height/2-20);
+                ctx.font = 'bold 18px "Segoe UI"';
+                ctx.fillText(`闯到第${currentLevel}关`, canvas.width/2-60, canvas.height/2+20);
             }
         }, 1000);
     }
@@ -818,7 +861,7 @@
     canvas.addEventListener('touchstart', (e) => {
         e.preventDefault();
         handleCanvasClick(e);
-    });
+    }, { passive: false });
     gameModal.addEventListener('click', (e) => {
         if(e.target === gameModal) stopGameAndClose();
     });
