@@ -226,7 +226,6 @@
 <div class="dog-container" id="dogContainer">
     <video id="dogVideo" class="dog-video" autoplay loop muted playsinline>
         <source src="dog_live.mp4" type="video/mp4">
-        <!-- 如果 dog.jpg 不存在，可以删除下面这行或者使用正确的图片路径 -->
     </video>
     <div class="dog-tip" id="dogTip">🐶 单击看视频 · 双击转圈圈</div>
 </div>
@@ -330,7 +329,7 @@
 
     // ========== Supabase 全球统一想念计数器 ==========
     const SUPABASE_URL = 'https://cgvnzfbdqmqguagtjhfi.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNndm56ZmJkcW1xZ3VhZ3RqaGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg3NjY4MDAsImV4cCI6MjA2NDM0MjgwMH0.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNndm56ZmJkcW1xZ3VhZ3RqaGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg3NjY4MDAsImV4cCI6MjA2NDM0MjgwMH0';
+    const SUPABASE_ANON_KEY = 'sb_publishable_W_1tTixY0j-gF8roUH9HRQ__hiuYCLG';
     
     const missBtn = document.getElementById('missYouHeartBtn');
     const missCountSpan = document.getElementById('missCountDisplay');
@@ -351,6 +350,7 @@
             'apikey': SUPABASE_ANON_KEY,
             'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
             'Content-Type': 'application/json',
+            'Prefer': 'return=representation',
             ...options.headers
         };
 
@@ -366,7 +366,9 @@
             clearTimeout(timeoutId);
 
             if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
+                const errorText = await response.text();
+                console.error('Supabase 错误响应:', errorText);
+                throw new Error(`HTTP ${response.status}: ${errorText}`);
             }
 
             const text = await response.text();
