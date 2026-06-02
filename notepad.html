@@ -3,393 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>熊国会 · 六一儿童节快乐 · 糖果乐园</title>
+    <title>小熊的记事本 📝</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             min-height: 100vh;
-            background: linear-gradient(145deg, #fde8cd 0%, #fff0db 35%, #c4e0fa 100%);
-            font-family: 'Segoe UI', 'Quicksand', system-ui, 'Poppins', 'Comic Neue', cursive;
-            display: flex; align-items: center; justify-content: center; position: relative;
-            overflow-x: hidden; padding: 2rem 1rem;
-        }
-
-        .love-card {
-            max-width: 950px; width: 100%;
-            background: rgba(255,250,240,0.92); backdrop-filter: blur(12px);
-            border-radius: 80px 80px 80px 60px;
-            box-shadow: 0 30px 45px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,215,175,0.8) inset, 0 8px 20px rgba(255,105,180,0.2);
-            padding: 2rem 1.8rem; text-align: center; z-index: 15;
-            transition: transform 0.2s ease; animation: gentleFloat 4s infinite ease-in-out;
-        }
-        .love-card:hover { transform: scale(1.01); }
-
-        .breeze-text {
-            font-size: 2rem; font-weight: 700;
-            background: linear-gradient(135deg, #ffaa44, #ff6b8b, #66ccff);
-            background-clip: text; -webkit-background-clip: text; color: transparent;
-            margin-bottom: 1rem; display: inline-block;
-        }
-
-        .festival-badge {
-            display: inline-block; background: rgba(255,220,150,0.8);
-            border-radius: 60px; padding: 0.2rem 1rem; margin-bottom: 0.8rem;
-            font-size: 1.1rem; color: #d2691e; backdrop-filter: blur(4px);
-        }
-
-        .cloud-section {
-            background: rgba(255,255,245,0.5); border-radius: 80px;
-            padding: 1.2rem 1rem; margin: 1.5rem 0; backdrop-filter: blur(4px); text-align: center;
-        }
-        .cloud-art { display: inline-block; text-align: left; background: rgba(255,245,235,0.4); border-radius: 60px; padding: 0.6rem 1.2rem; }
-        .cloud-line {
-            font-family: monospace, 'Segoe UI Emoji'; font-size: 1.5rem; white-space: pre; line-height: 1.65;
-            filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.1));
-            animation: floatCloud 3s infinite alternate ease-in-out; display: block;
-        }
-        .cloud-line:nth-child(1) { animation-duration: 2.8s; }
-        .cloud-line:nth-child(2) { animation-duration: 3.4s; animation-delay: 0.2s; }
-        .cloud-line:nth-child(3) { animation-duration: 2.5s; animation-delay: 0.5s; }
-        .cloud-line:nth-child(4) { animation-duration: 3.2s; animation-delay: 0.1s; }
-
-        .cool-breeze { display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin: 1rem 0 0.8rem; }
-        .cool-item { font-size: 1.8rem; display: inline-block; animation: spinFlurry 1.8s infinite alternate, floatUpSmall 2.2s infinite alternate; }
-
-        .blessing { font-size: 1.9rem; font-weight: bold; background: linear-gradient(120deg, #ff9966, #ff5e7e); background-clip: text; -webkit-background-clip: text; color: transparent; margin: 1rem 0 0.5rem; letter-spacing: 2px; }
-        .blessing-dual { font-size: 1.7rem; margin-top: 0.8rem; padding: 0.6rem; border-top: 2px dashed #ffb387; border-bottom: 2px dashed #ffb387; display: inline-block; background: rgba(255,200,180,0.3); border-radius: 60px; }
-
-        .miss-you-area { margin: 1.5rem 0 0.8rem; display: flex; flex-direction: column; align-items: center; }
-        .heart-miss-btn {
-            background: radial-gradient(circle at 30% 30%, #ff7b9c, #e6456b); border: none;
-            width: 85px; height: 85px; border-radius: 50%; position: relative; cursor: pointer;
-            box-shadow: 0 15px 25px rgba(220,20,60,0.4), 0 0 0 4px rgba(255,240,245,0.9);
-            transition: all 0.25s ease; font-size: 2.5rem; display: flex; align-items: center; justify-content: center;
-            color: white; text-shadow: 0 2px 8px rgba(0,0,0,0.2); margin-bottom: 0.5rem;
-            animation: heartBeatPulse 1.8s infinite;
-        }
-        .heart-miss-btn::before {
-            content: ""; position: absolute; top: -4px; left: -4px; right: -4px; bottom: -4px;
-            background: transparent; border-radius: 50%; border: 2px dashed rgba(255,255,200,0.7);
-            animation: rotateDash 10s linear infinite; pointer-events: none;
-        }
-        @keyframes rotateDash { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .heart-miss-btn:hover { transform: scale(1.12); background: radial-gradient(circle at 30% 30%, #ff99b9, #f0627c); box-shadow: 0 0 30px #ff4d7a, 0 0 0 5px rgba(255,220,220,0.9); }
-        .heart-miss-btn:active { transform: scale(0.95); }
-        @keyframes heartBeatPulse { 0% { transform: scale(1); } 30% { transform: scale(1.05); } 50% { transform: scale(1.02); } 70% { transform: scale(1.08); } 100% { transform: scale(1); } }
-
-        .miss-counter-box { background: rgba(255,255,250,0.8); backdrop-filter: blur(12px); border-radius: 50px; padding: 0.6rem 1.4rem; display: inline-flex; align-items: center; gap: 15px; font-size: 1.1rem; font-weight: bold; color: #b13e4b; box-shadow: 0 6px 14px rgba(255,140,140,0.3); margin-top: 5px; flex-wrap: wrap; justify-content: center; }
-        .miss-count { background: #ffe8f0; padding: 0.2rem 1rem; border-radius: 30px; color: #c0395c; font-size: 1.4rem; min-width: 50px; }
-        .last-time { color: #7b4b3a; font-size: 0.9rem; max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .history-badge { margin-top: 0.5rem; font-size: 0.9rem; background: #fff2e6; border-radius: 30px; padding: 0.2rem 1.2rem; color: #9b5e4b; }
-        .global-badge { display: inline-block; background: rgba(255,200,100,0.3); border-radius: 20px; padding: 0.15rem 0.8rem; font-size: 0.75rem; color: #b8782e; margin-left: 8px; animation: gentleFloat 2s infinite ease-in-out; }
-
-        .drama-section {
-            background: rgba(255,240,250,0.7); border-radius: 40px;
-            padding: 1.2rem; margin: 1.5rem 0; backdrop-filter: blur(4px);
-            border: 2px dashed #ffb6c1;
-        }
-        .section-title {
-            font-size: 1.4rem; font-weight: bold; margin-bottom: 0.8rem;
-            background: linear-gradient(135deg, #ff6b8b, #ff9966);
-            background-clip: text; -webkit-background-clip: text; color: transparent;
-        }
-        .input-row { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 0.8rem; }
-        .custom-input {
-            padding: 0.5rem 1rem; border-radius: 30px; border: 2px solid #ffb6c1;
-            background: rgba(255,255,255,0.9); font-size: 0.95rem; outline: none;
-            font-family: inherit; min-width: 180px;
-        }
-        .custom-input:focus { border-color: #ff6b8b; }
-        .add-btn {
-            background: linear-gradient(135deg, #ff6b8b, #ff9966); border: none;
-            color: white; padding: 0.5rem 1.2rem; border-radius: 30px;
-            cursor: pointer; font-weight: bold; font-size: 0.9rem;
-            transition: all 0.2s; white-space: nowrap;
-        }
-        .add-btn:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(255,107,139,0.4); }
-        .drama-list { list-style: none; max-height: 200px; overflow-y: auto; text-align: left; padding: 0 0.5rem; }
-        .drama-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0.5rem 0.8rem; margin: 0.3rem 0;
-            background: rgba(255,255,255,0.7); border-radius: 20px;
-            font-size: 0.95rem; color: #5c3a3a; animation: fadeIn 0.3s ease;
-        }
-        .drama-item-info { flex: 1; display: flex; align-items: center; gap: 8px; }
-        .drama-ep { color: #ff6b8b; font-weight: bold; font-size: 0.85rem; }
-        .delete-btn {
-            background: #ffe0e0; border: none; color: #ff4d4f;
-            width: 28px; height: 28px; border-radius: 50%;
-            cursor: pointer; font-size: 0.9rem; transition: all 0.2s;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: 'Segoe UI', 'Quicksand', system-ui, sans-serif;
             display: flex; align-items: center; justify-content: center;
+            padding: 2rem 1rem; perspective: 1500px;
+            overflow-x: hidden;
         }
-        .delete-btn:hover { background: #ff4d4f; color: white; }
-        .drama-empty { color: #b8a0a0; font-size: 0.9rem; padding: 1rem; text-align: center; }
+        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .star { position: absolute; background: white; border-radius: 50%; animation: twinkle 2s infinite alternate; }
+        @keyframes twinkle { 0% { opacity: 0.3; transform: scale(1); } 100% { opacity: 1; transform: scale(1.5); } }
 
-        .game-btn {
-            background: linear-gradient(135deg, #ffaa66, #ff6b8b); border: none;
-            font-size: 1.3rem; font-weight: bold; padding: 0.7rem 1.8rem; border-radius: 60px;
-            color: white; cursor: pointer; margin-top: 1.2rem; box-shadow: 0 6px 14px rgba(0,0,0,0.2);
-            transition: all 0.2s; font-family: inherit; display: inline-flex; align-items: center; gap: 10px;
+        .main-container { width: 100%; max-width: 800px; z-index: 10; display: flex; flex-direction: column; gap: 1.5rem; }
+        .header { text-align: center; color: #e0d4ff; animation: fadeSlideDown 0.8s ease-out; }
+        .header h1 { font-size: 2.2rem; background: linear-gradient(135deg, #a78bfa, #f472b6, #fb923c); background-clip: text; -webkit-background-clip: text; color: transparent; margin-bottom: 0.3rem; }
+        .header p { color: #94a3b8; font-size: 0.9rem; }
+        .back-btn { display: inline-block; margin-top: 0.8rem; padding: 0.4rem 1.5rem; border-radius: 30px; background: rgba(255,255,255,0.1); color: #c4b5fd; text-decoration: none; font-size: 0.9rem; font-weight: bold; border: 1px solid rgba(196,181,253,0.3); transition: all 0.3s; }
+        .back-btn:hover { background: rgba(196,181,253,0.2); border-color: #a78bfa; }
+
+        .card-wrapper { perspective: 1500px; animation: fadeSlideUp 0.8s ease-out 0.2s both; }
+        @keyframes fadeSlideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card-inner { position: relative; width: 100%; min-height: 450px; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
+        .card-inner.flipped { transform: rotateY(180deg); }
+        .card-front, .card-back { position: absolute; width: 100%; min-height: 450px; backface-visibility: hidden; border-radius: 30px; background: rgba(30,27,50,0.95); border: 2px solid rgba(167,139,250,0.3); box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(139,92,246,0.1); padding: 2rem; }
+        .card-back { transform: rotateY(180deg); background: rgba(20,15,40,0.95); border-color: rgba(244,114,182,0.3); }
+
+        .tabs-area { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.2rem; padding-bottom: 0.8rem; border-bottom: 1px solid rgba(167,139,250,0.2); align-items: center; }
+        .tab-btn { padding: 0.4rem 1rem; border-radius: 25px; border: 2px solid rgba(167,139,250,0.3); background: rgba(167,139,250,0.1); color: #c4b5fd; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: all 0.3s; max-width: 130px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 5px; }
+        .tab-btn.active { background: linear-gradient(135deg, #8b5cf6, #6366f1); color: white; border-color: transparent; }
+        .tab-btn:hover:not(.active) { border-color: #a78bfa; background: rgba(167,139,250,0.2); }
+        .add-tab-btn { padding: 0.4rem 0.7rem; border-radius: 25px; border: 2px dashed rgba(167,139,250,0.3); background: transparent; color: #a78bfa; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: all 0.3s; }
+        .add-tab-btn:hover { background: rgba(167,139,250,0.15); border-color: #a78bfa; }
+
+        .textarea-wrap { position: relative; flex: 1; }
+        .notepad-textarea { width: 100%; min-height: 280px; max-height: 350px; padding: 1.2rem; border-radius: 20px; background: rgba(255,255,255,0.03); border: 1px solid rgba(167,139,250,0.2); color: #e0d4ff; font-size: 1rem; line-height: 1.8; resize: vertical; outline: none; font-family: inherit; transition: all 0.3s; }
+        .notepad-textarea:focus { border-color: #a78bfa; box-shadow: 0 0 20px rgba(139,92,246,0.15); }
+        .notepad-textarea::placeholder { color: rgba(196,181,253,0.3); }
+
+        .status-row { display: flex; justify-content: space-between; align-items: center; margin-top: 0.8rem; flex-wrap: wrap; gap: 0.5rem; }
+        .status-text { color: #94a3b8; font-size: 0.8rem; }
+        .action-btns { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .action-btn { padding: 0.35rem 1rem; border-radius: 20px; border: 1px solid rgba(167,139,250,0.3); background: rgba(167,139,250,0.1); color: #c4b5fd; cursor: pointer; font-size: 0.8rem; font-weight: bold; transition: all 0.3s; display: flex; align-items: center; gap: 4px; }
+        .action-btn:hover { background: rgba(167,139,250,0.25); border-color: #a78bfa; }
+        .action-btn.danger { color: #f472b6; border-color: rgba(244,114,182,0.3); background: rgba(244,114,182,0.1); }
+        .action-btn.danger:hover { background: rgba(244,114,182,0.25); border-color: #f472b6; color: #fb7185; }
+
+        .flip-indicator { text-align: center; margin-top: 1rem; }
+        .flip-btn { padding: 0.5rem 1.5rem; border-radius: 25px; background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(244,114,182,0.2)); border: 1px solid rgba(167,139,250,0.3); color: #c4b5fd; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: all 0.3s; }
+        .flip-btn:hover { background: linear-gradient(135deg, rgba(139,92,246,0.4), rgba(244,114,182,0.4)); }
+
+        .card-back .back-content { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 350px; text-align: center; color: #e0d4ff; }
+        .back-content .warn-icon { font-size: 4rem; margin-bottom: 1rem; }
+        .back-content h3 { color: #f472b6; margin-bottom: 0.5rem; }
+        .back-content p { color: #94a3b8; margin-bottom: 1.5rem; font-size: 0.9rem; }
+        .confirm-btns { display: flex; gap: 0.8rem; }
+        .confirm-delete { padding: 0.6rem 2rem; border-radius: 25px; border: none; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; cursor: pointer; font-weight: bold; font-size: 0.9rem; transition: all 0.3s; }
+        .confirm-delete:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(239,68,68,0.4); }
+        .cancel-delete { padding: 0.6rem 2rem; border-radius: 25px; border: 1px solid rgba(167,139,250,0.3); background: rgba(167,139,250,0.1); color: #c4b5fd; cursor: pointer; font-weight: bold; font-size: 0.9rem; transition: all 0.3s; }
+        .cancel-delete:hover { background: rgba(167,139,250,0.25); }
+
+        @media (max-width: 600px) {
+            .card-front, .card-back { padding: 1.5rem; min-height: 400px; }
+            .header h1 { font-size: 1.6rem; }
+            .notepad-textarea { min-height: 220px; }
+            .tab-btn { max-width: 90px; font-size: 0.75rem; padding: 0.3rem 0.6rem; }
         }
-        .game-btn:hover { transform: scale(1.03); background: linear-gradient(135deg, #ffbb77, #ff7f9f); box-shadow: 0 10px 18px rgba(0,0,0,0.25); }
-
-        @keyframes floatCloud { 0% { transform: translate(0,0) rotate(0deg); } 100% { transform: translate(8px,-5px) rotate(0.8deg); } }
-        @keyframes gentleFloat { 0% { transform: translateY(0); } 100% { transform: translateY(-6px); } }
-        @keyframes spinFlurry { 0% { transform: rotate(0) scale(0.9); opacity: 0.7; } 100% { transform: rotate(12deg) scale(1.2); opacity: 1; } }
-        @keyframes floatUpSmall { 0% { transform: translateY(0); } 100% { transform: translateY(-8px); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .floating-particle { position: fixed; pointer-events: none; z-index: 20; font-size: 1.4rem; animation: blowWind 6s linear forwards; filter: drop-shadow(0 0 4px gold); }
-        @keyframes blowWind { 0% { transform: translate(0,0) rotate(0deg); opacity: 0.8; } 100% { transform: translate(180px,-120px) rotate(360deg); opacity: 0; } }
-        .bg-cloud { position: fixed; background: rgba(255,255,250,0.7); border-radius: 1000px; filter: blur(20px); z-index: 0; pointer-events: none; animation: bgCloudMove 20s infinite alternate; }
-        @keyframes bgCloudMove { 0% { transform: translate(-3%,0); } 100% { transform: translate(5%,-8%); } }
-        .fan-icon { display: inline-block; animation: fanSwing 2s infinite ease; font-size: 1.9rem; margin-right: 6px; }
-        @keyframes fanSwing { 0% { transform: rotate(-15deg); } 100% { transform: rotate(15deg); } }
-        @keyframes clickPopFade { 0% { transform: scale(0.3) translateY(0); opacity: 1; } 100% { transform: scale(1.5) translateY(-40px); opacity: 0; } }
-        @keyframes floatUpHeart { 0% { transform: translateY(0) rotate(0deg); opacity: 0.9; } 100% { transform: translateY(-120vh) rotate(25deg); opacity: 0; } }
-
-        @media (max-width: 620px) {
-            .love-card { padding: 1.2rem; }
-            .cloud-line { font-size: 0.95rem; white-space: pre-wrap; }
-            .breeze-text { font-size: 1.6rem; }
-            .blessing { font-size: 1.4rem; }
-            .game-btn { font-size: 1rem; padding: 0.5rem 1.2rem; }
-            .heart-miss-btn { width: 70px; height: 70px; font-size: 2rem; }
-            .custom-input { min-width: 140px; }
-            .input-row { flex-direction: column; align-items: center; }
-        }
-
-        .dog-container { position: fixed; z-index: 30; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: grab; transition: transform 0.2s; }
-        .dog-container.dragging { transition: none; cursor: grabbing; }
-        .dog-container:active { transform: scale(0.94); }
-        .dog-container.deleted { animation: deletePop 0.5s ease-out forwards; }
-        @keyframes deletePop { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.5; } 100% { transform: scale(0); opacity: 0; } }
-        .dog-video { width: auto; height: auto; max-width: 220px; max-height: 220px; border-radius: 25px; object-fit: contain; background: rgba(255,245,220,0.35); backdrop-filter: blur(4px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); border: 3px solid rgba(255,215,175,0.6); padding: 2px; transition: transform 0.3s ease; pointer-events: none; }
-        .dog-video.dog-spin { animation: dogSpin 0.6s ease-in-out forwards; }
-        @keyframes dogSpin { from { transform: rotate(0deg) scale(1); } to { transform: rotate(360deg) scale(1.1); } }
-        .dog-tip { background: rgba(255,255,210,0.85); border-radius: 40px; padding: 5px 12px; font-size: 0.8rem; font-weight: bold; color: #b45f2b; white-space: nowrap; animation: tipPulse 1.2s infinite alternate; pointer-events: none; }
-        @keyframes tipPulse { 0% { opacity: 0.7; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1.05); } }
-
-        /* 记事本 - 原图大小，单击打开，双击删除 */
-        .notepad-float {
-            position: fixed; z-index: 28; display: flex;
-            flex-direction: column; align-items: center; gap: 5px;
-            cursor: grab; transition: transform 0.2s;
-        }
-        .notepad-float.dragging { transition: none; cursor: grabbing; }
-        .notepad-float:hover { transform: scale(1.05); }
-        .notepad-float:active { transform: scale(0.95); }
-        .notepad-float.deleted { animation: deletePop 0.5s ease-out forwards; }
-        .notepad-img {
-            width: auto;
-            height: auto;
-            max-width: 200px;
-            max-height: 200px;
-            object-fit: contain;
-            pointer-events: none;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(139,92,246,0.4), 0 0 0 3px rgba(255,240,255,0.6);
-            animation: notepadFloat 3.5s infinite ease-in-out;
-            padding: 3px;
-            background: rgba(255,255,255,0.3);
-            backdrop-filter: blur(4px);
-        }
-        @keyframes notepadFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-        .notepad-tip {
-            background: rgba(255,255,210,0.85); border-radius: 40px;
-            padding: 5px 14px; font-size: 0.85rem; font-weight: bold;
-            color: #6366f1; white-space: nowrap; pointer-events: none;
-            animation: tipPulse 1.5s infinite alternate;
-        }
-
-        @media (max-width: 550px) {
-            .dog-video { max-width: 160px; max-height: 160px; }
-            .dog-tip { font-size: 0.7rem; }
-            .notepad-img { max-width: 150px; max-height: 150px; }
-            .notepad-tip { font-size: 0.7rem; }
-        }
-
-        .video-modal, .game-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 1000; justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
-        .video-modal.active, .game-modal.active { display: flex; }
-        .modal-content { position: relative; max-width: 90%; max-height: 90%; background: #1e1a1a; border-radius: 32px; padding: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); border: 2px solid #ffcd94; text-align: center; }
-        .modal-content video { max-width: 100%; max-height: 70vh; border-radius: 24px; }
-        .close-modal { position: absolute; top: 8px; right: 18px; font-size: 2rem; color: #ffcf9a; cursor: pointer; background: rgba(0,0,0,0.5); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-        .close-modal:hover { background: #ff8866; color: white; }
-        .video-caption { margin-top: 12px; color: #ffecb3; }
-
-        .game-container { background: #fff6e8; border-radius: 48px; padding: 20px; text-align: center; width: 100%; max-width: 500px; margin: 0 auto; }
-        .game-header { display: flex; justify-content: space-between; font-size: 1.4rem; font-weight: bold; color: #d96c1e; background: #ffefcf; padding: 8px 20px; border-radius: 60px; margin-bottom: 20px; }
-        .game-canvas { background: #fdf3e0; border-radius: 40px; box-shadow: inset 0 0 0 3px #ffd8a5, 0 10px 20px rgba(0,0,0,0.2); display: block; margin: 0 auto; cursor: pointer; width: 100%; height: auto; max-width: 450px; }
-        .game-message { margin-top: 15px; font-size: 1.2rem; color: #aa5e1e; min-height: 2rem; }
-        .restart-btn { background: #ff9f4a; border: none; color: white; padding: 6px 20px; border-radius: 60px; font-size: 1rem; margin-top: 12px; cursor: pointer; font-weight: bold; }
-        .restart-btn:hover { background: #ff7a2a; }
-        .level-badge { display: inline-block; background: linear-gradient(135deg, #ff6b6b, #ffa500); color: white; padding: 4px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-        .level-up-effect { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3rem; z-index: 2000; animation: levelUpPop 1.5s ease-out forwards; pointer-events: none; }
-        @keyframes levelUpPop { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(2); opacity: 0; } }
     </style>
 </head>
 <body>
-<div class="love-card">
-    <div class="festival-badge">🎈 6·1 儿童节特别版 🎈</div>
-    <div class="breeze-text"><span class="fan-icon">🍭</span> 熊国会小朋友，儿童节快乐！ <span class="fan-icon">🎈</span></div>
-    <div class="cloud-section">
-        <div class="cloud-art">
-            <div class="cloud-line">╭◜◝ ͡ ◜◝╮</div>
-            <div class="cloud-line">(　　　`3´ )༄༅༄༅</div>
-            <div class="cloud-line">╰◟◞ ͜ ◟◞╯　　༄༅༄༅ 🧸🍬🍭</div>
-            <div class="cloud-line">༄༅ 🎁 🎈 🎀</div>
-        </div>
-    </div>
-    <div class="cool-breeze"><span class="cool-item">🍬</span><span class="cool-item">🍭</span><span class="cool-item">🎈</span><span class="cool-item">🧸</span><span class="cool-item">✨</span></div>
-    <div class="blessing">🎉 祝熊国会儿童节快乐！童心永驻，可爱无敌 🎉</div>
-    <div class="blessing blessing-dual">🎉 小熊陪你每一天，快乐成长 ۶•͈⚇•͈ა 🎉</div>
+<div class="stars" id="starsContainer"></div>
 
-    <div class="miss-you-area">
-        <button class="heart-miss-btn" id="missYouHeartBtn">❤️</button>
-        <div class="miss-counter-box">
-            <span>💌 想念次数</span>
-            <span class="miss-count" id="missCountDisplay">…</span>
-            <span class="last-time" id="lastClickTimeDisplay">加载中…</span>
-            <span class="global-badge" id="globalBadge">🌐 全球统一</span>
-        </div>
-        <div id="syncError" style="display: none; color: #ff4d4f; font-size: 0.9rem; margin-top: 0.4rem; font-weight: 500; background: rgba(255,240,240,0.8); border-radius: 30px; padding: 0.2rem 1.2rem;">⚠️ 网络开小差，同步失败，请稍后再试</div>
-        <div class="history-badge" id="historyHint">✨ 每次想念都被珍藏 ✨</div>
+<div class="main-container">
+    <div class="header">
+        <h1>📝 小熊的记事本 🌐</h1>
+        <p>记录甜蜜的每一刻 · 全球同步</p>
+        <a href="index.html" class="back-btn">🏠 回到糖果乐园</a>
     </div>
 
-    <div class="drama-section">
-        <div class="section-title">📺 熊国会的追剧收藏夹 🌐</div>
-        <div class="input-row">
-            <input type="text" class="custom-input" id="dramaNameInput" placeholder="输入剧名...">
-            <input type="text" class="custom-input" id="dramaEpInput" placeholder="看到第几集？" style="max-width: 120px;">
-            <button class="add-btn" id="dramaAddBtn">➕ 添加追剧</button>
-        </div>
-        <ul class="drama-list" id="dramaList">
-            <li class="drama-empty">🔄 加载中...</li>
-        </ul>
-    </div>
-
-    <div style="margin-top: 1rem; font-size:1rem; color:#b45f3b;">🎀 愿你永远像孩子一样，被世界温柔以待 🎀</div>
-    <button class="game-btn" id="openGameBtn">🎮 糖果大作战 · 戳我玩 🍬</button>
-</div>
-
-<div id="bgCloudContainer"></div>
-
-<div class="dog-container" id="dogContainer">
-    <video id="dogVideo" class="dog-video" autoplay loop muted playsinline>
-        <source src="dog_live.mp4" type="video/mp4">
-    </video>
-    <div class="dog-tip" id="dogTip">🐶 单击看视频 · 双击删除 · 三击转圈</div>
-</div>
-
-<div class="notepad-float" id="notepadFloat">
-    <img src="eyes.jpg" alt="记事本" class="notepad-img" id="notepadImg">
-    <div class="notepad-tip">📝 单击打开 · 双击删除</div>
-</div>
-
-<div id="videoModal" class="video-modal">
-    <div class="modal-content">
-        <span class="close-modal" id="closeModalBtn">&times;</span>
-        <video id="loveVideo" controls autoplay muted playsinline>
-            <source src="61.mp4" type="video/mp4">
-        </video>
-        <div class="video-caption">🎁 专属你的儿童节小电影 🎁</div>
-    </div>
-</div>
-
-<div id="gameModal" class="game-modal">
-    <div class="modal-content" style="background: transparent; border: none; box-shadow: none; padding: 0;">
-        <div class="game-container">
-            <div class="game-header">
-                <span>🍬 糖果大作战</span>
-                <span class="level-badge" id="levelDisplay">🏆 第1关</span>
-                <span>⏱️ <span id="timerDisplay">15</span>s</span>
-                <span>🍭 <span id="scoreDisplay">0</span></span>
+    <div class="card-wrapper">
+        <div class="card-inner" id="cardInner">
+            <div class="card-front">
+                <div class="tabs-area" id="tabsArea"></div>
+                <div class="textarea-wrap">
+                    <textarea class="notepad-textarea" id="notepadTextarea" placeholder="在这里写下你的小秘密...💭"></textarea>
+                </div>
+                <div class="status-row">
+                    <span class="status-text" id="statusText">🔄 同步中...</span>
+                    <div class="action-btns">
+                        <button class="action-btn" id="renameBtn">✏️ 重命名</button>
+                        <button class="action-btn danger" id="deleteBtn">🗑️ 删除笔记</button>
+                    </div>
+                </div>
             </div>
-            <canvas id="gameCanvas" class="game-canvas" width="450" height="450"></canvas>
-            <div class="game-message" id="gameMessage">🎯 第1关：收集10颗糖果晋级！</div>
-            <button class="restart-btn" id="restartGameBtn">✨ 重新开始 ✨</button>
-            <span class="close-modal" id="closeGameBtn" style="position: static; margin-top: 12px; background: #ffaa77; color: #5c2e0e; display: inline-block; width: auto; padding: 6px 20px; border-radius: 60px; font-size: 0.9rem;">关闭游戏</span>
+            <div class="card-back">
+                <div class="back-content">
+                    <div class="warn-icon">⚠️</div>
+                    <h3>确定要删除这个笔记吗？</h3>
+                    <p id="deleteNoteName">笔记名称</p>
+                    <p style="font-size:0.8rem;">此操作不可恢复，将同步到所有设备</p>
+                    <div class="confirm-btns">
+                        <button class="confirm-delete" id="confirmDeleteBtn">确认删除</button>
+                        <button class="cancel-delete" id="cancelDeleteBtn">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flip-indicator">
+            <button class="flip-btn" id="flipBackBtn">🔄 翻转卡片</button>
         </div>
     </div>
 </div>
 
 <script>
 (function() {
-    const bodyEl = document.body;
-    let particleInterval = null;
-    const coolItems = ['🍬','🍭','🎈','🧸','🎀','✨','🍬','🍭','💖','🎁'];
-
-    function createWindParticle() {
-        const p = document.createElement('div');
-        p.classList.add('floating-particle');
-        p.innerHTML = coolItems[Math.floor(Math.random()*coolItems.length)];
-        p.style.fontSize = `${1+Math.random()*1.2}rem`;
-        p.style.left = Math.random()*window.innerWidth+'px';
-        p.style.top = window.innerHeight+20+'px';
-        p.style.animation = `blowWind ${4+Math.random()*3}s linear forwards`;
-        bodyEl.appendChild(p);
-        p.addEventListener('animationend', ()=>p.remove());
-    }
-
-    function startCoolBreeze() {
-        if(particleInterval) clearInterval(particleInterval);
-        particleInterval = setInterval(() => {
-            if(document.hidden) return;
-            for(let i=0;i<(Math.random()*2+1);i++) createWindParticle();
-        }, 600);
-    }
-
-    function createBgClouds() {
-        const container = document.getElementById('bgCloudContainer');
-        if(!container) return;
-        container.innerHTML = '';
-        for(let i=0;i<6;i++) {
-            const c = document.createElement('div');
-            c.classList.add('bg-cloud');
-            c.style.width = 200+Math.random()*350+'px';
-            c.style.height = 100+Math.random()*180+'px';
-            c.style.left = Math.random()*80+'%';
-            c.style.top = Math.random()*80+'%';
-            c.style.opacity = 0.3+Math.random()*0.3;
-            container.appendChild(c);
-        }
-    }
-
-    function createFloatingHearts() {
-        setInterval(() => {
-            if(document.hidden) return;
-            const h = document.createElement('div');
-            h.style.cssText = 'position:fixed; bottom:-20px; left:'+Math.random()*window.innerWidth+'px; font-size:'+(1.2+Math.random()*1.5)+'rem; pointer-events:none; z-index:25; animation:floatUpHeart 5s ease-in forwards;';
-            h.innerHTML = ['❤️','💖','🧡','💛','💚','🎈','🍭'][Math.floor(Math.random()*7)];
-            document.body.appendChild(h);
-            h.addEventListener('animationend', ()=>h.remove());
-        }, 1500);
-    }
-
-    function addClickBreezeEffect(e) {
-        if(e.target.closest('.game-modal') || e.target.closest('.video-modal')) return;
-        const x = e.clientX || (e.touches?e.touches[0].clientX:0);
-        const y = e.clientY || (e.touches?e.touches[0].clientY:0);
-        if(!x && !y) return;
-        for(let i=0;i<4;i++) {
-            const p = document.createElement('div');
-            p.style.cssText = `position:fixed; left:${x+(Math.random()-0.5)*30}px; top:${y+(Math.random()-0.5)*30}px; font-size:${1+Math.random()*1.2}rem; pointer-events:none; z-index:999; animation:clickPopFade 0.9s forwards;`;
-            p.innerHTML = ['🍬','🍭','🎈','❤️'][Math.floor(Math.random()*4)];
-            document.body.appendChild(p);
-            p.addEventListener('animationend', ()=>p.remove());
-        }
-    }
-
-    startCoolBreeze(); createBgClouds(); createFloatingHearts();
-    window.addEventListener('click', addClickBreezeEffect);
-    window.addEventListener('beforeunload', ()=> particleInterval && clearInterval(particleInterval));
-
-    // ========== Supabase 配置 ==========
+    // Supabase 配置
     const SUPABASE_URL = 'https://cgvnzfbdqmqguagtjhfi.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_W_1tTixY0j-gF8roUH9HRQ__hiuYCLG';
     const MAX_RETRIES = 3;
@@ -409,456 +142,159 @@
         }
     }
 
-    // ========== 想念计数器 ==========
-    const missBtn = document.getElementById('missYouHeartBtn');
-    const missCountSpan = document.getElementById('missCountDisplay');
-    const lastTimeSpan = document.getElementById('lastClickTimeDisplay');
-    const historyHint = document.getElementById('historyHint');
-    const globalBadge = document.getElementById('globalBadge');
-    const syncError = document.getElementById('syncError');
-    
-    let globalCount = 0, globalLastTime = null, apiAvailable = false, isRequesting = false, errorTimer = null;
-
-    function showSyncError() {
-        if (syncError) { syncError.style.display = 'block'; if (errorTimer) clearTimeout(errorTimer); errorTimer = setTimeout(() => { syncError.style.display = 'none'; }, 3000); }
+    // 星空背景
+    const starsContainer = document.getElementById('starsContainer');
+    for(let i = 0; i < 80; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.width = star.style.height = (Math.random() * 3 + 1) + 'px';
+        star.style.animationDelay = Math.random() * 3 + 's';
+        star.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+        starsContainer.appendChild(star);
     }
 
-    async function updateCountDisplay() {
-        missCountSpan.textContent = globalCount;
-        lastTimeSpan.textContent = globalLastTime ? '🕒 ' + new Date(globalLastTime).toLocaleString() : '还没按过呢';
-        historyHint.innerHTML = globalCount > 0 ? `🍪 小熊饼干已经想念了 ${globalCount} 次 🍪` : '✨ 每次想念都被珍藏 ✨';
-        globalBadge.textContent = apiAvailable ? '🌐 Supabase 全球同步' : '📱 本地模式';
-    }
+    let notes = [];
+    let currentNoteIndex = 0;
+    let autoSaveTimer = null;
+    let isFlipped = false;
 
-    async function loadGlobalCount() {
+    const cardInner = document.getElementById('cardInner');
+    const tabsArea = document.getElementById('tabsArea');
+    const notepadTextarea = document.getElementById('notepadTextarea');
+    const statusText = document.getElementById('statusText');
+    const deleteNoteName = document.getElementById('deleteNoteName');
+    const flipBackBtn = document.getElementById('flipBackBtn');
+
+    async function saveToServer() {
         try {
-            const data = await supabaseRequest('miss_counter?id=eq.1&select=count,last_time');
-            if (data && data.length > 0) { globalCount = data[0].count || 0; globalLastTime = data[0].last_time || null; apiAvailable = true; }
-        } catch (e) { apiAvailable = false; }
-        updateCountDisplay();
-    }
-
-    missBtn.addEventListener('click', async (e) => {
-        if (isRequesting) return;
-        isRequesting = true; missBtn.disabled = true; missBtn.style.opacity = '0.7';
-        const rect = missBtn.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2;
-        for (let i = 0; i < 8; i++) {
-            const h = document.createElement('div');
-            h.innerHTML = ['💖','❤️','💕','💗','💘','💝','✨','🌸'][i % 8];
-            h.style.cssText = `position:fixed; left:${cx+(Math.random()-0.5)*30}px; top:${cy+(Math.random()-0.5)*20}px; font-size:1.5rem; pointer-events:none; z-index:999; animation:clickPopFade 0.8s forwards;`;
-            document.body.appendChild(h);
-            setTimeout(() => h.remove(), 800);
-        }
-        try {
-            const current = await supabaseRequest('miss_counter?id=eq.1&select=count');
-            if (current && current.length > 0) {
-                const newCount = (current[0].count || 0) + 1;
-                const now = Date.now();
-                await supabaseRequest('miss_counter?id=eq.1', { method: 'PATCH', body: JSON.stringify({ count: newCount, last_time: now }) });
-                globalCount = newCount; globalLastTime = now; apiAvailable = true;
-                if (syncError) syncError.style.display = 'none';
-                if (errorTimer) { clearTimeout(errorTimer); errorTimer = null; }
-            }
-        } catch (err) { apiAvailable = false; showSyncError(); }
-        updateCountDisplay();
-        missBtn.style.opacity = '1'; missBtn.disabled = false; isRequesting = false;
-    });
-
-    loadGlobalCount();
-
-    // ========== 追剧收藏夹 ==========
-    const dramaNameInput = document.getElementById('dramaNameInput');
-    const dramaEpInput = document.getElementById('dramaEpInput');
-    const dramaAddBtn = document.getElementById('dramaAddBtn');
-    const dramaList = document.getElementById('dramaList');
-    let dramaData = [];
-
-    function escapeHTML(str) { const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
-
-    function renderDramaList() {
-        dramaList.innerHTML = '';
-        if (dramaData.length === 0) { dramaList.innerHTML = '<li class="drama-empty">✨ 还没有追剧记录，快来添加吧~</li>'; return; }
-        dramaData.forEach((item, index) => {
-            const li = document.createElement('li'); li.className = 'drama-item';
-            li.innerHTML = `<div class="drama-item-info"><span>📺</span><span>${escapeHTML(item.name)}</span>${item.ep ? `<span class="drama-ep">第${escapeHTML(item.ep)}集</span>` : ''}</div><button class="delete-btn" data-index="${index}" title="删除">×</button>`;
-            li.querySelector('.delete-btn').addEventListener('click', () => deleteDrama(index));
-            dramaList.appendChild(li);
-        });
-    }
-
-    async function saveDramaToServer() {
-        try { await supabaseRequest('drama_data?id=eq.1', { method: 'PATCH', body: JSON.stringify({ dramas: JSON.stringify(dramaData) }) }); } catch (e) {}
-    }
-
-    async function loadDramaFromServer() {
-        try {
-            const data = await supabaseRequest('drama_data?id=eq.1&select=dramas');
-            if (data && data.length > 0 && data[0].dramas) { dramaData = JSON.parse(data[0].dramas); }
-        } catch (e) {}
-        renderDramaList();
-    }
-
-    async function deleteDrama(index) { dramaData.splice(index, 1); renderDramaList(); await saveDramaToServer(); }
-
-    dramaAddBtn.addEventListener('click', async () => {
-        const name = dramaNameInput.value.trim(), ep = dramaEpInput.value.trim();
-        if (!name) { alert('请输入剧名哦~'); return; }
-        dramaData.push({ name, ep }); renderDramaList(); await saveDramaToServer();
-        dramaNameInput.value = ''; dramaEpInput.value = ''; dramaNameInput.focus();
-    });
-    dramaNameInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') dramaAddBtn.click(); });
-    loadDramaFromServer();
-
-    // ========== 小狗 ==========
-    const dogContainer = document.getElementById('dogContainer');
-    const dogVideo = document.getElementById('dogVideo');
-    const dogTip = document.getElementById('dogTip');
-
-    function setDogInitialPosition() {
-        const w = dogContainer.offsetWidth, h = dogContainer.offsetHeight;
-        dogContainer.style.left = (window.innerWidth - w - 20) + 'px';
-        dogContainer.style.top = (window.innerHeight - h - 20) + 'px';
-        dogContainer.style.right = 'auto'; dogContainer.style.bottom = 'auto';
-    }
-    setDogInitialPosition();
-    window.addEventListener('resize', () => { if (!dogContainer.dataset.dragged) setDogInitialPosition(); });
-
-    let isDogDragging = false, dogStartX, dogStartY, dogStartLeft, dogStartTop, dogHasMoved = false;
-    const DRAG_THRESHOLD = 5;
-    dogContainer.addEventListener('mousedown', onDogDragStart);
-    dogContainer.addEventListener('touchstart', onDogDragStart, { passive: false });
-    window.addEventListener('mousemove', onDogDragMove);
-    window.addEventListener('touchmove', onDogDragMove, { passive: false });
-    window.addEventListener('mouseup', onDogDragEnd);
-    window.addEventListener('touchend', onDogDragEnd);
-
-    function onDogDragStart(e) {
-        if (document.querySelector('.game-modal.active') || document.querySelector('.video-modal.active')) return;
-        e.preventDefault();
-        const point = e.touches ? e.touches[0] : e;
-        dogStartX = point.clientX; dogStartY = point.clientY;
-        dogStartLeft = parseFloat(dogContainer.style.left) || 0;
-        dogStartTop = parseFloat(dogContainer.style.top) || 0;
-        isDogDragging = true; dogHasMoved = false;
-        dogContainer.classList.add('dragging');
-    }
-    function onDogDragMove(e) {
-        if (!isDogDragging) return;
-        e.preventDefault();
-        const point = e.touches ? e.touches[0] : e;
-        const dx = point.clientX - dogStartX, dy = point.clientY - dogStartY;
-        if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) dogHasMoved = true;
-        if (dogHasMoved) {
-            dogContainer.style.left = (dogStartLeft + dx) + 'px';
-            dogContainer.style.top = (dogStartTop + dy) + 'px';
-            dogContainer.dataset.dragged = 'true';
-        }
-    }
-    function onDogDragEnd(e) {
-        if (!isDogDragging) return;
-        isDogDragging = false; dogContainer.classList.remove('dragging');
-        if (!dogHasMoved) handleDogMultiClick(e);
-        dogStartX = dogStartY = dogStartLeft = dogStartTop = null; dogHasMoved = false;
-    }
-
-    let dogClickCount = 0, dogClickTimer = null;
-    function handleDogMultiClick(e) {
-        e.stopPropagation();
-        dogClickCount++;
-        if (dogClickTimer) clearTimeout(dogClickTimer);
-        dogClickTimer = setTimeout(() => {
-            if (dogClickCount === 1) {
-                document.getElementById('videoModal').classList.add('active');
-                document.getElementById('loveVideo').muted = false;
-                document.getElementById('loveVideo').play().catch(()=>{});
-            } else if (dogClickCount === 2) {
-                dogContainer.classList.add('deleted');
-                dogTip.textContent = '💔 小狗消失了...';
-                setTimeout(() => { dogContainer.style.display = 'none'; }, 500);
-            } else if (dogClickCount >= 3) {
-                dogVideo.classList.add('dog-spin');
-                dogTip.textContent = '🌀 转圈圈啦！';
-                setTimeout(() => { dogVideo.classList.remove('dog-spin'); dogTip.textContent = '🐶 单击看视频 · 双击删除 · 三击转圈'; }, 600);
-            }
-            dogClickCount = 0; dogClickTimer = null;
-        }, 300);
-    }
-
-    document.getElementById('closeModalBtn').addEventListener('click', () => {
-        document.getElementById('videoModal').classList.remove('active');
-        document.getElementById('loveVideo').pause();
-    });
-    document.getElementById('videoModal').addEventListener('click', e => {
-        if (e.target === document.getElementById('videoModal')) {
-            document.getElementById('videoModal').classList.remove('active');
-            document.getElementById('loveVideo').pause();
-        }
-    });
-
-    // ========== 记事本 - 单击打开 / 双击删除 ==========
-    const notepadFloat = document.getElementById('notepadFloat');
-    const notepadImg = document.getElementById('notepadImg');
-    const notepadTip = document.querySelector('.notepad-tip');
-
-    function setNotepadInitialPosition() {
-        const nw = notepadFloat.offsetWidth, nh = notepadFloat.offsetHeight;
-        const dogRect = dogContainer.getBoundingClientRect();
-        notepadFloat.style.left = (dogRect.left + dogRect.width / 2 - nw / 2) + 'px';
-        notepadFloat.style.top = (dogRect.top - nh - 25) + 'px';
-        notepadFloat.style.right = 'auto'; notepadFloat.style.bottom = 'auto';
-    }
-    setTimeout(setNotepadInitialPosition, 600);
-    window.addEventListener('resize', () => { if (!notepadFloat.dataset.dragged) setNotepadInitialPosition(); });
-
-    let isNotepadDragging = false, npStartX, npStartY, npStartLeft, npStartTop, npHasMoved = false;
-    notepadFloat.addEventListener('mousedown', onNpDragStart);
-    notepadFloat.addEventListener('touchstart', onNpDragStart, { passive: false });
-    window.addEventListener('mousemove', onNpDragMove);
-    window.addEventListener('touchmove', onNpDragMove, { passive: false });
-    window.addEventListener('mouseup', onNpDragEnd);
-    window.addEventListener('touchend', onNpDragEnd);
-
-    function onNpDragStart(e) {
-        if (document.querySelector('.game-modal.active') || document.querySelector('.video-modal.active')) return;
-        e.preventDefault();
-        const point = e.touches ? e.touches[0] : e;
-        npStartX = point.clientX; npStartY = point.clientY;
-        npStartLeft = parseFloat(notepadFloat.style.left) || 0;
-        npStartTop = parseFloat(notepadFloat.style.top) || 0;
-        isNotepadDragging = true; npHasMoved = false;
-        notepadFloat.classList.add('dragging');
-    }
-    function onNpDragMove(e) {
-        if (!isNotepadDragging) return;
-        e.preventDefault();
-        const point = e.touches ? e.touches[0] : e;
-        const dx = point.clientX - npStartX, dy = point.clientY - npStartY;
-        if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) npHasMoved = true;
-        if (npHasMoved) {
-            notepadFloat.style.left = (npStartLeft + dx) + 'px';
-            notepadFloat.style.top = (npStartTop + dy) + 'px';
-            notepadFloat.dataset.dragged = 'true';
-        }
-    }
-    function onNpDragEnd(e) {
-        if (!isNotepadDragging) return;
-        isNotepadDragging = false; notepadFloat.classList.remove('dragging');
-        if (!npHasMoved) handleNotepadMultiClick(e);
-        npStartX = npStartY = npStartLeft = npStartTop = null; npHasMoved = false;
-    }
-
-    // 记事本多击检测：单击打开，双击删除
-    let npClickCount = 0, npClickTimer = null;
-    function handleNotepadMultiClick(e) {
-        e.stopPropagation();
-        npClickCount++;
-        if (npClickTimer) clearTimeout(npClickTimer);
-        npClickTimer = setTimeout(() => {
-            if (npClickCount === 1) {
-                // 单击：打开记事本
-                window.location.href = 'notepad.html';
-            } else if (npClickCount >= 2) {
-                // 双击：删除记事本
-                notepadFloat.classList.add('deleted');
-                notepadTip.textContent = '💔 记事本消失了...';
-                setTimeout(() => { notepadFloat.style.display = 'none'; }, 500);
-            }
-            npClickCount = 0;
-            npClickTimer = null;
-        }, 300);
-    }
-
-    notepadImg.addEventListener('error', () => {
-        notepadImg.style.display = 'none';
-        const fallback = document.createElement('div');
-        fallback.style.cssText = 'width:180px;height:180px;border-radius:15px;background:linear-gradient(135deg,#8b5cf6,#6366f1);display:flex;align-items:center;justify-content:center;font-size:4rem;box-shadow:0 10px 25px rgba(139,92,246,0.4),0 0 0 3px rgba(255,240,255,0.6);animation:notepadFloat 3.5s infinite ease-in-out;padding:3px;';
-        fallback.textContent = '📖';
-        notepadImg.parentNode.insertBefore(fallback, notepadImg);
-    });
-
-    // ========== 糖果大作战 ==========
-    const gameModal = document.getElementById('gameModal');
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-    const timerSpan = document.getElementById('timerDisplay');
-    const scoreSpan = document.getElementById('scoreDisplay');
-    const gameMessageDiv = document.getElementById('gameMessage');
-    const levelDisplay = document.getElementById('levelDisplay');
-    const restartBtn = document.getElementById('restartGameBtn');
-    const closeGameBtn = document.getElementById('closeGameBtn');
-
-    let gameActive = false, score = 0, timeLeft = 15, intervalId = null, animationId = null;
-    let candies = [];
-    let currentLevel = 1, levelTargetScore = 10, baseCandyCount = 5;
-    let CANDY_COUNT = 5, RADIUS = 20;
-    let loveMsgTimer = null;
-
-    const loveQuotes = [
-        "你知道我想喝什么吗？我想呵护你。","莫文蔚的阴天，孙燕姿的雨天，都不如你和我聊天。",
-        "我觉得你特别像一款游戏，我的世界。","遇到你之后，我再也没吃过糖，因为你太甜了。",
-        "你有打火机吗？没有啊？那你是怎么点燃我的心的？","猜猜我的心在哪边？左边？错啦，在你那边。",
-        "我想去取个东西，取什么？娶你。","你能不能别再走来走去了？不然我眼里就全是你了。",
-        "最近有谣言说我喜欢你，我要澄清一下，那不是谣言。","我觉得你今天有点怪，哪里怪？怪好看的。",
-        "牛肉、猪肉、羊肉，你猜我最喜欢哪种肉？是你这心头肉。","你知道我的缺点是什么吗？缺点你。",
-        "手可不可以借我牵一下？反正迟早都是我的。","我想买一块地，你的死心塌地。",
-        "天气这么冷，你知道怎么取暖吗？钻进我怀里。","你累不累啊？不累。可你都在我心里跑了一整天了。",
-        "别到处走了，就留在我身边吧。","你是不是会魔法？不然怎么我看一眼就开心。",
-        "苦海无涯，回头是我。","我最近学会了一门新技能，算命。我掐指一算，你命里缺我。",
-        "你知道我最喜欢吃什么水果吗？是你这个开心果。","全世界有 70 亿人，我偏偏遇见了你，好幸运。",
-        "我们来玩个游戏吧，一二三，木头人，不许动！糟糕，我心动了。","能不能帮我洗个东西？洗什么？喜欢我。",
-        "我觉得你今天有点不一样，具体哪不一样？更让我心动了。","从今往后，山河远阔，人间星河，无一不是你。",
-        "听说奶茶和甜点很甜，直到遇见你，我才知道什么是真的甜。","我迷路了，你知道去往你心里的路怎么走吗？",
-        "不要抱怨生活了，抱我。","你是什么血型？理想型。","风止意难平，意难平全是你。",
-        "我想在你那里买一扇门，什么门？我们的余生之门。","星星都睡着了，唯独我还在想你。",
-        "你知道为什么我总感冒吗？因为我对你没有抵抗力。","近朱者赤，近你者甜。",
-        "我想变成一只猫，每天赖在你身边。","遇见你的时候，上帝只说了四个字：在劫难逃。",
-        "别再发光啦，我都快被你闪晕了。","我有一个超能力，超级喜欢你。","蛋糕、糖果、蜂蜜，都甜不过你的微笑。",
-        "你能不能闭嘴？我没说话啊。那为什么我满脑子都是你的声音？","我想去环游世界，不用走远，围着你转就好。",
-        "今天的风好大，吹得我好想你。","你是碳酸饮料吗？不然我怎么一见到你就开心得冒泡。",
-        "生是你的人，死是你的鬼，这辈子都赖定你了。","月亮很亮，亮也没用，没用也亮。就像我喜欢你，喜欢没用，没用也喜欢。",
-        "请问你有女朋友吗？没有的话，介意有一个吗？","我的钱包丢了，因为心都被你偷走了。",
-        "落叶归根，我归你。","你知道我最喜欢什么神吗？你的眼神。","把你的手给我，我帮你看看手相，你命里缺我。",
-        "本来想浪迹天涯，结果遇见你，只想在家陪你。","白开水淡而无味，有你相伴才万般有趣。",
-        "你是不是偷了东西？偷了我的快乐。","一日不见如隔三秋，我已经想你无数个秋天了。",
-        "我觉得空气都变甜了，原来是你来了。","不想看风景了，因为最美的风景就在眼前。",
-        "能不能做我的导航？带我走完往后的路。","花开十里不如你，春风万里不及你。",
-        "我不喜欢喝酒，但我愿意沉醉在你的温柔里。","云朵漂浮在天空，而你漂浮在我的心上。",
-        "遇到你之后，我再也不想独自前行。","你像冬日暖阳，一下子温暖了我的全部。",
-        "别躲啦，我早就盯上你了。","酸甜苦辣我都尝过，唯独喜欢你最上头。","星河万里，我只看向你。",
-        "想把所有温柔和偏爱，全都留给你。","我没有什么野心，只想一辈子拥有你。",
-        "目光所及皆是你，心之所向唯有你。","别人再好与我无关，你再普通我都喜欢。",
-        "这是我的手背，这是我的脚背，你是我的宝贝。","只许州官放火，不许你离开我。",
-        "你近视吗？不近视为什么看不出来我喜欢你。","我想吃碗面，你的心里面。",
-        "甜有100种方式，吃糖，蛋糕，还有每天98次的想你。","你的名字，是我见过最短的情诗。"
-    ];
-
-    function showLevelUpEffect() {
-        const effect = document.createElement('div'); effect.className = 'level-up-effect';
-        effect.innerHTML = `🎉 第${currentLevel}关通过！`;
-        document.body.appendChild(effect);
-        setTimeout(() => effect.remove(), 1500);
-    }
-
-    function initCandies() {
-        candies = []; CANDY_COUNT = baseCandyCount + currentLevel;
-        for(let i=0;i<CANDY_COUNT;i++) {
-            candies.push({
-                x: 40 + Math.random()*(canvas.width-80), y: 40 + Math.random()*(canvas.height-80),
-                vx: (Math.random()-0.5)*(2 + currentLevel * 0.5), vy: (Math.random()-0.5)*(2 + currentLevel * 0.5)
+            await supabaseRequest('notepad_data?id=eq.1', {
+                method: 'PATCH',
+                body: JSON.stringify({ notes: JSON.stringify(notes) })
             });
+            updateStatus('💾 已同步到云端');
+        } catch (e) {
+            updateStatus('⚠️ 同步失败，请检查网络');
         }
     }
 
-    function drawCandies() {
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle = '#fdf3e0'; ctx.fillRect(0,0,canvas.width,canvas.height);
-        for(let c of candies) {
-            ctx.save();
-            ctx.shadowBlur = 6; ctx.shadowColor = "rgba(0,0,0,0.2)";
-            ctx.font = `${RADIUS*1.5}px "Segoe UI Emoji"`; ctx.fillStyle = '#ffaa66';
-            ctx.beginPath(); ctx.arc(c.x, c.y, RADIUS-2, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = '#d45a1a'; ctx.font = `${RADIUS*1.4}px "Segoe UI Emoji"`;
-            ctx.fillText('🍬', c.x-12, c.y+10);
-            ctx.restore();
-        }
-    }
-
-    function updateCandies() {
-        if(!gameActive) return;
-        for(let c of candies) {
-            c.x += c.vx; c.y += c.vy;
-            if(c.x - RADIUS < 0) { c.x = RADIUS; c.vx = -c.vx; }
-            if(c.x + RADIUS > canvas.width) { c.x = canvas.width - RADIUS; c.vx = -c.vx; }
-            if(c.y - RADIUS < 0) { c.y = RADIUS; c.vy = -c.vy; }
-            if(c.y + RADIUS > canvas.height) { c.y = canvas.height - RADIUS; c.vy = -c.vy; }
-        }
-        drawCandies();
-        animationId = requestAnimationFrame(updateCandies);
-    }
-
-    function handleCanvasClick(e) {
-        if(!gameActive) return;
-        const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width, scaleY = canvas.height / rect.height;
-        let clientX, clientY;
-        if(e.touches) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
-        else { clientX = e.clientX; clientY = e.clientY; }
-        const canvasX = (clientX - rect.left) * scaleX, canvasY = (clientY - rect.top) * scaleY;
-        for(let c of candies) {
-            if(Math.hypot(canvasX - c.x, canvasY - c.y) < RADIUS) {
-                score++; scoreSpan.innerText = score;
-                c.x = 40 + Math.random()*(canvas.width-80);
-                c.y = 40 + Math.random()*(canvas.height-80);
-                c.vx = (Math.random()-0.5)*(2.5 + currentLevel);
-                c.vy = (Math.random()-0.5)*(2.5 + currentLevel);
-                const randomLove = loveQuotes[Math.floor(Math.random() * loveQuotes.length)];
-                gameMessageDiv.innerHTML = randomLove;
-                clearTimeout(loveMsgTimer);
-                loveMsgTimer = setTimeout(() => {
-                    if(gameActive) gameMessageDiv.innerHTML = `🎯 第${currentLevel}关：还需${levelTargetScore - score}颗糖果晋级！`;
-                }, 3000);
-                if(score >= levelTargetScore) levelUp();
-                break;
+    async function loadFromServer() {
+        try {
+            const data = await supabaseRequest('notepad_data?id=eq.1&select=notes');
+            if (data && data.length > 0 && data[0].notes) {
+                notes = JSON.parse(data[0].notes);
             }
+            if (notes.length === 0) {
+                notes = [{ title: '我的甜蜜日记', content: '' }];
+            }
+        } catch (e) {
+            console.warn('加载失败:', e);
+            updateStatus('⚠️ 加载失败，使用本地缓存');
+        }
+        if (notes.length > 0) {
+            notepadTextarea.value = notes[0].content || '';
+        }
+        renderTabs();
+        updateStatus('✅ 已从云端加载');
+    }
+
+    function renderTabs() {
+        tabsArea.innerHTML = '';
+        notes.forEach((note, index) => {
+            const tab = document.createElement('span');
+            tab.className = 'tab-btn' + (index === currentNoteIndex ? ' active' : '');
+            tab.textContent = '📄 ' + (note.title || '无标题');
+            tab.title = note.title || '无标题';
+            tab.addEventListener('click', () => switchNote(index));
+            tabsArea.appendChild(tab);
+        });
+        const addBtn = document.createElement('button');
+        addBtn.className = 'add-tab-btn';
+        addBtn.textContent = '➕ 新建';
+        addBtn.addEventListener('click', addNewNote);
+        tabsArea.appendChild(addBtn);
+    }
+
+    function switchNote(index) {
+        if (index === currentNoteIndex && !isFlipped) return;
+        notes[currentNoteIndex].content = notepadTextarea.value;
+        if (isFlipped) flipCard();
+        currentNoteIndex = index;
+        notepadTextarea.value = notes[index].content || '';
+        renderTabs();
+        updateStatus('📂 已切换到: ' + notes[index].title);
+        notepadTextarea.focus();
+    }
+
+    async function addNewNote() {
+        notes[currentNoteIndex].content = notepadTextarea.value;
+        const newIndex = notes.length;
+        notes.push({ title: '新笔记 ' + (newIndex + 1), content: '' });
+        currentNoteIndex = newIndex;
+        notepadTextarea.value = '';
+        renderTabs();
+        await saveToServer();
+        notepadTextarea.focus();
+    }
+
+    function updateStatus(msg) {
+        statusText.textContent = msg;
+    }
+
+    function flipCard() {
+        isFlipped = !isFlipped;
+        cardInner.classList.toggle('flipped', isFlipped);
+        flipBackBtn.textContent = isFlipped ? '🔄 翻回正面' : '🔄 翻转卡片';
+        if (isFlipped) {
+            deleteNoteName.textContent = '「' + notes[currentNoteIndex].title + '」';
         }
     }
 
-    function levelUp() {
-        currentLevel++; levelTargetScore += 10 + currentLevel * 2;
-        timeLeft = 15 + currentLevel * 2;
-        timerSpan.innerText = timeLeft;
-        levelDisplay.innerHTML = `🏆 第${currentLevel}关`;
-        score = 0; scoreSpan.innerText = '0';
-        showLevelUpEffect();
-        gameMessageDiv.innerHTML = `🎉 晋级第${currentLevel}关！目标：${levelTargetScore}颗糖果！糖果移动更快了哦~`;
-        initCandies();
-    }
-
-    function startGame() {
-        if(intervalId) clearInterval(intervalId);
-        if(animationId) cancelAnimationFrame(animationId);
-        if(loveMsgTimer) clearTimeout(loveMsgTimer);
-        currentLevel = 1; levelTargetScore = 10; score = 0; timeLeft = 15;
-        scoreSpan.innerText = '0'; timerSpan.innerText = '15';
-        levelDisplay.innerHTML = '🏆 第1关'; gameActive = true;
-        gameMessageDiv.innerHTML = '🎯 第1关：收集10颗糖果晋级！';
-        initCandies(); drawCandies(); updateCandies();
-        intervalId = setInterval(() => {
-            if(!gameActive) return;
-            timeLeft--; timerSpan.innerText = timeLeft;
-            if(timeLeft <= 0) {
-                gameActive = false; clearInterval(intervalId);
-                if(animationId) cancelAnimationFrame(animationId);
-                const totalScore = (currentLevel - 1) * levelTargetScore + score;
-                gameMessageDiv.innerHTML = `⏰ 时间到啦！你闯到第${currentLevel}关，总共收集了 ${totalScore} 颗糖果！ 🎁`;
-                ctx.clearRect(0,0,canvas.width,canvas.height);
-                ctx.fillStyle = '#fdf3e0'; ctx.fillRect(0,0,canvas.width,canvas.height);
-                ctx.font = 'bold 24px "Segoe UI"'; ctx.fillStyle = '#d96c1e';
-                ctx.fillText('🎉 GAME OVER 🎉', canvas.width/2-100, canvas.height/2-20);
-                ctx.font = 'bold 18px "Segoe UI"';
-                ctx.fillText(`闯到第${currentLevel}关`, canvas.width/2-60, canvas.height/2+20);
-            }
+    notepadTextarea.addEventListener('input', () => {
+        if (autoSaveTimer) clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(async () => {
+            notes[currentNoteIndex].content = notepadTextarea.value;
+            await saveToServer();
         }, 1000);
-    }
-
-    function stopGameAndClose() {
-        gameActive = false;
-        if(intervalId) clearInterval(intervalId);
-        if(animationId) cancelAnimationFrame(animationId);
-        if(loveMsgTimer) clearTimeout(loveMsgTimer);
-        gameModal.classList.remove('active');
-    }
-
-    document.getElementById('openGameBtn').addEventListener('click', () => {
-        if(gameModal.classList.contains('active')) return;
-        startGame(); gameModal.classList.add('active');
     });
-    closeGameBtn.addEventListener('click', stopGameAndClose);
-    restartBtn.addEventListener('click', () => { stopGameAndClose(); setTimeout(() => { startGame(); gameModal.classList.add('active'); }, 100); });
-    canvas.addEventListener('click', handleCanvasClick);
-    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); handleCanvasClick(e); }, { passive: false });
-    gameModal.addEventListener('click', (e) => { if(e.target === gameModal) stopGameAndClose(); });
+
+    flipBackBtn.addEventListener('click', flipCard);
+    document.getElementById('deleteBtn').addEventListener('click', () => { if (!isFlipped) flipCard(); });
+    document.getElementById('cancelDeleteBtn').addEventListener('click', () => { if (isFlipped) flipCard(); });
+
+    document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
+        if (notes.length <= 1) { alert('至少保留一个笔记哦~'); flipCard(); return; }
+        notes.splice(currentNoteIndex, 1);
+        if (currentNoteIndex >= notes.length) currentNoteIndex = notes.length - 1;
+        notepadTextarea.value = notes[currentNoteIndex].content || '';
+        renderTabs();
+        await saveToServer();
+        flipCard();
+        updateStatus('🗑️ 笔记已删除并同步');
+    });
+
+    document.getElementById('renameBtn').addEventListener('click', async () => {
+        const newTitle = prompt('请输入新标题：', notes[currentNoteIndex].title);
+        if (newTitle && newTitle.trim()) {
+            notes[currentNoteIndex].title = newTitle.trim();
+            renderTabs();
+            await saveToServer();
+            updateStatus('✏️ 已重命名: ' + newTitle.trim());
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault();
+            notes[currentNoteIndex].content = notepadTextarea.value;
+            saveToServer();
+            updateStatus('💾 已手动保存并同步');
+        }
+        if (e.ctrlKey && e.key === 'n') { e.preventDefault(); addNewNote(); }
+    });
+
+    loadFromServer();
 })();
 </script>
 </body>
