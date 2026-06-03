@@ -36,10 +36,7 @@
         .cloud-section { background: rgba(255,255,245,0.5); border-radius: 80px; padding: 1.2rem 1rem; margin: 1.5rem 0; backdrop-filter: blur(4px); text-align: center; }
         .cloud-art { display: inline-block; text-align: left; background: rgba(255,245,235,0.4); border-radius: 60px; padding: 0.6rem 1.2rem; }
         .cloud-line { font-family: monospace, 'Segoe UI Emoji'; font-size: 1.5rem; white-space: pre; line-height: 1.65; filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.1)); animation: floatCloud 3s infinite alternate ease-in-out; display: block; }
-        .cloud-line:nth-child(1) { animation-duration: 2.8s; }
-        .cloud-line:nth-child(2) { animation-duration: 3.4s; animation-delay: 0.2s; }
-        .cloud-line:nth-child(3) { animation-duration: 2.5s; animation-delay: 0.5s; }
-        .cloud-line:nth-child(4) { animation-duration: 3.2s; animation-delay: 0.1s; }
+        .cloud-line:nth-child(1) { animation-duration: 2.8s; } .cloud-line:nth-child(2) { animation-duration: 3.4s; animation-delay: 0.2s; } .cloud-line:nth-child(3) { animation-duration: 2.5s; animation-delay: 0.5s; } .cloud-line:nth-child(4) { animation-duration: 3.2s; animation-delay: 0.1s; }
         .cool-breeze { display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin: 1rem 0 0.8rem; }
         .cool-item { font-size: 1.8rem; display: inline-block; animation: spinFlurry 1.8s infinite alternate, floatUpSmall 2.2s infinite alternate; }
         .blessing { font-size: 1.9rem; font-weight: bold; background: linear-gradient(120deg, #ff9966, #ff5e7e); background-clip: text; -webkit-background-clip: text; color: transparent; margin: 1rem 0 0.5rem; letter-spacing: 2px; }
@@ -63,21 +60,54 @@
         .last-time { color: #7b4b3a; font-size: 0.9rem; max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .history-badge { margin-top: 0.5rem; font-size: 0.9rem; background: #fff2e6; border-radius: 30px; padding: 0.2rem 1.2rem; color: #9b5e4b; }
         .global-badge { display: inline-block; background: rgba(255,200,100,0.3); border-radius: 20px; padding: 0.15rem 0.8rem; font-size: 0.75rem; color: #b8782e; margin-left: 8px; animation: gentleFloat 2s infinite ease-in-out; }
-        .drama-section { background: rgba(255,240,250,0.7); border-radius: 40px; padding: 1.2rem; margin: 1.5rem 0; backdrop-filter: blur(4px); border: 2px dashed #ffb6c1; }
-        .section-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 0.8rem; background: linear-gradient(135deg, #ff6b8b, #ff9966); background-clip: text; -webkit-background-clip: text; color: transparent; }
+        .drama-section, .weight-section {
+            background: rgba(255,240,250,0.7); border-radius: 40px;
+            padding: 1.2rem; margin: 1.5rem 0; backdrop-filter: blur(4px);
+            border: 2px dashed #ffb6c1;
+        }
+        .section-title {
+            font-size: 1.4rem; font-weight: bold; margin-bottom: 0.8rem;
+            background: linear-gradient(135deg, #ff6b8b, #ff9966);
+            background-clip: text; -webkit-background-clip: text; color: transparent;
+        }
         .input-row { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 0.8rem; }
-        .custom-input { padding: 0.5rem 1rem; border-radius: 30px; border: 2px solid #ffb6c1; background: rgba(255,255,255,0.9); font-size: 0.95rem; outline: none; font-family: inherit; min-width: 180px; }
+        .custom-input {
+            padding: 0.5rem 1rem; border-radius: 30px; border: 2px solid #ffb6c1;
+            background: rgba(255,255,255,0.9); font-size: 0.95rem; outline: none;
+            font-family: inherit; min-width: 180px;
+        }
         .custom-input:focus { border-color: #ff6b8b; }
-        .add-btn { background: linear-gradient(135deg, #ff6b8b, #ff9966); border: none; color: white; padding: 0.5rem 1.2rem; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 0.9rem; transition: all 0.2s; white-space: nowrap; }
+        .add-btn {
+            background: linear-gradient(135deg, #ff6b8b, #ff9966); border: none;
+            color: white; padding: 0.5rem 1.2rem; border-radius: 30px;
+            cursor: pointer; font-weight: bold; font-size: 0.9rem;
+            transition: all 0.2s; white-space: nowrap;
+        }
         .add-btn:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(255,107,139,0.4); }
-        .drama-list { list-style: none; max-height: 200px; overflow-y: auto; text-align: left; padding: 0 0.5rem; }
-        .drama-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.8rem; margin: 0.3rem 0; background: rgba(255,255,255,0.7); border-radius: 20px; font-size: 0.95rem; color: #5c3a3a; animation: fadeIn 0.3s ease; }
-        .drama-item-info { flex: 1; display: flex; align-items: center; gap: 8px; }
+        .drama-list, .weight-list { list-style: none; max-height: 200px; overflow-y: auto; text-align: left; padding: 0 0.5rem; }
+        .drama-item, .weight-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.5rem 0.8rem; margin: 0.3rem 0;
+            background: rgba(255,255,255,0.7); border-radius: 20px;
+            font-size: 0.95rem; color: #5c3a3a; animation: fadeIn 0.3s ease;
+        }
+        .drama-item-info, .weight-item-info { flex: 1; display: flex; align-items: center; gap: 8px; }
         .drama-ep { color: #ff6b8b; font-weight: bold; font-size: 0.85rem; }
-        .delete-btn { background: #ffe0e0; border: none; color: #ff4d4f; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+        .weight-value { color: #d96c1e; font-weight: bold; font-size: 0.9rem; }
+        .delete-btn {
+            background: #ffe0e0; border: none; color: #ff4d4f;
+            width: 28px; height: 28px; border-radius: 50%;
+            cursor: pointer; font-size: 0.9rem; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center;
+        }
         .delete-btn:hover { background: #ff4d4f; color: white; }
-        .drama-empty { color: #b8a0a0; font-size: 0.9rem; padding: 1rem; text-align: center; }
-        .game-btn { background: linear-gradient(135deg, #ffaa66, #ff6b8b); border: none; font-size: 1.3rem; font-weight: bold; padding: 0.7rem 1.8rem; border-radius: 60px; color: white; cursor: pointer; margin-top: 1.2rem; box-shadow: 0 6px 14px rgba(0,0,0,0.2); transition: all 0.2s; font-family: inherit; display: inline-flex; align-items: center; gap: 10px; }
+        .drama-empty, .weight-empty { color: #b8a0a0; font-size: 0.9rem; padding: 1rem; text-align: center; }
+        .game-btn {
+            background: linear-gradient(135deg, #ffaa66, #ff6b8b); border: none;
+            font-size: 1.3rem; font-weight: bold; padding: 0.7rem 1.8rem; border-radius: 60px;
+            color: white; cursor: pointer; margin-top: 1.2rem; box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+            transition: all 0.2s; font-family: inherit; display: inline-flex; align-items: center; gap: 10px;
+        }
         .game-btn:hover { transform: scale(1.03); background: linear-gradient(135deg, #ffbb77, #ff7f9f); box-shadow: 0 10px 18px rgba(0,0,0,0.25); }
         @keyframes floatCloud { 0% { transform: translate(0,0) rotate(0deg); } 100% { transform: translate(8px,-5px) rotate(0.8deg); } }
         @keyframes gentleFloat { 0% { transform: translateY(0); } 100% { transform: translateY(-6px); } }
@@ -193,6 +223,18 @@
         </ul>
     </div>
 
+    <div class="weight-section">
+        <div class="section-title">⚖️ 每日体重记录 🌐</div>
+        <div class="input-row">
+            <input type="date" class="custom-input" id="weightDateInput" value="">
+            <input type="number" step="0.1" class="custom-input" id="weightValueInput" placeholder="体重 (kg)" style="max-width: 140px;">
+            <button class="add-btn" id="weightAddBtn">➕ 添加体重</button>
+        </div>
+        <ul class="weight-list" id="weightList">
+            <li class="weight-empty">🔄 加载中...</li>
+        </ul>
+    </div>
+
     <div style="margin-top: 1rem; font-size:1rem; color:#b45f3b;">🎀 愿你永远像孩子一样，被世界温柔以待 🎀</div>
     <button class="game-btn" id="openGameBtn">🎮 糖果大作战 · 戳我玩 🍬</button>
 </div>
@@ -281,22 +323,10 @@
     // ========== 视频预加载 ==========
     const DOG_CLICK_VIDEO = '61.mp4';
     const TRANSITION_VIDEO = 'tears.mp4';
-    function addPreloadLink(href) {
-        const link = document.createElement('link');
-        link.rel = 'preload'; link.as = 'video'; link.href = href; link.type = 'video/mp4';
-        document.head.appendChild(link);
-    }
+    function addPreloadLink(href) { const link = document.createElement('link'); link.rel = 'preload'; link.as = 'video'; link.href = href; link.type = 'video/mp4'; document.head.appendChild(link); }
     addPreloadLink(DOG_CLICK_VIDEO); addPreloadLink(TRANSITION_VIDEO); addPreloadLink('dog_live.mp4');
     const videoCache = {};
-    function preloadVideo(key, src) {
-        return new Promise((resolve, reject) => {
-            const video = document.createElement('video');
-            video.preload = 'auto'; video.muted = true; video.playsInline = true; video.src = src;
-            video.load();
-            video.addEventListener('loadeddata', () => { videoCache[key] = video; resolve(video); }, { once: true });
-            video.addEventListener('error', reject, { once: true });
-        });
-    }
+    function preloadVideo(key, src) { return new Promise((resolve, reject) => { const video = document.createElement('video'); video.preload = 'auto'; video.muted = true; video.playsInline = true; video.src = src; video.load(); video.addEventListener('loadeddata', () => { videoCache[key] = video; resolve(video); }, { once: true }); video.addEventListener('error', reject, { once: true }); }); }
     Promise.all([preloadVideo('dogClick', DOG_CLICK_VIDEO), preloadVideo('transition', TRANSITION_VIDEO)]).catch(err => console.warn('预加载失败', err));
 
     // ========== 装饰粒子 ==========
@@ -316,15 +346,10 @@
     const SUPABASE_URL = 'https://cgvnzfbdqmqguagtjhfi.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_W_1tTixY0j-gF8roUH9HRQ__hiuYCLG';
     const MAX_RETRIES = 3;
-    async function supabaseRequest(endpoint, options = {}, retry = 0) { /* 同上 */ try { const url = `${SUPABASE_URL}/rest/v1/${endpoint}`; const headers = { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`, 'Content-Type': 'application/json', ...options.headers }; const response = await fetch(url, { ...options, headers, mode: 'cors' }); if (!response.ok) throw new Error(`HTTP ${response.status}`); const text = await response.text(); if (!text) return []; return JSON.parse(text); } catch (error) { if (retry < MAX_RETRIES) { await new Promise(r => setTimeout(r, 1000 * (retry + 1))); return supabaseRequest(endpoint, options, retry + 1); } throw error; } }
+    async function supabaseRequest(endpoint, options = {}, retry = 0) { try { const url = `${SUPABASE_URL}/rest/v1/${endpoint}`; const headers = { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`, 'Content-Type': 'application/json', ...options.headers }; const response = await fetch(url, { ...options, headers, mode: 'cors' }); if (!response.ok) throw new Error(`HTTP ${response.status}`); const text = await response.text(); if (!text) return []; return JSON.parse(text); } catch (error) { if (retry < MAX_RETRIES) { await new Promise(r => setTimeout(r, 1000 * (retry + 1))); return supabaseRequest(endpoint, options, retry + 1); } throw error; } }
 
-    // ========== 想念计数器 (保持不变) ==========
-    const missBtn = document.getElementById('missYouHeartBtn');
-    const missCountSpan = document.getElementById('missCountDisplay');
-    const lastTimeSpan = document.getElementById('lastClickTimeDisplay');
-    const historyHint = document.getElementById('historyHint');
-    const globalBadge = document.getElementById('globalBadge');
-    const syncError = document.getElementById('syncError');
+    // ========== 想念计数器 ==========
+    const missBtn = document.getElementById('missYouHeartBtn'); const missCountSpan = document.getElementById('missCountDisplay'); const lastTimeSpan = document.getElementById('lastClickTimeDisplay'); const historyHint = document.getElementById('historyHint'); const globalBadge = document.getElementById('globalBadge'); const syncError = document.getElementById('syncError');
     let globalCount = 0, globalLastTime = null, apiAvailable = false, isRequesting = false, errorTimer = null;
     function showSyncError() { if (syncError) { syncError.style.display = 'block'; if (errorTimer) clearTimeout(errorTimer); errorTimer = setTimeout(() => { syncError.style.display = 'none'; }, 3000); } }
     async function updateCountDisplay() { missCountSpan.textContent = globalCount; lastTimeSpan.textContent = globalLastTime ? '🕒 ' + new Date(globalLastTime).toLocaleString() : '还没按过呢'; historyHint.innerHTML = globalCount > 0 ? `🍪 小熊饼干已经想念了 ${globalCount} 次 🍪` : '✨ 每次想念都被珍藏 ✨'; globalBadge.textContent = apiAvailable ? '🌐 Supabase 全球同步' : '📱 本地模式'; }
@@ -332,11 +357,8 @@
     missBtn.addEventListener('click', async (e) => { if (isRequesting) return; isRequesting = true; missBtn.disabled = true; missBtn.style.opacity = '0.7'; const rect = missBtn.getBoundingClientRect(); const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2; for (let i = 0; i < 8; i++) { const h = document.createElement('div'); h.innerHTML = ['💖','❤️','💕','💗','💘','💝','✨','🌸'][i % 8]; h.style.cssText = `position:fixed; left:${cx+(Math.random()-0.5)*30}px; top:${cy+(Math.random()-0.5)*20}px; font-size:1.5rem; pointer-events:none; z-index:999; animation:clickPopFade 0.8s forwards;`; document.body.appendChild(h); setTimeout(() => h.remove(), 800); } try { const current = await supabaseRequest('miss_counter?id=eq.1&select=count'); if (current && current.length > 0) { const newCount = (current[0].count || 0) + 1; const now = Date.now(); await supabaseRequest('miss_counter?id=eq.1', { method: 'PATCH', body: JSON.stringify({ count: newCount, last_time: now }) }); globalCount = newCount; globalLastTime = now; apiAvailable = true; if (syncError) syncError.style.display = 'none'; if (errorTimer) { clearTimeout(errorTimer); errorTimer = null; } } } catch (err) { apiAvailable = false; showSyncError(); } updateCountDisplay(); missBtn.style.opacity = '1'; missBtn.disabled = false; isRequesting = false; });
     loadGlobalCount();
 
-    // ========== 追剧 (保持不变) ==========
-    const dramaNameInput = document.getElementById('dramaNameInput');
-    const dramaEpInput = document.getElementById('dramaEpInput');
-    const dramaAddBtn = document.getElementById('dramaAddBtn');
-    const dramaList = document.getElementById('dramaList');
+    // ========== 追剧 ==========
+    const dramaNameInput = document.getElementById('dramaNameInput'); const dramaEpInput = document.getElementById('dramaEpInput'); const dramaAddBtn = document.getElementById('dramaAddBtn'); const dramaList = document.getElementById('dramaList');
     let dramaData = [];
     function escapeHTML(str) { const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
     function renderDramaList() { dramaList.innerHTML = ''; if (dramaData.length === 0) { dramaList.innerHTML = '<li class="drama-empty">✨ 还没有追剧记录，快来添加吧~</li>'; return; } dramaData.forEach((item, index) => { const li = document.createElement('li'); li.className = 'drama-item'; li.innerHTML = `<div class="drama-item-info"><span>📺</span><span>${escapeHTML(item.name)}</span>${item.ep ? `<span class="drama-ep">第${escapeHTML(item.ep)}集</span>` : ''}</div><button class="delete-btn" data-index="${index}" title="删除">×</button>`; li.querySelector('.delete-btn').addEventListener('click', () => deleteDrama(index)); dramaList.appendChild(li); }); }
@@ -347,7 +369,18 @@
     dramaNameInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') dramaAddBtn.click(); });
     loadDramaFromServer();
 
-    // ========== 小狗 & 记事本转场 (保持不变) ==========
+    // ========== 体重记录 ==========
+    const weightDateInput = document.getElementById('weightDateInput'); const weightValueInput = document.getElementById('weightValueInput'); const weightAddBtn = document.getElementById('weightAddBtn'); const weightList = document.getElementById('weightList');
+    let weightData = [];
+    weightDateInput.value = new Date().toISOString().split('T')[0];
+    function renderWeightList() { weightList.innerHTML = ''; if (weightData.length === 0) { weightList.innerHTML = '<li class="weight-empty">⚖️ 还没有体重记录，开始记录吧~</li>'; return; } weightData.sort((a, b) => b.date.localeCompare(a.date)); weightData.forEach((item, index) => { const li = document.createElement('li'); li.className = 'weight-item'; li.innerHTML = `<div class="weight-item-info"><span>📅 ${item.date}</span><span class="weight-value">${item.weight} kg</span></div><button class="delete-btn" data-index="${index}" title="删除">×</button>`; li.querySelector('.weight-item-info').addEventListener('click', () => { alert(`日期：${item.date}\n体重：${item.weight} kg`); }); li.querySelector('.delete-btn').addEventListener('click', (e) => { e.stopPropagation(); deleteWeightItem(index); }); weightList.appendChild(li); }); }
+    async function saveWeightToServer() { try { await supabaseRequest('weight_data?id=eq.1', { method: 'PATCH', body: JSON.stringify({ weights: JSON.stringify(weightData) }) }); } catch (e) { console.warn('体重同步失败', e); } }
+    async function loadWeightFromServer() { try { const data = await supabaseRequest('weight_data?id=eq.1&select=weights'); if (data && data.length > 0 && data[0].weights) { weightData = JSON.parse(data[0].weights); } } catch (e) { console.warn('加载体重记录失败', e); } renderWeightList(); }
+    async function deleteWeightItem(index) { weightData.splice(index, 1); renderWeightList(); await saveWeightToServer(); }
+    weightAddBtn.addEventListener('click', async () => { const date = weightDateInput.value; const weight = parseFloat(weightValueInput.value); if (!date || isNaN(weight) || weight <= 0) { alert('请输入有效日期和体重（大于0）'); return; } const exists = weightData.find(item => item.date === date); if (exists) { if (!confirm(`日期 ${date} 已有记录，是否覆盖？`)) return; exists.weight = weight; } else { weightData.push({ date, weight }); } renderWeightList(); await saveWeightToServer(); weightDateInput.value = new Date().toISOString().split('T')[0]; weightValueInput.value = ''; });
+    loadWeightFromServer();
+
+    // ========== 小狗 & 记事本转场 ==========
     const dogContainer = document.getElementById('dogContainer'); const dogVideo = document.getElementById('dogVideo'); const dogTip = document.getElementById('dogTip'); const loveVideo = document.getElementById('loveVideo');
     function setDogInitialPosition() { const w = dogContainer.offsetWidth, h = dogContainer.offsetHeight; dogContainer.style.left = (window.innerWidth - w - 20) + 'px'; dogContainer.style.top = (window.innerHeight - h - 20) + 'px'; dogContainer.style.right = 'auto'; dogContainer.style.bottom = 'auto'; }
     setDogInitialPosition(); window.addEventListener('resize', () => { if (!dogContainer.dataset.dragged) setDogInitialPosition(); });
@@ -373,7 +406,7 @@
     function handleNotepadMultiClick(e) { e.stopPropagation(); npClickCount++; if (npClickTimer) clearTimeout(npClickTimer); npClickTimer = setTimeout(() => { if (npClickCount === 1) { if (isTransitioning) return; isTransitioning = true; transitionModal.classList.remove('hidden'); let videoSrc = videoCache['transition'] ? videoCache['transition'].src : TRANSITION_VIDEO; transitionVideo.src = videoSrc; transitionVideo.load(); transitionVideo.currentTime = 0; let transitionTimeout; const cleanUpAndGo = () => { if (transitionTimeout) clearTimeout(transitionTimeout); isTransitioning = false; window.location.href = 'notepad.html'; }; transitionTimeout = setTimeout(() => { console.warn('转场视频超时'); cleanUpAndGo(); }, 3000); const handleEnded = () => { transitionVideo.removeEventListener('ended', handleEnded); transitionVideo.removeEventListener('loadedmetadata', handleMeta); cleanUpAndGo(); }; const handleMeta = () => { if (transitionTimeout) { clearTimeout(transitionTimeout); transitionTimeout = null; } }; transitionVideo.addEventListener('ended', handleEnded); transitionVideo.addEventListener('loadedmetadata', handleMeta); transitionVideo.play().then(() => {}).catch(err => { console.warn('播放失败', err); cleanUpAndGo(); }); } else if (npClickCount >= 2) { if (isTransitioning) { isTransitioning = false; transitionVideo.pause(); transitionModal.classList.add('hidden'); } notepadFloat.classList.add('deleted'); notepadTip.textContent = '💔 记事本消失了...'; setTimeout(() => { notepadFloat.style.display = 'none'; }, 500); } npClickCount = 0; npClickTimer = null; }, 300); }
     notepadImg.addEventListener('error', () => { notepadImg.style.display = 'none'; const fallback = document.createElement('div'); fallback.style.cssText = 'width:180px;height:180px;border-radius:15px;background:linear-gradient(135deg,#8b5cf6,#6366f1);display:flex;align-items:center;justify-content:center;font-size:4rem;box-shadow:0 10px 25px rgba(139,92,246,0.4),0 0 0 3px rgba(255,240,255,0.6);animation:notepadFloat 3.5s infinite ease-in-out;padding:3px;'; fallback.textContent = '📖'; notepadImg.parentNode.insertBefore(fallback, notepadImg); });
 
-    // ========== 🍬 糖果大作战（优化版） ==========
+    // ========== 🍬 糖果大作战（完整优化版） ==========
     const gameModal = document.getElementById('gameModal');
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
@@ -387,7 +420,6 @@
     const livesContainer = document.getElementById('livesContainer');
     const livesDisplay = document.getElementById('livesDisplay');
 
-    // 游戏状态
     let gameActive = false, score = 0, timeLeft = 15, intervalId = null, animationId = null;
     let candies = [];
     let currentLevel = 1, levelTargetScore = 10, baseCandyCount = 5;
@@ -404,30 +436,17 @@
     let obstacles = [];
     let magnetActive = false, magnetTimer = null, magnetPos = null;
     let colorChainCount = 0;
-    // 炸弹躲躲乐专属
     let bombLives = 3;
-    // 定点收集点位
     let pointCollectTargets = [];
 
     const ITEMS = {
-        normal:  { emoji: '🍬', weight: 55 },
-        time:    { emoji: '⏳', weight: 6 },
-        bomb:    { emoji: '💣', weight: 8 },
-        ice:     { emoji: '❄️', weight: 6 },
-        lucky:   { emoji: '⭐', weight: 2 },
-        speed:   { emoji: '🔥', weight: 3 },
-        shield:  { emoji: '🛡️', weight: 3 },
-        swap:    { emoji: '🔄', weight: 2 },
-        giant:   { emoji: '🍫', weight: 3 },
-        magnet:  { emoji: '🧲', weight: 3 },
-        clean:   { emoji: '🧹', weight: 1 },
-        random:  { emoji: '🎲', weight: 2 },
-        egg:     { emoji: '🐣', weight: 2 },
-        tornado: { emoji: '🌪', weight: 2 },
-        diamond: { emoji: '💎', weight: 4 },
+        normal:  { emoji: '🍬', weight: 55 }, time: { emoji: '⏳', weight: 6 }, bomb: { emoji: '💣', weight: 8 },
+        ice: { emoji: '❄️', weight: 6 }, lucky: { emoji: '⭐', weight: 2 }, speed: { emoji: '🔥', weight: 3 },
+        shield: { emoji: '🛡️', weight: 3 }, swap: { emoji: '🔄', weight: 2 }, giant: { emoji: '🍫', weight: 3 },
+        magnet: { emoji: '🧲', weight: 3 }, clean: { emoji: '🧹', weight: 1 }, random: { emoji: '🎲', weight: 2 },
+        egg: { emoji: '🐣', weight: 2 }, tornado: { emoji: '🌪', weight: 2 }, diamond: { emoji: '💎', weight: 4 },
         eggCandy:{ emoji: '🎁', weight: 0.1 }
     };
-
     const loveQuotes = [
         "你知道我想喝什么吗？我想呵护你。","莫文蔚的阴天，孙燕姿的雨天，都不如你和我聊天。",
         "我觉得你特别像一款游戏，我的世界。","遇到你之后，我再也没吃过糖，因为你太甜了。",
@@ -470,7 +489,6 @@
     function getItemWeights() {
         const weights = JSON.parse(JSON.stringify(ITEMS));
         if (gameMode === 'bombDodge') {
-            // 炸弹90%，增益10%（不含普通糖果）
             weights.bomb.weight = 90;
             const gainKeys = ['time', 'shield', 'clean', 'speed', 'ice'];
             gainKeys.forEach(k => { if (weights[k]) weights[k].weight = 2; });
@@ -511,7 +529,7 @@
         candies = [];
         CANDY_COUNT = baseCandyCount + currentLevel;
         if (gameMode === 'bombDodge') {
-            CANDY_COUNT = 12; // 固定12个
+            CANDY_COUNT = 12;
             bombLives = 3;
             livesContainer.style.display = 'inline';
             livesDisplay.textContent = bombLives;
@@ -621,9 +639,9 @@
         animationId = requestAnimationFrame(updateCandies);
     }
 
-    function isCandyOnPoint(candy) {
+    function isCandyOnPoint(c) {
         if (gameMode !== 'pointCollect') return true;
-        return pointCollectTargets.some(p => Math.hypot(candy.x - p.x, candy.y - p.y) < 20);
+        return pointCollectTargets.some(p => Math.hypot(c.x - p.x, c.y - p.y) < 20);
     }
 
     function resetCombo() { comboCount = 0; comboMultiplier = 1; if(comboTimer)clearTimeout(comboTimer); comboTimer = null; }
@@ -651,11 +669,9 @@
         let showedLove = false;
         for(const index of hitIndices) {
             const c=candies[index];
-            // 定点收集模式：只有点位上的糖果才有效
             if (gameMode === 'pointCollect' && !isCandyOnPoint(c)) continue;
             if (gameMode === 'blindBox' && c.blind) c.blind = false;
 
-            // 炸弹躲躲乐特殊处理
             if (gameMode === 'bombDodge' && c.type === 'bomb') {
                 if (bombImmuneActive || shieldActive) {
                     popupMessage(shieldActive ? '🛡️ 护盾抵挡' : '🛡️ 免罚窗口');
@@ -675,7 +691,6 @@
                         return;
                     }
                 }
-                // 移除炸弹并重生
                 candies[index].x=40+Math.random()*(canvas.width-80);
                 candies[index].y=40+Math.random()*(canvas.height-80);
                 candies[index].type = randomItemType();
@@ -837,14 +852,11 @@
         gameModal.classList.remove('active');
     }
 
-    // 图鉴面板开关
+    // 图鉴面板
     const infoToggleBtn = document.getElementById('infoToggleBtn');
     const infoPanel = document.getElementById('infoPanel');
     if (infoToggleBtn && infoPanel) {
-        infoToggleBtn.addEventListener('click', () => {
-            infoPanel.classList.toggle('active');
-            infoToggleBtn.textContent = infoPanel.classList.contains('active') ? '📖 收起图鉴' : '📖 糖果图鉴';
-        });
+        infoToggleBtn.addEventListener('click', () => { infoPanel.classList.toggle('active'); infoToggleBtn.textContent = infoPanel.classList.contains('active') ? '📖 收起图鉴' : '📖 糖果图鉴'; });
     }
 
     modeButtons.forEach(btn=>{
