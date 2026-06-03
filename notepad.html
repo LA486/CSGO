@@ -10,9 +10,13 @@
             min-height: 100vh;
             background: linear-gradient(135deg, #0b0b1a 0%, #1a1a2e 30%, #16213e 70%, #0f3460 100%);
             font-family: 'Segoe UI', 'Quicksand', system-ui, sans-serif;
-            display: flex; align-items: center; justify-content: center;
-            padding: 2rem 1rem; perspective: 1500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+            perspective: 1500px;
             overflow-x: hidden;
+            overflow-y: auto;               /* 允许纵向滚动 */
             position: relative;
         }
         .stars, .nebula, .shooting-stars, .fireflies, .aurora, .stardust {
@@ -107,11 +111,10 @@
         /* 流星（优化版） */
         .shooting-star {
             position: absolute;
-            width: 100px;              /* 略缩短，更灵巧 */
+            width: 100px;
             height: 2px;
             background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.9) 40%, transparent 100%);
             border-radius: 1px;
-            /* 初始旋转角度由 JS 动态设置 */
             animation: shoot linear forwards;
             filter: drop-shadow(0 0 5px rgba(180,200,255,0.7));
         }
@@ -217,6 +220,15 @@
         .cancel-delete { padding: 0.6rem 2rem; border-radius: 25px; border: 1px solid rgba(167,139,250,0.3); background: rgba(167,139,250,0.1); color: #c4b5fd; cursor: pointer; font-weight: bold; font-size: 0.9rem; transition: all 0.3s; }
         .cancel-delete:hover { background: rgba(167,139,250,0.25); }
 
+        /* 占位文字，让页面可以滚动 */
+        .scroll-hint {
+            text-align: center;
+            color: rgba(255,255,255,0.2);
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            z-index: 10;
+        }
+
         @media (max-width: 600px) {
             .card-front, .card-back { padding: 1.5rem; min-height: 400px; }
             .header h1 { font-size: 1.6rem; }
@@ -271,6 +283,13 @@
         <div class="flip-indicator">
             <button class="flip-btn" id="flipBackBtn">🔄 翻转卡片</button>
         </div>
+    </div>
+
+    <!-- 装饰性占位，让页面有滚动条 -->
+    <div class="scroll-hint">
+        <p>✨ 向下滑动查看更多星空 ✨</p>
+        <p style="margin-top:1rem; font-size:0.8rem;">每一颗星星都为你闪烁</p>
+        <p style="margin-top:1rem; font-size:0.8rem;">🌌 愿你今夜好梦 🌌</p>
     </div>
 </div>
 
@@ -378,34 +397,26 @@
     }
     scheduleFirefly();
 
-    // ========== 流星（优化版） ==========
+    // 流星
     const shootingContainer = document.getElementById('shootingStarsContainer');
     function createShootingStar(colored = false) {
         const star = document.createElement('div');
         star.className = 'shooting-star' + (colored ? ' colored' : '');
-
-        // 随机起始位置：x 40%～100% vw，y 0%～30% vh
         const startX = 40 + Math.random() * 60;
         const startY = Math.random() * 30;
         star.style.left = startX + 'vw';
         star.style.top = startY + 'vh';
-
-        // 随机角度：-25deg 到 -55deg
         const angle = -25 - Math.random() * 30;
         star.style.setProperty('--angle', angle + 'deg');
         star.style.transform = `rotate(${angle}deg)`;
-
-        // 随机动画时长：1.5s～3s
         star.style.animationDuration = (1.5 + Math.random() * 1.5) + 's';
-
         shootingContainer.appendChild(star);
         star.addEventListener('animationend', () => star.remove());
     }
-
     function scheduleMeteor() {
         const delay = 2000 + Math.random() * 3500;
         setTimeout(() => {
-            createShootingStar(Math.random() < 0.3); // 30% 彩色流星
+            createShootingStar(Math.random() < 0.3);
             scheduleMeteor();
         }, delay);
     }
