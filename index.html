@@ -4,12 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>认真工作版 · 亮红灯也要战斗</title>
-
-    <!-- 视频预加载不再写死，改由 JS 动态生成，参见下方脚本 -->
-
     <style>
+        /* ========== 全局样式 ========== */
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
-
         body {
             min-height: 100vh;
             background: linear-gradient(145deg, #fde8cd 0%, #fff0db 35%, #c4e0fa 100%);
@@ -18,6 +15,7 @@
             overflow-x: hidden; padding: 2rem 1rem;
         }
 
+        /* ========== 主卡片 ========== */
         .love-card {
             max-width: 950px; width: 100%;
             background: rgba(255,250,240,0.92); backdrop-filter: blur(12px);
@@ -28,6 +26,7 @@
         }
         .love-card:hover { transform: scale(1.01); }
 
+        /* 标题文字 */
         .breeze-text {
             font-size: 2rem; font-weight: 700;
             background: linear-gradient(135deg, #ffaa44, #ff6b8b, #66ccff);
@@ -41,6 +40,7 @@
             font-size: 1.1rem; color: #d2691e; backdrop-filter: blur(4px);
         }
 
+        /* 云朵区域 */
         .cloud-section {
             background: rgba(255,255,245,0.5); border-radius: 80px;
             padding: 1.2rem 1rem; margin: 1.5rem 0; backdrop-filter: blur(4px); text-align: center;
@@ -62,6 +62,7 @@
         .blessing { font-size: 1.9rem; font-weight: bold; background: linear-gradient(120deg, #ff9966, #ff5e7e); background-clip: text; -webkit-background-clip: text; color: transparent; margin: 1rem 0 0.5rem; letter-spacing: 2px; }
         .blessing-dual { font-size: 1.7rem; margin-top: 0.8rem; padding: 0.6rem; border-top: 2px dashed #ffb387; border-bottom: 2px dashed #ffb387; display: inline-block; background: rgba(255,200,180,0.3); border-radius: 60px; }
 
+        /* 想念区域 */
         .miss-you-area { margin: 1.5rem 0 0.8rem; display: flex; flex-direction: column; align-items: center; }
         .heart-miss-btn {
             background: radial-gradient(circle at 30% 30%, #ff7b9c, #e6456b); border: none;
@@ -87,6 +88,7 @@
         .history-badge { margin-top: 0.5rem; font-size: 0.9rem; background: #fff2e6; border-radius: 30px; padding: 0.2rem 1.2rem; color: #9b5e4b; }
         .global-badge { display: inline-block; background: rgba(255,200,100,0.3); border-radius: 20px; padding: 0.15rem 0.8rem; font-size: 0.75rem; color: #b8782e; margin-left: 8px; animation: gentleFloat 2s infinite ease-in-out; }
 
+        /* 追剧区域 */
         .drama-section {
             background: rgba(255,240,250,0.7); border-radius: 40px;
             padding: 1.2rem; margin: 1.5rem 0; backdrop-filter: blur(4px);
@@ -129,6 +131,7 @@
         .delete-btn:hover { background: #ff4d4f; color: white; }
         .drama-empty { color: #b8a0a0; font-size: 0.9rem; padding: 1rem; text-align: center; }
 
+        /* 游戏按钮 */
         .game-btn {
             background: linear-gradient(135deg, #ffaa66, #ff6b8b); border: none;
             font-size: 1.3rem; font-weight: bold; padding: 0.7rem 1.8rem; border-radius: 60px;
@@ -137,6 +140,7 @@
         }
         .game-btn:hover { transform: scale(1.03); background: linear-gradient(135deg, #ffbb77, #ff7f9f); box-shadow: 0 10px 18px rgba(0,0,0,0.25); }
 
+        /* 动画 */
         @keyframes floatCloud { 0% { transform: translate(0,0) rotate(0deg); } 100% { transform: translate(8px,-5px) rotate(0.8deg); } }
         @keyframes gentleFloat { 0% { transform: translateY(0); } 100% { transform: translateY(-6px); } }
         @keyframes spinFlurry { 0% { transform: rotate(0) scale(0.9); opacity: 0.7; } 100% { transform: rotate(12deg) scale(1.2); opacity: 1; } }
@@ -152,17 +156,7 @@
         @keyframes clickPopFade { 0% { transform: scale(0.3) translateY(0); opacity: 1; } 100% { transform: scale(1.5) translateY(-40px); opacity: 0; } }
         @keyframes floatUpHeart { 0% { transform: translateY(0) rotate(0deg); opacity: 0.9; } 100% { transform: translateY(-120vh) rotate(25deg); opacity: 0; } }
 
-        @media (max-width: 620px) {
-            .love-card { padding: 1.2rem; }
-            .cloud-line { font-size: 0.95rem; white-space: pre-wrap; }
-            .breeze-text { font-size: 1.6rem; }
-            .blessing { font-size: 1.4rem; }
-            .game-btn { font-size: 1rem; padding: 0.5rem 1.2rem; }
-            .heart-miss-btn { width: 70px; height: 70px; font-size: 2rem; }
-            .custom-input { min-width: 140px; }
-            .input-row { flex-direction: column; align-items: center; }
-        }
-
+        /* 小狗 */
         .dog-container { position: fixed; z-index: 30; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: grab; transition: transform 0.2s; }
         .dog-container.dragging { transition: none; cursor: grabbing; }
         .dog-container:active { transform: scale(0.94); }
@@ -185,23 +179,14 @@
         .notepad-float:active { transform: scale(0.95); }
         .notepad-float.deleted { animation: deletePop 0.5s ease-out forwards; }
         .notepad-img {
-            width: auto;
-            height: auto;
-            max-width: 200px;
-            max-height: 200px;
-            object-fit: contain;
-            pointer-events: none;
+            width: auto; height: auto; max-width: 200px; max-height: 200px;
+            object-fit: contain; pointer-events: none;
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(139,92,246,0.4), 0 0 0 3px rgba(255,240,255,0.6);
             animation: notepadFloat 3.5s infinite ease-in-out;
-            padding: 3px;
-            background: rgba(255,255,255,0.3);
-            backdrop-filter: blur(4px);
+            padding: 3px; background: rgba(255,255,255,0.3); backdrop-filter: blur(4px);
         }
-        @keyframes notepadFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
+        @keyframes notepadFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         .notepad-tip {
             background: rgba(255,255,210,0.85); border-radius: 40px;
             padding: 5px 14px; font-size: 0.85rem; font-weight: bold;
@@ -209,7 +194,7 @@
             animation: tipPulse 1.5s infinite alternate;
         }
 
-        /* 转场动画模态 */
+        /* 转场模态 */
         .transition-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 2000; display: flex;
@@ -217,41 +202,105 @@
             animation: fadeIn 0.2s ease;
         }
         .transition-modal.hidden { display: none; }
-        .transition-modal video {
-            width: 100%; height: 100%; object-fit: contain;
-            background: black;
-        }
+        .transition-modal video { width: 100%; height: 100%; object-fit: contain; background: black; }
 
-        @media (max-width: 550px) {
-            .dog-video { max-width: 160px; max-height: 160px; }
-            .dog-tip { font-size: 0.7rem; }
-            .notepad-img { max-width: 150px; max-height: 150px; }
-            .notepad-tip { font-size: 0.7rem; }
-        }
-
-        .video-modal, .game-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 1000; justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
-        .video-modal.active, .game-modal.active { display: flex; }
+        /* 小狗视频模态 */
+        .video-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 1000; justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
+        .video-modal.active { display: flex; }
         .modal-content { position: relative; max-width: 90%; max-height: 90%; background: #1e1a1a; border-radius: 32px; padding: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); border: 2px solid #ffcd94; text-align: center; }
         .modal-content video { max-width: 100%; max-height: 70vh; border-radius: 24px; }
         .close-modal { position: absolute; top: 8px; right: 18px; font-size: 2rem; color: #ffcf9a; cursor: pointer; background: rgba(0,0,0,0.5); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
         .close-modal:hover { background: #ff8866; color: white; }
         .video-caption { margin-top: 12px; color: #ffecb3; }
 
-        .game-container { background: #fff6e8; border-radius: 48px; padding: 20px; text-align: center; width: 100%; max-width: 500px; margin: 0 auto; }
-        .game-header { display: flex; justify-content: space-between; font-size: 1.4rem; font-weight: bold; color: #d96c1e; background: #ffefcf; padding: 8px 20px; border-radius: 60px; margin-bottom: 20px; }
-        .game-canvas { background: #fdf3e0; border-radius: 40px; box-shadow: inset 0 0 0 3px #ffd8a5, 0 10px 20px rgba(0,0,0,0.2); display: block; margin: 0 auto; cursor: pointer; width: 100%; height: auto; max-width: 450px; }
-        .game-message { margin-top: 15px; font-size: 1.2rem; color: #aa5e1e; min-height: 2rem; }
-        .restart-btn { background: #ff9f4a; border: none; color: white; padding: 6px 20px; border-radius: 60px; font-size: 1rem; margin-top: 12px; cursor: pointer; font-weight: bold; }
-        .restart-btn:hover { background: #ff7a2a; }
-        .level-badge { display: inline-block; background: linear-gradient(135deg, #ff6b6b, #ffa500); color: white; padding: 4px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; animation: pulse 1.5s infinite; }
+        /* 游戏模态优化 */
+        .game-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 1000; justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
+        .game-modal.active { display: flex; }
+        .game-container {
+            background: #fff6e8; border-radius: 48px; padding: 20px; text-align: center;
+            width: 100%; max-width: 500px; margin: 0 auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 0 4px rgba(255,215,175,0.8);
+        }
+        .game-header {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 1.2rem; font-weight: bold; color: #d96c1e;
+            background: #ffefcf; padding: 10px 20px; border-radius: 60px; margin-bottom: 15px;
+            flex-wrap: wrap; gap: 5px;
+        }
+        .game-canvas {
+            background: #fdf3e0; border-radius: 40px;
+            box-shadow: inset 0 0 0 3px #ffd8a5, 0 10px 20px rgba(0,0,0,0.2);
+            display: block; margin: 0 auto; cursor: pointer;
+            width: 100%; height: auto; max-width: 450px;
+        }
+        .game-message {
+            margin-top: 15px; font-size: 1.1rem; color: #aa5e1e; min-height: 2.5rem;
+            font-weight: bold; background: rgba(255,255,255,0.5); border-radius: 30px;
+            padding: 0.4rem 1rem; display: inline-block;
+        }
+        .restart-btn {
+            background: #ff9f4a; border: none; color: white; padding: 8px 24px;
+            border-radius: 60px; font-size: 1rem; margin-top: 10px; cursor: pointer;
+            font-weight: bold; transition: all 0.2s;
+        }
+        .restart-btn:hover { background: #ff7a2a; transform: scale(1.05); }
+        .close-game-btn {
+            background: #ffaa77; color: #5c2e0e; display: inline-block;
+            width: auto; padding: 6px 20px; border-radius: 60px; font-size: 0.9rem;
+            margin-top: 8px; cursor: pointer; border: none; font-weight: bold;
+            transition: all 0.2s;
+        }
+        .close-game-btn:hover { background: #ffbb88; }
+        .level-badge {
+            display: inline-block; background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            color: white; padding: 4px 15px; border-radius: 20px; font-size: 0.9rem;
+            font-weight: bold; animation: pulse 1.5s infinite;
+        }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-        .level-up-effect { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3rem; z-index: 2000; animation: levelUpPop 1.5s ease-out forwards; pointer-events: none; }
+        .level-up-effect {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 3rem; z-index: 2000; animation: levelUpPop 1.5s ease-out forwards;
+            pointer-events: none;
+        }
         @keyframes levelUpPop { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(2); opacity: 0; } }
+        .game-popup {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+            background: rgba(0,0,0,0.85); color: #ffd966; font-size: 2rem; font-weight: bold;
+            padding: 0.8rem 2rem; border-radius: 40px; z-index: 2000; pointer-events: none;
+            animation: popupBounce 1.2s ease forwards;
+        }
+        @keyframes popupBounce {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            30% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+        }
+        .mode-select { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 10px; }
+        .mode-btn {
+            padding: 0.3rem 0.8rem; border-radius: 20px; border: 2px solid #ffb6c1;
+            background: rgba(255,255,255,0.8); color: #d96c1e; cursor: pointer;
+            font-size: 0.8rem; font-weight: bold; transition: all 0.2s;
+        }
+        .mode-btn.active { background: #ff6b8b; color: white; border-color: #ff6b8b; }
+
+        @media (max-width: 620px) {
+            .love-card { padding: 1.2rem; }
+            .cloud-line { font-size: 0.95rem; white-space: pre-wrap; }
+            .breeze-text { font-size: 1.6rem; }
+            .blessing { font-size: 1.4rem; }
+            .game-btn { font-size: 1rem; padding: 0.5rem 1.2rem; }
+            .heart-miss-btn { width: 70px; height: 70px; font-size: 2rem; }
+            .custom-input { min-width: 140px; }
+            .input-row { flex-direction: column; align-items: center; }
+            .dog-video { max-width: 160px; max-height: 160px; }
+            .dog-tip { font-size: 0.7rem; }
+            .notepad-img { max-width: 150px; max-height: 150px; }
+            .notepad-tip { font-size: 0.7rem; }
+        }
     </style>
 </head>
 <body>
 <div class="love-card">
-    <div class="festival-badge">💼  认真工作，给老婆买榴莲·特别版 💼</div>
+    <div class="festival-badge">💼 认真工作，给老婆买榴莲·特别版 💼</div>
     <div class="breeze-text"><span class="fan-icon">🍭</span> 熊国会小朋友，愿你天天开心！ <span class="fan-icon">🎈</span></div>
     <div class="cloud-section">
         <div class="cloud-art">
@@ -307,7 +356,6 @@
     <div class="notepad-tip" id="notepadTip">📝 单击打开 · 双击删除</div>
 </div>
 
-<!-- 小狗视频模态 -->
 <div id="videoModal" class="video-modal">
     <div class="modal-content">
         <span class="close-modal" id="closeModalBtn">&times;</span>
@@ -316,78 +364,63 @@
     </div>
 </div>
 
-<!-- 转场动画模态 -->
 <div id="transitionModal" class="transition-modal hidden">
     <video id="transitionVideo" muted playsinline></video>
 </div>
 
-<!-- 游戏模态 -->
 <div id="gameModal" class="game-modal">
-    <div class="modal-content" style="background: transparent; border: none; box-shadow: none; padding: 0;">
-        <div class="game-container">
-            <div class="game-header">
-                <span>🍬 糖果大作战</span>
-                <span class="level-badge" id="levelDisplay">🏆 第1关</span>
-                <span>⏱️ <span id="timerDisplay">15</span>s</span>
-                <span>🍭 <span id="scoreDisplay">0</span></span>
-            </div>
-            <canvas id="gameCanvas" class="game-canvas" width="450" height="450"></canvas>
-            <div class="game-message" id="gameMessage">🎯 第1关：收集10颗糖果晋级！</div>
-            <button class="restart-btn" id="restartGameBtn">✨ 重新开始 ✨</button>
-            <span class="close-modal" id="closeGameBtn" style="position: static; margin-top: 12px; background: #ffaa77; color: #5c2e0e; display: inline-block; width: auto; padding: 6px 20px; border-radius: 60px; font-size: 0.9rem;">关闭游戏</span>
+    <div class="game-container">
+        <div class="game-header">
+            <span>🍬 糖果大作战</span>
+            <span class="level-badge" id="levelDisplay">🏆 第1关</span>
+            <span>⏱️ <span id="timerDisplay">15</span>s</span>
+            <span>🍭 <span id="scoreDisplay">0</span></span>
         </div>
+        <div class="mode-select" id="modeSelect">
+            <button class="mode-btn active" data-mode="classic">经典闯关</button>
+            <button class="mode-btn" data-mode="sprint">限时冲刺</button>
+            <button class="mode-btn" data-mode="survival">无尽生存</button>
+        </div>
+        <canvas id="gameCanvas" class="game-canvas" width="450" height="450"></canvas>
+        <div class="game-message" id="gameMessage">🎯 第1关：收集10颗糖果晋级！</div>
+        <br>
+        <button class="restart-btn" id="restartGameBtn">✨ 重新开始 ✨</button>
+        <button class="close-game-btn" id="closeGameBtn">关闭游戏</button>
     </div>
 </div>
 
 <script>
 (function() {
-    // ========== 🔧 视频文件变量（只需要改这里！） ==========
-    const DOG_CLICK_VIDEO = '61.mp4';       // 单击小狗播放的视频
-    const TRANSITION_VIDEO = 'tears.mp4';   // 记事本转场动画视频
+    // ========== 视频预加载 ==========
+    const DOG_CLICK_VIDEO = '61.mp4';
+    const TRANSITION_VIDEO = 'tears.mp4';
 
-    // ========== 动态创建预加载标签（使用上面的变量） ==========
     function addPreloadLink(href) {
         const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = 'video';
-        link.href = href;
-        link.type = 'video/mp4';
+        link.rel = 'preload'; link.as = 'video'; link.href = href; link.type = 'video/mp4';
         document.head.appendChild(link);
     }
-    addPreloadLink(DOG_CLICK_VIDEO);
-    addPreloadLink(TRANSITION_VIDEO);
-    addPreloadLink('dog_live.mp4'); // 角落小狗循环视频
+    addPreloadLink(DOG_CLICK_VIDEO); addPreloadLink(TRANSITION_VIDEO); addPreloadLink('dog_live.mp4');
 
-    // ========== 视频预加载管理器 ==========
     const videoCache = {};
-
     function preloadVideo(key, src) {
         return new Promise((resolve, reject) => {
             const video = document.createElement('video');
-            video.preload = 'auto';
-            video.muted = true;
-            video.playsInline = true;
-            video.src = src;
+            video.preload = 'auto'; video.muted = true; video.playsInline = true; video.src = src;
             video.load();
-            video.addEventListener('loadeddata', () => {
-                videoCache[key] = video;
-                resolve(video);
-            }, { once: true });
+            video.addEventListener('loadeddata', () => { videoCache[key] = video; resolve(video); }, { once: true });
             video.addEventListener('error', reject, { once: true });
         });
     }
-
-    // 页面加载时预加载（使用统一变量）
     Promise.all([
         preloadVideo('dogClick', DOG_CLICK_VIDEO),
         preloadVideo('transition', TRANSITION_VIDEO)
-    ]).catch(err => console.warn('部分视频预加载失败', err));
+    ]).catch(err => console.warn('预加载失败', err));
 
-    // ========== 原有的装饰效果 ==========
+    // ========== 装饰粒子 ==========
     const bodyEl = document.body;
     let particleInterval = null;
     const coolItems = ['🍬','🍭','🎈','🧸','🎀','✨','🍬','🍭','💖','🎁'];
-
     function createWindParticle() {
         const p = document.createElement('div');
         p.classList.add('floating-particle');
@@ -399,7 +432,6 @@
         bodyEl.appendChild(p);
         p.addEventListener('animationend', ()=>p.remove());
     }
-
     function startCoolBreeze() {
         if(particleInterval) clearInterval(particleInterval);
         particleInterval = setInterval(() => {
@@ -407,34 +439,26 @@
             for(let i=0;i<(Math.random()*2+1);i++) createWindParticle();
         }, 600);
     }
-
     function createBgClouds() {
         const container = document.getElementById('bgCloudContainer');
         if(!container) return;
         container.innerHTML = '';
         for(let i=0;i<6;i++) {
-            const c = document.createElement('div');
-            c.classList.add('bg-cloud');
-            c.style.width = 200+Math.random()*350+'px';
-            c.style.height = 100+Math.random()*180+'px';
-            c.style.left = Math.random()*80+'%';
-            c.style.top = Math.random()*80+'%';
-            c.style.opacity = 0.3+Math.random()*0.3;
-            container.appendChild(c);
+            const c = document.createElement('div'); c.classList.add('bg-cloud');
+            c.style.width = 200+Math.random()*350+'px'; c.style.height = 100+Math.random()*180+'px';
+            c.style.left = Math.random()*80+'%'; c.style.top = Math.random()*80+'%';
+            c.style.opacity = 0.3+Math.random()*0.3; container.appendChild(c);
         }
     }
-
     function createFloatingHearts() {
         setInterval(() => {
             if(document.hidden) return;
             const h = document.createElement('div');
             h.style.cssText = 'position:fixed; bottom:-20px; left:'+Math.random()*window.innerWidth+'px; font-size:'+(1.2+Math.random()*1.5)+'rem; pointer-events:none; z-index:25; animation:floatUpHeart 5s ease-in forwards;';
             h.innerHTML = ['❤️','💖','🧡','💛','💚','🎈','🍭'][Math.floor(Math.random()*7)];
-            document.body.appendChild(h);
-            h.addEventListener('animationend', ()=>h.remove());
+            document.body.appendChild(h); h.addEventListener('animationend', ()=>h.remove());
         }, 1500);
     }
-
     function addClickBreezeEffect(e) {
         if(e.target.closest('.game-modal') || e.target.closest('.video-modal')) return;
         const x = e.clientX || (e.touches?e.touches[0].clientX:0);
@@ -444,28 +468,24 @@
             const p = document.createElement('div');
             p.style.cssText = `position:fixed; left:${x+(Math.random()-0.5)*30}px; top:${y+(Math.random()-0.5)*30}px; font-size:${1+Math.random()*1.2}rem; pointer-events:none; z-index:999; animation:clickPopFade 0.9s forwards;`;
             p.innerHTML = ['🍬','🍭','🎈','❤️'][Math.floor(Math.random()*4)];
-            document.body.appendChild(p);
-            p.addEventListener('animationend', ()=>p.remove());
+            document.body.appendChild(p); p.addEventListener('animationend', ()=>p.remove());
         }
     }
-
     startCoolBreeze(); createBgClouds(); createFloatingHearts();
     window.addEventListener('click', addClickBreezeEffect);
     window.addEventListener('beforeunload', ()=> particleInterval && clearInterval(particleInterval));
 
-    // ========== Supabase 配置 ==========
+    // ========== Supabase ==========
     const SUPABASE_URL = 'https://cgvnzfbdqmqguagtjhfi.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_W_1tTixY0j-gF8roUH9HRQ__hiuYCLG';
     const MAX_RETRIES = 3;
-
     async function supabaseRequest(endpoint, options = {}, retry = 0) {
         const url = `${SUPABASE_URL}/rest/v1/${endpoint}`;
         const headers = { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`, 'Content-Type': 'application/json', ...options.headers };
         try {
             const response = await fetch(url, { ...options, headers, mode: 'cors' });
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const text = await response.text();
-            if (!text) return [];
+            const text = await response.text(); if (!text) return [];
             return JSON.parse(text);
         } catch (error) {
             if (retry < MAX_RETRIES) { await new Promise(r => setTimeout(r, 1000 * (retry + 1))); return supabaseRequest(endpoint, options, retry + 1); }
@@ -480,20 +500,16 @@
     const historyHint = document.getElementById('historyHint');
     const globalBadge = document.getElementById('globalBadge');
     const syncError = document.getElementById('syncError');
-    
     let globalCount = 0, globalLastTime = null, apiAvailable = false, isRequesting = false, errorTimer = null;
-
     function showSyncError() {
         if (syncError) { syncError.style.display = 'block'; if (errorTimer) clearTimeout(errorTimer); errorTimer = setTimeout(() => { syncError.style.display = 'none'; }, 3000); }
     }
-
     async function updateCountDisplay() {
         missCountSpan.textContent = globalCount;
         lastTimeSpan.textContent = globalLastTime ? '🕒 ' + new Date(globalLastTime).toLocaleString() : '还没按过呢';
         historyHint.innerHTML = globalCount > 0 ? `🍪 小熊饼干已经想念了 ${globalCount} 次 🍪` : '✨ 每次想念都被珍藏 ✨';
         globalBadge.textContent = apiAvailable ? '🌐 Supabase 全球同步' : '📱 本地模式';
     }
-
     async function loadGlobalCount() {
         try {
             const data = await supabaseRequest('miss_counter?id=eq.1&select=count,last_time');
@@ -501,7 +517,6 @@
         } catch (e) { apiAvailable = false; }
         updateCountDisplay();
     }
-
     missBtn.addEventListener('click', async (e) => {
         if (isRequesting) return;
         isRequesting = true; missBtn.disabled = true; missBtn.style.opacity = '0.7';
@@ -511,8 +526,7 @@
             const h = document.createElement('div');
             h.innerHTML = ['💖','❤️','💕','💗','💘','💝','✨','🌸'][i % 8];
             h.style.cssText = `position:fixed; left:${cx+(Math.random()-0.5)*30}px; top:${cy+(Math.random()-0.5)*20}px; font-size:1.5rem; pointer-events:none; z-index:999; animation:clickPopFade 0.8s forwards;`;
-            document.body.appendChild(h);
-            setTimeout(() => h.remove(), 800);
+            document.body.appendChild(h); setTimeout(() => h.remove(), 800);
         }
         try {
             const current = await supabaseRequest('miss_counter?id=eq.1&select=count');
@@ -525,21 +539,17 @@
                 if (errorTimer) { clearTimeout(errorTimer); errorTimer = null; }
             }
         } catch (err) { apiAvailable = false; showSyncError(); }
-        updateCountDisplay();
-        missBtn.style.opacity = '1'; missBtn.disabled = false; isRequesting = false;
+        updateCountDisplay(); missBtn.style.opacity = '1'; missBtn.disabled = false; isRequesting = false;
     });
-
     loadGlobalCount();
 
-    // ========== 追剧收藏夹 ==========
+    // ========== 追剧 ==========
     const dramaNameInput = document.getElementById('dramaNameInput');
     const dramaEpInput = document.getElementById('dramaEpInput');
     const dramaAddBtn = document.getElementById('dramaAddBtn');
     const dramaList = document.getElementById('dramaList');
     let dramaData = [];
-
     function escapeHTML(str) { const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
-
     function renderDramaList() {
         dramaList.innerHTML = '';
         if (dramaData.length === 0) { dramaList.innerHTML = '<li class="drama-empty">✨ 还没有追剧记录，快来添加吧~</li>'; return; }
@@ -550,21 +560,9 @@
             dramaList.appendChild(li);
         });
     }
-
-    async function saveDramaToServer() {
-        try { await supabaseRequest('drama_data?id=eq.1', { method: 'PATCH', body: JSON.stringify({ dramas: JSON.stringify(dramaData) }) }); } catch (e) {}
-    }
-
-    async function loadDramaFromServer() {
-        try {
-            const data = await supabaseRequest('drama_data?id=eq.1&select=dramas');
-            if (data && data.length > 0 && data[0].dramas) { dramaData = JSON.parse(data[0].dramas); }
-        } catch (e) {}
-        renderDramaList();
-    }
-
+    async function saveDramaToServer() { try { await supabaseRequest('drama_data?id=eq.1', { method: 'PATCH', body: JSON.stringify({ dramas: JSON.stringify(dramaData) }) }); } catch (e) {} }
+    async function loadDramaFromServer() { try { const data = await supabaseRequest('drama_data?id=eq.1&select=dramas'); if (data && data.length > 0 && data[0].dramas) { dramaData = JSON.parse(data[0].dramas); } } catch (e) {} renderDramaList(); }
     async function deleteDrama(index) { dramaData.splice(index, 1); renderDramaList(); await saveDramaToServer(); }
-
     dramaAddBtn.addEventListener('click', async () => {
         const name = dramaNameInput.value.trim(), ep = dramaEpInput.value.trim();
         if (!name) { alert('请输入剧名哦~'); return; }
@@ -579,7 +577,6 @@
     const dogVideo = document.getElementById('dogVideo');
     const dogTip = document.getElementById('dogTip');
     const loveVideo = document.getElementById('loveVideo');
-
     function setDogInitialPosition() {
         const w = dogContainer.offsetWidth, h = dogContainer.offsetHeight;
         dogContainer.style.left = (window.innerWidth - w - 20) + 'px';
@@ -588,7 +585,6 @@
     }
     setDogInitialPosition();
     window.addEventListener('resize', () => { if (!dogContainer.dataset.dragged) setDogInitialPosition(); });
-
     let isDogDragging = false, dogStartX, dogStartY, dogStartLeft, dogStartTop, dogHasMoved = false;
     const DRAG_THRESHOLD = 5;
     dogContainer.addEventListener('mousedown', onDogDragStart);
@@ -597,7 +593,6 @@
     window.addEventListener('touchmove', onDogDragMove, { passive: false });
     window.addEventListener('mouseup', onDogDragEnd);
     window.addEventListener('touchend', onDogDragEnd);
-
     function onDogDragStart(e) {
         if (document.querySelector('.game-modal.active') || document.querySelector('.video-modal.active')) return;
         e.preventDefault();
@@ -605,12 +600,10 @@
         dogStartX = point.clientX; dogStartY = point.clientY;
         dogStartLeft = parseFloat(dogContainer.style.left) || 0;
         dogStartTop = parseFloat(dogContainer.style.top) || 0;
-        isDogDragging = true; dogHasMoved = false;
-        dogContainer.classList.add('dragging');
+        isDogDragging = true; dogHasMoved = false; dogContainer.classList.add('dragging');
     }
     function onDogDragMove(e) {
-        if (!isDogDragging) return;
-        e.preventDefault();
+        if (!isDogDragging) return; e.preventDefault();
         const point = e.touches ? e.touches[0] : e;
         const dx = point.clientX - dogStartX, dy = point.clientY - dogStartY;
         if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) dogHasMoved = true;
@@ -626,79 +619,40 @@
         if (!dogHasMoved) handleDogMultiClick(e);
         dogStartX = dogStartY = dogStartLeft = dogStartTop = null; dogHasMoved = false;
     }
-
     let dogClickCount = 0, dogClickTimer = null;
     function handleDogMultiClick(e) {
-        e.stopPropagation();
-        dogClickCount++;
+        e.stopPropagation(); dogClickCount++;
         if (dogClickTimer) clearTimeout(dogClickTimer);
         dogClickTimer = setTimeout(() => {
             if (dogClickCount === 1) {
-                const modal = document.getElementById('videoModal');
-                modal.classList.add('active');
-                // 使用统一变量
+                const modal = document.getElementById('videoModal'); modal.classList.add('active');
                 let videoSrc = videoCache['dogClick'] ? videoCache['dogClick'].src : DOG_CLICK_VIDEO;
-                loveVideo.src = videoSrc;
-                loveVideo.load();
-                loveVideo.muted = false;
-
+                loveVideo.src = videoSrc; loveVideo.load(); loveVideo.muted = false;
                 let dogVideoTimeout;
-                const closeModal = () => {
-                    if (dogVideoTimeout) clearTimeout(dogVideoTimeout);
-                    modal.classList.remove('active');
-                    loveVideo.pause();
-                    loveVideo.currentTime = 0;
-                };
-
-                // 超时回退：5秒
-                dogVideoTimeout = setTimeout(() => {
-                    console.warn('小狗视频超时，关闭模态');
-                    closeModal();
-                }, 5000);
-
-                loveVideo.addEventListener('loadedmetadata', () => {
-                    if (dogVideoTimeout) { clearTimeout(dogVideoTimeout); dogVideoTimeout = null; }
-                }, { once: true });
-
-                loveVideo.play().catch(err => {
-                    console.warn('小狗视频播放失败', err);
-                    closeModal();
-                });
+                const closeModal = () => { if (dogVideoTimeout) clearTimeout(dogVideoTimeout); modal.classList.remove('active'); loveVideo.pause(); loveVideo.currentTime = 0; };
+                dogVideoTimeout = setTimeout(() => { console.warn('小狗视频超时'); closeModal(); }, 5000);
+                loveVideo.addEventListener('loadedmetadata', () => { if (dogVideoTimeout) { clearTimeout(dogVideoTimeout); dogVideoTimeout = null; } }, { once: true });
+                loveVideo.play().catch(err => { console.warn('播放失败', err); closeModal(); });
             } else if (dogClickCount === 2) {
-                dogContainer.classList.add('deleted');
-                dogTip.textContent = '💔 小狗消失了...';
+                dogContainer.classList.add('deleted'); dogTip.textContent = '💔 小狗消失了...';
                 setTimeout(() => { dogContainer.style.display = 'none'; }, 500);
             } else if (dogClickCount >= 3) {
-                dogVideo.classList.add('dog-spin');
-                dogTip.textContent = '🌀 转圈圈啦！';
+                dogVideo.classList.add('dog-spin'); dogTip.textContent = '🌀 转圈圈啦！';
                 setTimeout(() => { dogVideo.classList.remove('dog-spin'); dogTip.textContent = '🐶 单击看视频 · 双击删除 · 三击转圈'; }, 600);
             }
-            dogClickCount = 0;
-            dogClickTimer = null;
+            dogClickCount = 0; dogClickTimer = null;
         }, 300);
     }
+    document.getElementById('closeModalBtn').addEventListener('click', () => { document.getElementById('videoModal').classList.remove('active'); loveVideo.pause(); loveVideo.currentTime = 0; });
+    document.getElementById('videoModal').addEventListener('click', e => { if (e.target === document.getElementById('videoModal')) { document.getElementById('videoModal').classList.remove('active'); loveVideo.pause(); loveVideo.currentTime = 0; } });
 
-    document.getElementById('closeModalBtn').addEventListener('click', () => {
-        document.getElementById('videoModal').classList.remove('active');
-        loveVideo.pause();
-        loveVideo.currentTime = 0;
-    });
-    document.getElementById('videoModal').addEventListener('click', e => {
-        if (e.target === document.getElementById('videoModal')) {
-            document.getElementById('videoModal').classList.remove('active');
-            loveVideo.pause();
-            loveVideo.currentTime = 0;
-        }
-    });
-
-    // ========== 记事本 - 单击播放转场动画后跳转 ==========
+    // ========== 记事本转场 ==========
     const notepadFloat = document.getElementById('notepadFloat');
     const notepadImg = document.getElementById('notepadImg');
     const notepadTip = document.getElementById('notepadTip');
     const transitionModal = document.getElementById('transitionModal');
     const transitionVideo = document.getElementById('transitionVideo');
     let isTransitioning = false;
-
     function setNotepadInitialPosition() {
         const nw = notepadFloat.offsetWidth, nh = notepadFloat.offsetHeight;
         const dogRect = dogContainer.getBoundingClientRect();
@@ -708,7 +662,6 @@
     }
     setTimeout(setNotepadInitialPosition, 600);
     window.addEventListener('resize', () => { if (!notepadFloat.dataset.dragged) setNotepadInitialPosition(); });
-
     let isNotepadDragging = false, npStartX, npStartY, npStartLeft, npStartTop, npHasMoved = false;
     notepadFloat.addEventListener('mousedown', onNpDragStart);
     notepadFloat.addEventListener('touchstart', onNpDragStart, { passive: false });
@@ -716,7 +669,6 @@
     window.addEventListener('touchmove', onNpDragMove, { passive: false });
     window.addEventListener('mouseup', onNpDragEnd);
     window.addEventListener('touchend', onNpDragEnd);
-
     function onNpDragStart(e) {
         if (document.querySelector('.game-modal.active') || document.querySelector('.video-modal.active')) return;
         e.preventDefault();
@@ -724,20 +676,14 @@
         npStartX = point.clientX; npStartY = point.clientY;
         npStartLeft = parseFloat(notepadFloat.style.left) || 0;
         npStartTop = parseFloat(notepadFloat.style.top) || 0;
-        isNotepadDragging = true; npHasMoved = false;
-        notepadFloat.classList.add('dragging');
+        isNotepadDragging = true; npHasMoved = false; notepadFloat.classList.add('dragging');
     }
     function onNpDragMove(e) {
-        if (!isNotepadDragging) return;
-        e.preventDefault();
+        if (!isNotepadDragging) return; e.preventDefault();
         const point = e.touches ? e.touches[0] : e;
         const dx = point.clientX - npStartX, dy = point.clientY - npStartY;
         if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) npHasMoved = true;
-        if (npHasMoved) {
-            notepadFloat.style.left = (npStartLeft + dx) + 'px';
-            notepadFloat.style.top = (npStartTop + dy) + 'px';
-            notepadFloat.dataset.dragged = 'true';
-        }
+        if (npHasMoved) { notepadFloat.style.left = (npStartLeft + dx) + 'px'; notepadFloat.style.top = (npStartTop + dy) + 'px'; notepadFloat.dataset.dragged = 'true'; }
     }
     function onNpDragEnd(e) {
         if (!isNotepadDragging) return;
@@ -745,80 +691,39 @@
         if (!npHasMoved) handleNotepadMultiClick(e);
         npStartX = npStartY = npStartLeft = npStartTop = null; npHasMoved = false;
     }
-
     let npClickCount = 0, npClickTimer = null;
     function handleNotepadMultiClick(e) {
-        e.stopPropagation();
-        npClickCount++;
+        e.stopPropagation(); npClickCount++;
         if (npClickTimer) clearTimeout(npClickTimer);
         npClickTimer = setTimeout(() => {
             if (npClickCount === 1) {
                 if (isTransitioning) return;
-                isTransitioning = true;
-                transitionModal.classList.remove('hidden');
-
-                // 使用统一变量
+                isTransitioning = true; transitionModal.classList.remove('hidden');
                 let videoSrc = videoCache['transition'] ? videoCache['transition'].src : TRANSITION_VIDEO;
-                transitionVideo.src = videoSrc;
-                transitionVideo.load();
-                transitionVideo.currentTime = 0;
-
+                transitionVideo.src = videoSrc; transitionVideo.load(); transitionVideo.currentTime = 0;
                 let transitionTimeout;
-                const cleanUpAndGo = () => {
-                    if (transitionTimeout) clearTimeout(transitionTimeout);
-                    isTransitioning = false;
-                    window.location.href = 'notepad.html';
-                };
-
-                // 超时回退：3秒
-                transitionTimeout = setTimeout(() => {
-                    console.warn('转场视频超时，直接跳转');
-                    cleanUpAndGo();
-                }, 3000);
-
-                const handleEnded = () => {
-                    transitionVideo.removeEventListener('ended', handleEnded);
-                    transitionVideo.removeEventListener('loadedmetadata', handleMeta);
-                    cleanUpAndGo();
-                };
-
-                const handleMeta = () => {
-                    if (transitionTimeout) { clearTimeout(transitionTimeout); transitionTimeout = null; }
-                };
-
-                transitionVideo.addEventListener('ended', handleEnded);
-                transitionVideo.addEventListener('loadedmetadata', handleMeta);
-
-                transitionVideo.play().then(() => {
-                    // 播放开始
-                }).catch(err => {
-                    console.warn('转场视频播放失败', err);
-                    cleanUpAndGo();
-                });
+                const cleanUpAndGo = () => { if (transitionTimeout) clearTimeout(transitionTimeout); isTransitioning = false; window.location.href = 'notepad.html'; };
+                transitionTimeout = setTimeout(() => { console.warn('转场视频超时'); cleanUpAndGo(); }, 3000);
+                const handleEnded = () => { transitionVideo.removeEventListener('ended', handleEnded); transitionVideo.removeEventListener('loadedmetadata', handleMeta); cleanUpAndGo(); };
+                const handleMeta = () => { if (transitionTimeout) { clearTimeout(transitionTimeout); transitionTimeout = null; } };
+                transitionVideo.addEventListener('ended', handleEnded); transitionVideo.addEventListener('loadedmetadata', handleMeta);
+                transitionVideo.play().then(() => {}).catch(err => { console.warn('播放失败', err); cleanUpAndGo(); });
             } else if (npClickCount >= 2) {
-                if (isTransitioning) {
-                    isTransitioning = false;
-                    transitionVideo.pause();
-                    transitionModal.classList.add('hidden');
-                }
-                notepadFloat.classList.add('deleted');
-                notepadTip.textContent = '💔 记事本消失了...';
+                if (isTransitioning) { isTransitioning = false; transitionVideo.pause(); transitionModal.classList.add('hidden'); }
+                notepadFloat.classList.add('deleted'); notepadTip.textContent = '💔 记事本消失了...';
                 setTimeout(() => { notepadFloat.style.display = 'none'; }, 500);
             }
-            npClickCount = 0;
-            npClickTimer = null;
+            npClickCount = 0; npClickTimer = null;
         }, 300);
     }
-
     notepadImg.addEventListener('error', () => {
         notepadImg.style.display = 'none';
         const fallback = document.createElement('div');
         fallback.style.cssText = 'width:180px;height:180px;border-radius:15px;background:linear-gradient(135deg,#8b5cf6,#6366f1);display:flex;align-items:center;justify-content:center;font-size:4rem;box-shadow:0 10px 25px rgba(139,92,246,0.4),0 0 0 3px rgba(255,240,255,0.6);animation:notepadFloat 3.5s infinite ease-in-out;padding:3px;';
-        fallback.textContent = '📖';
-        notepadImg.parentNode.insertBefore(fallback, notepadImg);
+        fallback.textContent = '📖'; notepadImg.parentNode.insertBefore(fallback, notepadImg);
     });
 
-    // ========== 糖果大作战 ==========
+    // ========== 🍬 糖果大作战（界面优化+保留土味情话） ==========
     const gameModal = document.getElementById('gameModal');
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
@@ -828,12 +733,29 @@
     const levelDisplay = document.getElementById('levelDisplay');
     const restartBtn = document.getElementById('restartGameBtn');
     const closeGameBtn = document.getElementById('closeGameBtn');
+    const modeButtons = document.querySelectorAll('.mode-btn');
 
     let gameActive = false, score = 0, timeLeft = 15, intervalId = null, animationId = null;
     let candies = [];
     let currentLevel = 1, levelTargetScore = 10, baseCandyCount = 5;
-    let CANDY_COUNT = 5, RADIUS = 20;
-    let loveMsgTimer = null;
+    let CANDY_COUNT = 5, RADIUS = 22;
+    let loveMsgTimer = null, frozen = false, frozenTimer = null;
+    let cooldownActive = false, cooldownTimer = null;
+    let shieldActive = false, shieldTimer = null;
+    let gameMode = 'classic';
+    let totalStars = 0;
+
+    const ITEMS = {
+        normal: { emoji: '🍬', weight: 70 },
+        time:   { emoji: '⏳', weight: 8 },
+        bomb:   { emoji: '💣', weight: 8 },
+        ice:    { emoji: '❄️', weight: 8 },
+        lucky:  { emoji: '⭐', weight: 2 },
+        speed:  { emoji: '🔥', weight: 3 },
+        shield: { emoji: '🛡️', weight: 3 },
+        swap:   { emoji: '🔄', weight: 2 },
+        giant:  { emoji: '🍫', weight: 3 },
+    };
 
     const loveQuotes = [
         "你知道我想喝什么吗？我想呵护你。","莫文蔚的阴天，孙燕姿的雨天，都不如你和我聊天。",
@@ -874,132 +796,269 @@
         "甜有100种方式，吃糖，蛋糕，还有每天98次的想你。","你的名字，是我见过最短的情诗。"
     ];
 
+    function getItemWeights() {
+        const weights = JSON.parse(JSON.stringify(ITEMS));
+        const bombRate = Math.min(0.25, 0.05 + (currentLevel-1)*0.02);
+        weights.bomb.weight = Math.round(bombRate * 100);
+        if (currentLevel % 5 === 0) {
+            for (let key of Object.keys(weights)) if (key !== 'normal') weights[key].weight *= 2;
+        }
+        return weights;
+    }
+
+    function randomItemType() {
+        const weights = getItemWeights();
+        const total = Object.values(weights).reduce((s,t) => s + t.weight, 0);
+        let rand = Math.random() * total;
+        for (const [type, data] of Object.entries(weights)) {
+            rand -= data.weight;
+            if (rand <= 0) return type;
+        }
+        return 'normal';
+    }
+
+    function popupMessage(msg) {
+        const el = document.createElement('div'); el.className = 'game-popup'; el.textContent = msg;
+        document.body.appendChild(el); setTimeout(() => el.remove(), 1200);
+    }
+
     function showLevelUpEffect() {
         const effect = document.createElement('div'); effect.className = 'level-up-effect';
         effect.innerHTML = `🎉 第${currentLevel}关通过！`;
-        document.body.appendChild(effect);
-        setTimeout(() => effect.remove(), 1500);
+        document.body.appendChild(effect); setTimeout(() => effect.remove(), 1500);
     }
 
     function initCandies() {
-        candies = []; CANDY_COUNT = baseCandyCount + currentLevel;
-        for(let i=0;i<CANDY_COUNT;i++) {
+        candies = [];
+        CANDY_COUNT = baseCandyCount + currentLevel;
+        if (currentLevel % 5 === 0) {
+            levelTargetScore = Math.floor(levelTargetScore * 3);
+            CANDY_COUNT = Math.floor(CANDY_COUNT * 1.5);
+        }
+        for (let i=0; i<CANDY_COUNT; i++) {
+            const speed = (Math.random()-0.5)*(2+currentLevel*0.4);
             candies.push({
-                x: 40 + Math.random()*(canvas.width-80), y: 40 + Math.random()*(canvas.height-80),
-                vx: (Math.random()-0.5)*(2 + currentLevel * 0.5), vy: (Math.random()-0.5)*(2 + currentLevel * 0.5)
+                x:40+Math.random()*(canvas.width-80), y:40+Math.random()*(canvas.height-80),
+                vx:speed, vy:speed, type:randomItemType(), radius:RADIUS
             });
         }
     }
 
     function drawCandies() {
         ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle = '#fdf3e0'; ctx.fillRect(0,0,canvas.width,canvas.height);
-        for(let c of candies) {
-            ctx.save();
-            ctx.shadowBlur = 6; ctx.shadowColor = "rgba(0,0,0,0.2)";
-            ctx.font = `${RADIUS*1.5}px "Segoe UI Emoji"`; ctx.fillStyle = '#ffaa66';
-            ctx.beginPath(); ctx.arc(c.x, c.y, RADIUS-2, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = '#d45a1a'; ctx.font = `${RADIUS*1.4}px "Segoe UI Emoji"`;
-            ctx.fillText('🍬', c.x-12, c.y+10);
+        ctx.fillStyle='#fdf3e0'; ctx.fillRect(0,0,canvas.width,canvas.height);
+        for (const c of candies) {
+            ctx.save(); ctx.shadowBlur=6; ctx.shadowColor="rgba(0,0,0,0.2)";
+            ctx.beginPath(); ctx.arc(c.x,c.y,c.radius-2,0,Math.PI*2);
+            ctx.fillStyle=c.type==='bomb'?'#555':c.type==='ice'?'#aee':c.type==='time'?'#eea':'#ffaa66';
+            ctx.fill();
+            ctx.font=`${c.radius*1.2}px "Segoe UI Emoji"`; ctx.fillStyle='#333';
+            ctx.fillText(ITEMS[c.type]?.emoji||'🍬', c.x-c.radius/2, c.y+c.radius/3);
             ctx.restore();
+            if (shieldActive && c.type==='bomb') {
+                ctx.save(); ctx.strokeStyle='rgba(0,200,255,0.8)'; ctx.lineWidth=2;
+                ctx.beginPath(); ctx.arc(c.x,c.y,c.radius+3,0,Math.PI*2); ctx.stroke(); ctx.restore();
+            }
+        }
+        if (cooldownActive) {
+            ctx.save(); ctx.fillStyle='rgba(255,0,0,0.1)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+            ctx.font='bold 18px "Segoe UI"'; ctx.fillStyle='#ff4444';
+            ctx.fillText('⏳ 冷却中...', canvas.width-120, 30); ctx.restore();
         }
     }
 
     function updateCandies() {
         if(!gameActive) return;
-        for(let c of candies) {
-            c.x += c.vx; c.y += c.vy;
-            if(c.x - RADIUS < 0) { c.x = RADIUS; c.vx = -c.vx; }
-            if(c.x + RADIUS > canvas.width) { c.x = canvas.width - RADIUS; c.vx = -c.vx; }
-            if(c.y - RADIUS < 0) { c.y = RADIUS; c.vy = -c.vy; }
-            if(c.y + RADIUS > canvas.height) { c.y = canvas.height - RADIUS; c.vy = -c.vy; }
+        if(!frozen) {
+            for(const c of candies) {
+                c.x+=c.vx; c.y+=c.vy;
+                if(c.x-c.radius<0){c.x=c.radius; c.vx=-c.vx;}
+                if(c.x+c.radius>canvas.width){c.x=canvas.width-c.radius; c.vx=-c.vx;}
+                if(c.y-c.radius<0){c.y=c.radius; c.vy=-c.vy;}
+                if(c.y+c.radius>canvas.height){c.y=canvas.height-c.radius; c.vy=-c.vy;}
+            }
         }
         drawCandies();
-        animationId = requestAnimationFrame(updateCandies);
+        animationId=requestAnimationFrame(updateCandies);
     }
 
     function handleCanvasClick(e) {
-        if(!gameActive) return;
-        const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width, scaleY = canvas.height / rect.height;
-        let clientX, clientY;
-        if(e.touches) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
-        else { clientX = e.clientX; clientY = e.clientY; }
-        const canvasX = (clientX - rect.left) * scaleX, canvasY = (clientY - rect.top) * scaleY;
-        for(let c of candies) {
-            if(Math.hypot(canvasX - c.x, canvasY - c.y) < RADIUS) {
-                score++; scoreSpan.innerText = score;
-                c.x = 40 + Math.random()*(canvas.width-80);
-                c.y = 40 + Math.random()*(canvas.height-80);
-                c.vx = (Math.random()-0.5)*(2.5 + currentLevel);
-                c.vy = (Math.random()-0.5)*(2.5 + currentLevel);
-                const randomLove = loveQuotes[Math.floor(Math.random() * loveQuotes.length)];
-                gameMessageDiv.innerHTML = randomLove;
-                clearTimeout(loveMsgTimer);
-                loveMsgTimer = setTimeout(() => {
-                    if(gameActive) gameMessageDiv.innerHTML = `🎯 第${currentLevel}关：还需${levelTargetScore - score}颗糖果晋级！`;
-                }, 3000);
-                if(score >= levelTargetScore) levelUp();
-                break;
+        if(!gameActive||cooldownActive) return;
+        const rect=canvas.getBoundingClientRect();
+        const scaleX=canvas.width/rect.width, scaleY=canvas.height/rect.height;
+        let clientX,clientY;
+        if(e.touches){clientX=e.touches[0].clientX;clientY=e.touches[0].clientY;}
+        else{clientX=e.clientX;clientY=e.clientY;}
+        const canvasX=(clientX-rect.left)*scaleX, canvasY=(clientY-rect.top)*scaleY;
+
+        const hitIndices=[];
+        for(let i=0;i<candies.length;i++) {
+            if(Math.hypot(canvasX-candies[i].x, canvasY-candies[i].y)<candies[i].radius) hitIndices.push(i);
+        }
+        if(hitIndices.length===0) return;
+
+        if(hitIndices.length>=3) {
+            cooldownActive=true;
+            if(cooldownTimer) clearTimeout(cooldownTimer);
+            cooldownTimer=setTimeout(()=>{cooldownActive=false;},2000);
+        }
+
+        for(const index of hitIndices) {
+            const c=candies[index];
+            switch(c.type) {
+                case 'normal': score++; break;
+                case 'time': timeLeft+=5; popupMessage('+5秒'); break;
+                case 'bomb':
+                    if(shieldActive){popupMessage('🛡️ 护盾抵挡'); break;}
+                    if(Math.random()<0.5){ const deduct=Math.floor(Math.random()*3)+1; score=Math.max(0,score-deduct); popupMessage(`-${deduct}颗`); }
+                    else{ timeLeft=Math.max(0,timeLeft-3); popupMessage('-3秒'); }
+                    break;
+                case 'ice':
+                    frozen=true; candies.forEach(c=>{c.vx=0;c.vy=0;}); popupMessage('❄️ 冰冻3秒');
+                    if(frozenTimer)clearTimeout(frozenTimer);
+                    frozenTimer=setTimeout(()=>{
+                        frozen=false; const boost=1.5;
+                        candies.forEach(c=>{c.vx=(Math.random()-0.5)*boost*(2+currentLevel*0.4); c.vy=(Math.random()-0.5)*boost*(2+currentLevel*0.4);});
+                        setTimeout(()=>{candies.forEach(c=>{c.vx=(Math.random()-0.5)*(2+currentLevel*0.4); c.vy=(Math.random()-0.5)*(2+currentLevel*0.4);});},1000);
+                    },3000);
+                    break;
+                case 'lucky': score+=10; if(Math.random()<0.5)timeLeft+=5; else {frozen=true; setTimeout(()=>{frozen=false;},3000);} popupMessage('⭐ 幸运！'); break;
+                case 'speed': candies.forEach(c=>{c.vx*=1.5; c.vy*=1.5;}); popupMessage('🔥 加速4秒'); setTimeout(()=>{candies.forEach(c=>{c.vx/=1.5; c.vy/=1.5;});},4000); break;
+                case 'shield': shieldActive=true; popupMessage('🛡️ 护盾6秒'); if(shieldTimer)clearTimeout(shieldTimer); shieldTimer=setTimeout(()=>{shieldActive=false;},6000); break;
+                case 'swap': const targets=candies.filter(c=>c.type!=='normal').slice(0,3); targets.forEach(c=>{c.type=randomItemType();}); popupMessage('🔄 换位！'); break;
+                case 'giant': score+=3; popupMessage('🍫 +3分'); break;
             }
+            candies[index].x=40+Math.random()*(canvas.width-80);
+            candies[index].y=40+Math.random()*(canvas.height-80);
+            candies[index].type=randomItemType();
+            candies[index].radius=(candies[index].type==='giant')?RADIUS*1.5:RADIUS;
+            if(!frozen){candies[index].vx=(Math.random()-0.5)*(2+currentLevel*0.4); candies[index].vy=(Math.random()-0.5)*(2+currentLevel*0.4);}
+            else{candies[index].vx=0; candies[index].vy=0;}
+        }
+
+        scoreSpan.innerText=score; timerSpan.innerText=timeLeft;
+
+        if(gameMode==='classic' && score>=levelTargetScore) {
+            const stars = score>=levelTargetScore*1.4?3:score>=levelTargetScore*1.2?2:1;
+            totalStars+=stars; levelUp();
         }
     }
 
     function levelUp() {
-        currentLevel++; levelTargetScore += 10 + currentLevel * 2;
-        timeLeft = 15 + currentLevel * 2;
-        timerSpan.innerText = timeLeft;
-        levelDisplay.innerHTML = `🏆 第${currentLevel}关`;
-        score = 0; scoreSpan.innerText = '0';
-        showLevelUpEffect();
-        gameMessageDiv.innerHTML = `🎉 晋级第${currentLevel}关！目标：${levelTargetScore}颗糖果！糖果移动更快了哦~`;
+        currentLevel++; levelTargetScore=Math.floor(levelTargetScore*1.2)+5;
+        timeLeft=15+currentLevel*2; timerSpan.innerText=timeLeft;
+        levelDisplay.innerHTML=`🏆 第${currentLevel}关`;
+        score=0; scoreSpan.innerText='0'; showLevelUpEffect();
+        gameMessageDiv.innerHTML=`🎉 晋级第${currentLevel}关！目标：${levelTargetScore}颗`;
+        if(frozen){frozen=false; if(frozenTimer)clearTimeout(frozenTimer);}
+        if(shieldActive){shieldActive=false; if(shieldTimer)clearTimeout(shieldTimer);}
         initCandies();
     }
 
-    function startGame() {
-        if(intervalId) clearInterval(intervalId);
-        if(animationId) cancelAnimationFrame(animationId);
-        if(loveMsgTimer) clearTimeout(loveMsgTimer);
-        currentLevel = 1; levelTargetScore = 10; score = 0; timeLeft = 15;
-        scoreSpan.innerText = '0'; timerSpan.innerText = '15';
-        levelDisplay.innerHTML = '🏆 第1关'; gameActive = true;
-        gameMessageDiv.innerHTML = '🎯 第1关：收集10颗糖果晋级！';
+    function startGame(mode='classic') {
+        if(intervalId)clearInterval(intervalId);
+        if(animationId)cancelAnimationFrame(animationId);
+        if(loveMsgTimer)clearTimeout(loveMsgTimer);
+        if(frozenTimer)clearTimeout(frozenTimer);
+        if(shieldTimer)clearTimeout(shieldTimer);
+        gameMode=mode; frozen=false; shieldActive=false; cooldownActive=false;
+        currentLevel=1; levelTargetScore=10; score=0;
+        timeLeft=mode==='sprint'?60:mode==='survival'?30:15;
+        scoreSpan.innerText='0'; timerSpan.innerText=timeLeft;
+        levelDisplay.innerHTML=mode==='sprint'?'⏱️ 冲刺':mode==='survival'?'♾️ 无尽':'🏆 第1关';
+        gameActive=true;
+        gameMessageDiv.innerHTML=mode==='sprint'?'🏃 60秒极限冲刺！':mode==='survival'?'♾️ 无尽生存！':'🎯 第1关：收集10颗糖果晋级！';
         initCandies(); drawCandies(); updateCandies();
-        intervalId = setInterval(() => {
-            if(!gameActive) return;
-            timeLeft--; timerSpan.innerText = timeLeft;
-            if(timeLeft <= 0) {
-                gameActive = false; clearInterval(intervalId);
-                if(animationId) cancelAnimationFrame(animationId);
-                const totalScore = (currentLevel - 1) * levelTargetScore + score;
-                gameMessageDiv.innerHTML = `⏰ 时间到啦！你闯到第${currentLevel}关，总共收集了 ${totalScore} 颗糖果！ 🎁`;
-                ctx.clearRect(0,0,canvas.width,canvas.height);
-                ctx.fillStyle = '#fdf3e0'; ctx.fillRect(0,0,canvas.width,canvas.height);
-                ctx.font = 'bold 24px "Segoe UI"'; ctx.fillStyle = '#d96c1e';
+        intervalId=setInterval(()=>{
+            if(!gameActive)return;
+            timeLeft--; timerSpan.innerText=timeLeft;
+            if(timeLeft<=0){
+                gameActive=false; clearInterval(intervalId);
+                if(animationId)cancelAnimationFrame(animationId);
+                const msg=mode==='sprint'?`⏰ 冲刺结束！得分：${score}`:mode==='survival'?`⏰ 生存结束！第${currentLevel}关，得分：${score}`:`⏰ 时间到！第${currentLevel}关，得分：${score}`;
+                gameMessageDiv.innerHTML=msg;
+                ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle='#fdf3e0'; ctx.fillRect(0,0,canvas.width,canvas.height);
+                ctx.font='bold 24px "Segoe UI"'; ctx.fillStyle='#d96c1e';
                 ctx.fillText('🎉 GAME OVER 🎉', canvas.width/2-100, canvas.height/2-20);
-                ctx.font = 'bold 18px "Segoe UI"';
-                ctx.fillText(`闯到第${currentLevel}关`, canvas.width/2-60, canvas.height/2+20);
+                ctx.font='bold 18px "Segoe UI"'; ctx.fillText(msg, canvas.width/2-150, canvas.height/2+20);
             }
-        }, 1000);
+        },1000);
     }
 
     function stopGameAndClose() {
-        gameActive = false;
-        if(intervalId) clearInterval(intervalId);
-        if(animationId) cancelAnimationFrame(animationId);
-        if(loveMsgTimer) clearTimeout(loveMsgTimer);
+        gameActive=false;
+        if(intervalId)clearInterval(intervalId);
+        if(animationId)cancelAnimationFrame(animationId);
+        if(loveMsgTimer)clearTimeout(loveMsgTimer);
+        if(frozenTimer)clearTimeout(frozenTimer);
+        if(shieldTimer)clearTimeout(shieldTimer);
         gameModal.classList.remove('active');
     }
 
-    document.getElementById('openGameBtn').addEventListener('click', () => {
+    modeButtons.forEach(btn=>{
+        btn.addEventListener('click',()=>{
+            modeButtons.forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active');
+            const mode=btn.dataset.mode;
+            stopGameAndClose();
+            setTimeout(()=>{startGame(mode); gameModal.classList.add('active');},100);
+        });
+    });
+
+    document.getElementById('openGameBtn').addEventListener('click',()=>{
         if(gameModal.classList.contains('active')) return;
-        startGame(); gameModal.classList.add('active');
+        startGame('classic'); gameModal.classList.add('active');
     });
     closeGameBtn.addEventListener('click', stopGameAndClose);
-    restartBtn.addEventListener('click', () => { stopGameAndClose(); setTimeout(() => { startGame(); gameModal.classList.add('active'); }, 100); });
+    restartBtn.addEventListener('click',()=>{stopGameAndClose(); setTimeout(()=>{startGame(gameMode); gameModal.classList.add('active');},100);});
     canvas.addEventListener('click', handleCanvasClick);
-    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); handleCanvasClick(e); }, { passive: false });
-    gameModal.addEventListener('click', (e) => { if(e.target === gameModal) stopGameAndClose(); });
+    canvas.addEventListener('touchstart', (e)=>{e.preventDefault(); handleCanvasClick(e);},{passive:false});
+    gameModal.addEventListener('click', (e)=>{if(e.target===gameModal) stopGameAndClose();});
+
+    // 在普通糖果得分时显示土味情话（已在normal case中调用）
+    // 重写normal处理以加入情话
+    const originalHandle = handleCanvasClick;
+    handleCanvasClick = function(e) {
+        if(!gameActive||cooldownActive) return;
+        const rect=canvas.getBoundingClientRect();
+        const scaleX=canvas.width/rect.width, scaleY=canvas.height/rect.height;
+        let clientX,clientY;
+        if(e.touches){clientX=e.touches[0].clientX;clientY=e.touches[0].clientY;}
+        else{clientX=e.clientX;clientY=e.clientY;}
+        const canvasX=(clientX-rect.left)*scaleX, canvasY=(clientY-rect.top)*scaleY;
+        const hitIndices=[];
+        for(let i=0;i<candies.length;i++) {
+            if(Math.hypot(canvasX-candies[i].x, canvasY-candies[i].y)<candies[i].radius) hitIndices.push(i);
+        }
+        if(hitIndices.length===0) return;
+        if(hitIndices.length>=3) { cooldownActive=true; if(cooldownTimer)clearTimeout(cooldownTimer); cooldownTimer=setTimeout(()=>{cooldownActive=false;},2000); }
+        let showedLove = false;
+        for(const index of hitIndices) {
+            const c=candies[index];
+            switch(c.type) {
+                case 'normal': score++; if(!showedLove) { const randomLove = loveQuotes[Math.floor(Math.random() * loveQuotes.length)]; gameMessageDiv.innerHTML = randomLove; showedLove = true; clearTimeout(loveMsgTimer); loveMsgTimer = setTimeout(() => { if(gameActive) gameMessageDiv.innerHTML = gameMode==='classic'?`🎯 第${currentLevel}关：还需${levelTargetScore-score}颗糖果晋级！`:gameMode==='sprint'?'🏃 冲刺中！':'♾️ 无尽生存'; }, 3000); } break;
+                case 'time': timeLeft+=5; popupMessage('+5秒'); break;
+                case 'bomb': if(shieldActive){popupMessage('🛡️ 护盾抵挡'); break;} if(Math.random()<0.5){const deduct=Math.floor(Math.random()*3)+1; score=Math.max(0,score-deduct); popupMessage(`-${deduct}颗`);}else{timeLeft=Math.max(0,timeLeft-3); popupMessage('-3秒');} break;
+                case 'ice': frozen=true; candies.forEach(c=>{c.vx=0;c.vy=0;}); popupMessage('❄️ 冰冻3秒'); if(frozenTimer)clearTimeout(frozenTimer); frozenTimer=setTimeout(()=>{frozen=false; const boost=1.5; candies.forEach(c=>{c.vx=(Math.random()-0.5)*boost*(2+currentLevel*0.4); c.vy=(Math.random()-0.5)*boost*(2+currentLevel*0.4);}); setTimeout(()=>{candies.forEach(c=>{c.vx=(Math.random()-0.5)*(2+currentLevel*0.4); c.vy=(Math.random()-0.5)*(2+currentLevel*0.4);});},1000);},3000); break;
+                case 'lucky': score+=10; if(Math.random()<0.5)timeLeft+=5; else {frozen=true; setTimeout(()=>{frozen=false;},3000);} popupMessage('⭐ 幸运！'); break;
+                case 'speed': candies.forEach(c=>{c.vx*=1.5; c.vy*=1.5;}); popupMessage('🔥 加速4秒'); setTimeout(()=>{candies.forEach(c=>{c.vx/=1.5; c.vy/=1.5;});},4000); break;
+                case 'shield': shieldActive=true; popupMessage('🛡️ 护盾6秒'); if(shieldTimer)clearTimeout(shieldTimer); shieldTimer=setTimeout(()=>{shieldActive=false;},6000); break;
+                case 'swap': const targets=candies.filter(c=>c.type!=='normal').slice(0,3); targets.forEach(c=>{c.type=randomItemType();}); popupMessage('🔄 换位！'); break;
+                case 'giant': score+=3; popupMessage('🍫 +3分'); break;
+            }
+            candies[index].x=40+Math.random()*(canvas.width-80);
+            candies[index].y=40+Math.random()*(canvas.height-80);
+            candies[index].type=randomItemType();
+            candies[index].radius=(candies[index].type==='giant')?RADIUS*1.5:RADIUS;
+            if(!frozen){candies[index].vx=(Math.random()-0.5)*(2+currentLevel*0.4); candies[index].vy=(Math.random()-0.5)*(2+currentLevel*0.4);}
+            else{candies[index].vx=0; candies[index].vy=0;}
+        }
+        scoreSpan.innerText=score; timerSpan.innerText=timeLeft;
+        if(gameMode==='classic' && score>=levelTargetScore) {
+            const stars = score>=levelTargetScore*1.4?3:score>=levelTargetScore*1.2?2:1;
+            totalStars+=stars; levelUp();
+        }
+    };
 })();
 </script>
 </body>
