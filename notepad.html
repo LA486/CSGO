@@ -18,7 +18,7 @@
             overflow-y: auto;
             position: relative;
         }
-        /* 所有背景层保持固定定位，不再受 body perspective 影响 */
+        /* 所有背景层保持固定定位 */
         .stars, .nebula, .shooting-stars, .fireflies, .aurora, .stardust {
             position: fixed;
             top: 0;
@@ -294,6 +294,7 @@
         }
     }
 
+    // ==================== 背景特效生成 ====================
     // 星云
     const nebulaContainer = document.getElementById('nebulaContainer');
     const nebulaColors = ['#a78bfa', '#f472b6', '#60a5fa', '#fbbf24', '#34d399'];
@@ -396,7 +397,7 @@
     }
     scheduleMeteor();
 
-    // 记事本核心逻辑
+    // ==================== 记事本核心逻辑 ====================
     let notes = [];
     let currentNoteIndex = 0;
     let autoSaveTimer = null;
@@ -409,18 +410,174 @@
     const deleteNoteName = document.getElementById('deleteNoteName');
     const flipBackBtn = document.getElementById('flipBackBtn');
 
-    async function saveToServer() { /* ... 同上 ... */ }
-    async function loadFromServer() { /* ... 同上 ... */ }
-    function renderTabs() { /* ... 同上 ... */ }
-    function switchNote(index) { /* ... 同上 ... */ }
-    async function addNewNote() { /* ... 同上 ... */ }
-    function updateStatus(msg) { statusText.textContent = msg; }
-    function flipCard() { window.location.href = 'love.html'; }
+    async function saveToServer() {
+        try {
+            await supabaseRequest('notepad_data?id=eq.1', {
+                method: 'PATCH',
+                body: JSON.stringify({ notes: JSON.stringify(notes) })
+            });
+            updateStatus('💾 已同步到云端');
+        } catch (e) {
+            updateStatus('⚠️ 同步失败，请检查网络');
+        }
+    }
 
-    // 完整逻辑与之前一致，此处省略重复代码，实际使用时请保留原有完整实现
-    // 包括事件监听、删除、重命名等
-    // 为节省篇幅，此处示意已包含所有关键修复
+    async function loadFromServer() {
+        try {
+            const data = await supabaseRequest('notepad_data?id=eq.1&select=notes');
+            if (data && data.length > 0 && data[0].notes) {
+                notes = JSON.parse(data[0].notes);
+            }
+            if (notes.length === 0) {
+                notes = [{ title: '我的甜蜜日记', content: '' }];
+            }
+        } catch (e) {
+            console.warn('加载失败:', e);
+            updateStatus('⚠️ 加载失败，使用本地缓存');
+        }
+        if (notes.length > 0) {
+            notepadTextarea.value = notes[0].content || '';
+        }
+        renderTabs();
+        updateStatus('✅ 已从云端加载');
+    }
 
+    function renderTabs() {
+        tabsArea.innerHTML = '';
+        notes.forEach((note, index) => {
+            const tab = document.createElement('span');
+            tab.className = 'tab-btn' + (index === currentNoteIndex ? ' active' : '');
+            tab.textContent = '📄 ' + (note.title || '无标题');
+            tab.title = note.title || '无标题';
+            tab.addEventListener('click', () => switchNote(index));
+            tabsArea.appendChild(tab);
+        });
+        const addBtn = document.createElement('button');
+        addBtn.className = 'add-tab-btn';
+        addBtn.textContent = '➕ 新建';
+        addBtn.addEventListener('click', addNewNote);
+        tabsArea.appendChild(addBtn);
+    }
+
+    function switchNote(index) {
+        if (index === currentNoteIndex && !isFlipped) return;
+        notes[currentNoteIndex].content = notepadTextarea.value;
+        if (isFlipped) flipCard();
+        currentNoteIndex = index;
+        notepadTextarea.value = notes[index].content || '';
+        renderTabs();
+        updateStatus('📂 已切换到: ' + notes[index].title);
+        notepadTextarea.focus();
+    }
+
+    async function addNewNote() {
+        notes[currentNoteIndex].content = notepadTextarea.value;
+        const newIndex = notes.length;
+        notes.push({ title: '新笔记 ' + (newIndex + 1), content: '' });
+        currentNoteIndex = newIndex;
+        notepadTextarea.value = '';
+        renderTabs();
+        await saveToServer();
+        notepadTextarea.focus();
+    }
+
+    function updateStatus(msg) {
+        statusText.textContent = msg;
+    }
+
+    function flipCard() {
+        window.location.href = 'love.html';
+    }
+
+    // 自动保存
+    notepadTextarea.addEventListener('input', () => {
+        if (autoSaveTimer) clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(async () => {
+            notes[currentNoteIndex].content = notepadTextarea.value;
+            await saveToServer();
+        }, 1000);
+    });
+
+    // 翻转按钮
+    flipBackBtn.addEventListener('click', flipCard);
+
+    // 删除笔记（先翻转卡片）
+    document.getElementById('deleteBtn').addEventListener('click', () => {
+        if (!isFlipped) {
+            // 为了保持原有交互：点击删除先翻转卡片，然后在卡片背面确认删除
+            // 但我们这里翻转卡片现在变成了跳转，所以需要调整。
+            // 由于原有逻辑中flipCard是跳转love.html，而删除应该还是原来的翻转操作。
+            // 此处修复：删除按钮应当执行原有的翻转逻辑，而不是跳转。
+            // 我们需要一个单独的翻转函数来显示确认界面。
+        }
+    });
+
+    // 实际上，原设计中删除按钮会翻转卡片到背面，然后背面有确认按钮。
+    // 但现在我们修改了flipCard为跳转，导致删除功能异常。
+    // 需要恢复删除功能：点击删除按钮时卡片翻转（显示背面），背面确认删除后再执行删除。
+    // 因此我们需要两个不同的函数：一个用于惊喜跳转，一个用于删除时的翻转。
+
+    // 重新定义翻转功能：
+    function flipCardForDelete() {
+        isFlipped = !isFlipped;
+        cardInner.classList.toggle('flipped', isFlipped);
+        if (isFlipped) {
+            deleteNoteName.textContent = '「' + notes[currentNoteIndex].title + '」';
+        }
+    }
+
+    // 更新删除按钮事件
+    document.getElementById('deleteBtn').onclick = () => {
+        if (isFlipped) return; // 已经翻转则忽略
+        notes[currentNoteIndex].content = notepadTextarea.value;
+        flipCardForDelete();
+    };
+
+    document.getElementById('cancelDeleteBtn').onclick = () => {
+        if (isFlipped) flipCardForDelete();
+    };
+
+    document.getElementById('confirmDeleteBtn').onclick = async () => {
+        if (notes.length <= 1) {
+            alert('至少保留一个笔记哦~');
+            if (isFlipped) flipCardForDelete();
+            return;
+        }
+        notes.splice(currentNoteIndex, 1);
+        if (currentNoteIndex >= notes.length) currentNoteIndex = notes.length - 1;
+        notepadTextarea.value = notes[currentNoteIndex].content || '';
+        renderTabs();
+        await saveToServer();
+        if (isFlipped) flipCardForDelete();
+        updateStatus('🗑️ 笔记已删除并同步');
+    };
+
+    // 重命名按钮
+    document.getElementById('renameBtn').addEventListener('click', async () => {
+        const newTitle = prompt('请输入新标题：', notes[currentNoteIndex].title);
+        if (newTitle && newTitle.trim()) {
+            notes[currentNoteIndex].title = newTitle.trim();
+            renderTabs();
+            await saveToServer();
+            updateStatus('✏️ 已重命名: ' + newTitle.trim());
+        }
+    });
+
+    // 快捷键
+    document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault();
+            notes[currentNoteIndex].content = notepadTextarea.value;
+            saveToServer();
+            updateStatus('💾 已手动保存并同步');
+        }
+        if (e.ctrlKey && e.key === 'n') {
+            e.preventDefault();
+            addNewNote();
+        }
+    });
+
+    // 初始化加载
     loadFromServer();
 })();
 </script>
