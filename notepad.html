@@ -286,7 +286,7 @@
             </div>
         </div>
         <div class="flip-indicator">
-            <button class="flip-btn" id="flipBackBtn">🔄 翻转卡片</button>
+            <button class="flip-btn" id="flipBackBtn">💖 打开惊喜</button>
         </div>
     </div>
 
@@ -515,12 +515,8 @@
     }
 
     function flipCard() {
-        isFlipped = !isFlipped;
-        cardInner.classList.toggle('flipped', isFlipped);
-        flipBackBtn.textContent = isFlipped ? '🔄 翻回正面' : '🔄 翻转卡片';
-        if (isFlipped) {
-            deleteNoteName.textContent = '「' + notes[currentNoteIndex].title + '」';
-        }
+        // 跳转到惊喜页面
+        window.location.href = 'love.html';
     }
 
     notepadTextarea.addEventListener('input', () => {
