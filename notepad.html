@@ -8,16 +8,165 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background: linear-gradient(135deg, #0b0b1a 0%, #1a1a2e 30%, #16213e 70%, #0f3460 100%);
             font-family: 'Segoe UI', 'Quicksand', system-ui, sans-serif;
             display: flex; align-items: center; justify-content: center;
             padding: 2rem 1rem; perspective: 1500px;
             overflow-x: hidden;
+            position: relative;
         }
-        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-        .star { position: absolute; background: white; border-radius: 50%; animation: twinkle 2s infinite alternate; }
-        @keyframes twinkle { 0% { opacity: 0.3; transform: scale(1); } 100% { opacity: 1; transform: scale(1.5); } }
+        .stars, .nebula, .shooting-stars, .fireflies, .aurora, .stardust {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;
+        }
+        .nebula { z-index: -1; }
+        .aurora { z-index: -1; }
+        .stars { z-index: 0; }
+        .stardust { z-index: 0; }
+        .shooting-stars { z-index: 1; }
+        .fireflies { z-index: 1; }
 
+        /* 星云光晕 */
+        .nebula-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.12;
+            animation: nebulaDrift 30s infinite alternate ease-in-out;
+        }
+        @keyframes nebulaDrift {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, -40px) scale(1.1); }
+        }
+
+        /* 细密星空 */
+        .star-particle {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: starTwinkle 3s infinite alternate ease-in-out;
+        }
+        @keyframes starTwinkle {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            100% { opacity: 0.9; transform: scale(1.1); }
+        }
+
+        /* 极光光带 */
+        .aurora-band {
+            position: absolute;
+            height: 200px;
+            width: 80%;
+            opacity: 0.2;
+            border-radius: 50%;
+            filter: blur(30px);
+            animation: auroraFloat 20s infinite alternate ease-in-out;
+            background: linear-gradient(180deg, rgba(0,255,128,0.3) 0%, rgba(128,0,255,0.1) 100%);
+        }
+        .aurora-band:nth-child(1) {
+            top: 5%;
+            left: -20%;
+            background: linear-gradient(180deg, rgba(0,255,200,0.4) 0%, rgba(100,0,255,0.15) 100%);
+            animation-delay: 0s;
+            transform: rotate(-8deg);
+        }
+        .aurora-band:nth-child(2) {
+            top: 15%;
+            left: -10%;
+            background: linear-gradient(180deg, rgba(128,0,255,0.3) 0%, rgba(0,200,255,0.1) 100%);
+            animation-delay: -7s;
+            transform: rotate(5deg);
+        }
+        .aurora-band:nth-child(3) {
+            top: 25%;
+            left: 0%;
+            background: linear-gradient(180deg, rgba(255,0,128,0.2) 0%, rgba(0,100,255,0.1) 100%);
+            animation-delay: -14s;
+            transform: rotate(-3deg);
+        }
+        @keyframes auroraFloat {
+            0% { transform: translateX(-5%) translateY(0) rotate(-8deg); opacity: 0.15; }
+            50% { transform: translateX(5%) translateY(-20px) rotate(2deg); opacity: 0.3; }
+            100% { transform: translateX(-2%) translateY(10px) rotate(5deg); opacity: 0.2; }
+        }
+
+        /* 星尘漩涡 */
+        .stardust-particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: stardustRotate 15s linear infinite;
+        }
+        @keyframes stardustRotate {
+            0% { transform: rotate(0deg) translateX(80px) rotate(0deg); opacity: 0.2; }
+            50% { opacity: 0.8; }
+            100% { transform: rotate(360deg) translateX(80px) rotate(-360deg); opacity: 0.2; }
+        }
+
+        /* 流星（优化版） */
+        .shooting-star {
+            position: absolute;
+            width: 100px;              /* 略缩短，更灵巧 */
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.9) 40%, transparent 100%);
+            border-radius: 1px;
+            /* 初始旋转角度由 JS 动态设置 */
+            animation: shoot linear forwards;
+            filter: drop-shadow(0 0 5px rgba(180,200,255,0.7));
+        }
+        .shooting-star::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: -1px;
+            width: 4px;
+            height: 4px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            box-shadow: 0 0 8px 2px rgba(180,200,255,0.6);
+        }
+        .shooting-star.colored {
+            background: linear-gradient(90deg, transparent 0%, #fbbf24 40%, transparent 100%);
+            filter: drop-shadow(0 0 5px #fbbf24);
+        }
+        .shooting-star.colored::after {
+            background: #fde68a;
+            box-shadow: 0 0 10px 3px #fbbf24;
+        }
+        @keyframes shoot {
+            0% { 
+                transform: translateX(0) translateY(0) rotate(var(--angle)); 
+                opacity: 0;
+            }
+            5% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { 
+                transform: translateX(-350px) translateY(500px) rotate(var(--angle)); 
+                opacity: 0;
+            }
+        }
+
+        /* 萤火虫（飞过型） */
+        .firefly {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: #fde68a;
+            border-radius: 50%;
+            box-shadow: 0 0 12px 4px #fbbf24, 0 0 20px 8px rgba(251,191,36,0.3);
+            animation: fireflyFly 6s linear forwards;
+        }
+        @keyframes fireflyFly {
+            0% { transform: translate(0, 0) scale(0.8); opacity: 0; }
+            5% { opacity: 0.8; transform: scale(1.2); }
+            20% { transform: translate(40px, -80px) scale(1); }
+            40% { transform: translate(90px, -160px) scale(1.1); }
+            60% { transform: translate(130px, -240px) scale(0.9); }
+            80% { opacity: 0.5; transform: translate(170px, -320px) scale(0.7); }
+            100% { opacity: 0; transform: translate(200px, -400px) scale(0.4); }
+        }
+
+        /* 主内容容器 */
         .main-container { width: 100%; max-width: 800px; z-index: 10; display: flex; flex-direction: column; gap: 1.5rem; }
         .header { text-align: center; color: #e0d4ff; animation: fadeSlideDown 0.8s ease-out; }
         .header h1 { font-size: 2.2rem; background: linear-gradient(135deg, #a78bfa, #f472b6, #fb923c); background-clip: text; -webkit-background-clip: text; color: transparent; margin-bottom: 0.3rem; }
@@ -77,7 +226,12 @@
     </style>
 </head>
 <body>
+<div class="nebula" id="nebulaContainer"></div>
+<div class="aurora" id="auroraContainer"></div>
 <div class="stars" id="starsContainer"></div>
+<div class="stardust" id="stardustContainer"></div>
+<div class="shooting-stars" id="shootingStarsContainer"></div>
+<div class="fireflies" id="firefliesContainer"></div>
 
 <div class="main-container">
     <div class="header">
@@ -122,7 +276,6 @@
 
 <script>
 (function() {
-    // Supabase 配置
     const SUPABASE_URL = 'https://cgvnzfbdqmqguagtjhfi.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_W_1tTixY0j-gF8roUH9HRQ__hiuYCLG';
     const MAX_RETRIES = 3;
@@ -142,19 +295,123 @@
         }
     }
 
-    // 星空背景
+    // 星云
+    const nebulaContainer = document.getElementById('nebulaContainer');
+    const nebulaColors = ['#a78bfa', '#f472b6', '#60a5fa', '#fbbf24', '#34d399'];
+    for (let i = 0; i < 4; i++) {
+        const blob = document.createElement('div');
+        blob.className = 'nebula-blob';
+        blob.style.background = nebulaColors[i % nebulaColors.length];
+        blob.style.width = (300 + Math.random() * 400) + 'px';
+        blob.style.height = blob.style.width;
+        blob.style.left = (Math.random() * 80) + '%';
+        blob.style.top = (Math.random() * 80) + '%';
+        blob.style.animationDuration = (20 + Math.random() * 20) + 's';
+        blob.style.animationDelay = Math.random() * 5 + 's';
+        nebulaContainer.appendChild(blob);
+    }
+
+    // 极光
+    const auroraContainer = document.getElementById('auroraContainer');
+    for (let i = 0; i < 3; i++) {
+        const band = document.createElement('div');
+        band.className = 'aurora-band';
+        auroraContainer.appendChild(band);
+    }
+
+    // 星空
     const starsContainer = document.getElementById('starsContainer');
-    for(let i = 0; i < 80; i++) {
+    for (let i = 0; i < 200; i++) {
         const star = document.createElement('div');
-        star.className = 'star';
+        star.className = 'star-particle';
+        const size = 1 + Math.random() * 2;
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
         star.style.left = Math.random() * 100 + '%';
         star.style.top = Math.random() * 100 + '%';
-        star.style.width = star.style.height = (Math.random() * 3 + 1) + 'px';
-        star.style.animationDelay = Math.random() * 3 + 's';
-        star.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+        star.style.animationDelay = Math.random() * 5 + 's';
+        star.style.animationDuration = (2 + Math.random() * 3) + 's';
         starsContainer.appendChild(star);
     }
 
+    // 星尘漩涡
+    const stardustContainer = document.getElementById('stardustContainer');
+    for (let i = 0; i < 40; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'stardust-particle';
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 60 + Math.random() * 100;
+        const centerX = 50, centerY = 50;
+        const x = centerX + Math.cos(angle) * (distance / window.innerWidth * 100);
+        const y = centerY + Math.sin(angle) * (distance / window.innerHeight * 100);
+        particle.style.left = x + 'vw';
+        particle.style.top = y + 'vh';
+        particle.style.animationDuration = (10 + Math.random() * 15) + 's';
+        particle.style.animationDelay = Math.random() * -10 + 's';
+        particle.style.width = (1 + Math.random() * 2) + 'px';
+        particle.style.height = particle.style.width;
+        stardustContainer.appendChild(particle);
+    }
+
+    // 萤火虫
+    const firefliesContainer = document.getElementById('firefliesContainer');
+    function createFlyingFirefly() {
+        const firefly = document.createElement('div');
+        firefly.className = 'firefly';
+        const startX = Math.random() * 100;
+        const startY = 70 + Math.random() * 30;
+        firefly.style.left = startX + 'vw';
+        firefly.style.top = startY + 'vh';
+        const size = 2 + Math.random() * 4;
+        firefly.style.width = size + 'px';
+        firefly.style.height = size + 'px';
+        firefly.style.animationDuration = (5 + Math.random() * 6) + 's';
+        firefliesContainer.appendChild(firefly);
+        firefly.addEventListener('animationend', () => firefly.remove());
+    }
+    function scheduleFirefly() {
+        const delay = 1500 + Math.random() * 2500;
+        setTimeout(() => {
+            createFlyingFirefly();
+            scheduleFirefly();
+        }, delay);
+    }
+    scheduleFirefly();
+
+    // ========== 流星（优化版） ==========
+    const shootingContainer = document.getElementById('shootingStarsContainer');
+    function createShootingStar(colored = false) {
+        const star = document.createElement('div');
+        star.className = 'shooting-star' + (colored ? ' colored' : '');
+
+        // 随机起始位置：x 40%～100% vw，y 0%～30% vh
+        const startX = 40 + Math.random() * 60;
+        const startY = Math.random() * 30;
+        star.style.left = startX + 'vw';
+        star.style.top = startY + 'vh';
+
+        // 随机角度：-25deg 到 -55deg
+        const angle = -25 - Math.random() * 30;
+        star.style.setProperty('--angle', angle + 'deg');
+        star.style.transform = `rotate(${angle}deg)`;
+
+        // 随机动画时长：1.5s～3s
+        star.style.animationDuration = (1.5 + Math.random() * 1.5) + 's';
+
+        shootingContainer.appendChild(star);
+        star.addEventListener('animationend', () => star.remove());
+    }
+
+    function scheduleMeteor() {
+        const delay = 2000 + Math.random() * 3500;
+        setTimeout(() => {
+            createShootingStar(Math.random() < 0.3); // 30% 彩色流星
+            scheduleMeteor();
+        }, delay);
+    }
+    scheduleMeteor();
+
+    // ========== 记事本核心逻辑 ==========
     let notes = [];
     let currentNoteIndex = 0;
     let autoSaveTimer = null;
